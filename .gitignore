@@ -1,0 +1,73 @@
+# Laravel Backend
+/platform/backend/.env
+/platform/backend/vendor/
+/platform/backend/node_modules/
+/platform/backend/storage/*.key
+/platform/backend/.phpunit.result.cache
+/platform/backend/Homestead.json
+/platform/backend/Homestead.yaml
+/platform/backend/auth.json
+/platform/backend/npm-debug.log
+/platform/backend/yarn-error.log
+/platform/backend/.DS_Store
+/platform/backend/public/hot
+/platform/backend/public/storage
+/platform/backend/storage/framework/cache/data/*
+/platform/backend/storage/framework/sessions/*
+/platform/backend/storage/framework/testing/*
+/platform/backend/storage/framework/views/*
+/platform/backend/storage/logs/*
+/platform/backend/bootstrap/cache/*
+!/platform/backend/storage/.gitkeep
+!/platform/backend/storage/framework/.gitkeep
+!/platform/backend/storage/framework/cache/.gitkeep
+!/platform/backend/storage/framework/sessions/.gitkeep
+!/platform/backend/storage/framework/testing/.gitkeep
+!/platform/backend/storage/framework/views/.gitkeep
+!/platform/backend/storage/logs/.gitkeep
+
+# React Admin Panel (when created)
+/platform/admin-panel/node_modules/
+/platform/admin-panel/.env.local
+/platform/admin-panel/.env.development.local
+/platform/admin-panel/.env.test.local
+/platform/admin-panel/.env.production.local
+/platform/admin-panel/npm-debug.log*
+/platform/admin-panel/yarn-debug.log*
+/platform/admin-panel/yarn-error.log*
+/platform/admin-panel/dist/
+/platform/admin-panel/build/
+
+# Next.js Storefront (when created)
+/storefront-template/node_modules/
+/storefront-template/.next/
+/storefront-template/out/
+/storefront-template/.env*.local
+/storefront-template/npm-debug.log*
+/storefront-template/yarn-debug.log*
+/storefront-template/yarn-error.log*
+
+# IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*.swn
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Composer
+composer.phar
+
+# Temporary files
+*.log
+*.tmp
+*.temp
