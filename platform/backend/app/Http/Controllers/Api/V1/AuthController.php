@@ -67,7 +67,7 @@ class AuthController extends Controller
             ], 403);
         }
 
-        $deviceName = $request->device_name ?? $request->userAgent();
+        $deviceName = $request->device_name ?? $request->userAgent() ?? 'unknown-device';
         $token = $user->createToken($deviceName)->plainTextToken;
 
         $stores = $user->stores()->get()->map(function ($store) {
