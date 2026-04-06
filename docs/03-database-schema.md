@@ -210,8 +210,18 @@ CREATE TABLE categories (
     slug VARCHAR(255) NOT NULL,
     description TEXT NULL,
     image_url VARCHAR(500) NULL,
-    meta_title VARCHAR(255) NULL,
-    meta_description TEXT NULL,
+    
+    -- SEO Fields (Critical for e-commerce)
+    meta_title VARCHAR(100) NULL,          -- SEO title (50-60 chars recommended)
+    meta_description TEXT NULL,            -- SEO description (150-160 chars)
+    meta_keywords VARCHAR(255) NULL,       -- Comma-separated keywords
+    canonical_url VARCHAR(512) NULL,       -- Canonical URL override
+    og_title VARCHAR(100) NULL,            -- Open Graph title (social sharing)
+    og_description TEXT NULL,              -- Open Graph description
+    og_image VARCHAR(512) NULL,            -- Open Graph image URL (1200x630px)
+    breadcrumb_schema JSON NULL,           -- BreadcrumbList Schema.org JSON-LD
+    robots_meta VARCHAR(50) DEFAULT 'index,follow',  -- Robots directive
+    
     display_order INT DEFAULT 0,
     is_active BOOLEAN DEFAULT TRUE,
     _lft INT NOT NULL DEFAULT 0,      -- Nested set left
@@ -254,9 +264,19 @@ CREATE TABLE products (
     weight DECIMAL(8, 2) NULL,             -- In store's weight unit
     weight_unit VARCHAR(10) DEFAULT 'kg',
     dimensions JSON NULL,                  -- {length, width, height, unit}
-    meta_title VARCHAR(255) NULL,
-    meta_description TEXT NULL,
-    meta_keywords VARCHAR(500) NULL,
+    
+    -- SEO Fields (Critical for e-commerce)
+    meta_title VARCHAR(100) NULL,          -- SEO title (50-60 chars recommended)
+    meta_description TEXT NULL,            -- SEO description (150-160 chars)
+    meta_keywords VARCHAR(255) NULL,       -- Comma-separated keywords
+    canonical_url VARCHAR(512) NULL,       -- Canonical URL override
+    og_title VARCHAR(100) NULL,            -- Open Graph title (social sharing)
+    og_description TEXT NULL,              -- Open Graph description
+    og_image VARCHAR(512) NULL,            -- Open Graph image URL (1200x630px)
+    twitter_card ENUM('summary', 'summary_large_image') DEFAULT 'summary_large_image',
+    schema_markup JSON NULL,               -- Product Schema.org JSON-LD
+    robots_meta VARCHAR(50) DEFAULT 'index,follow',  -- Robots directive
+    
     published_at TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

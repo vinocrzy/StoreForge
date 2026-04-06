@@ -231,6 +231,93 @@ php artisan make:migration add_status_to_products_table
 # ❌ Bad - editing old migration breaks production
 ```
 
+## SEO Requirements (CRITICAL)
+
+**SEO is critical for e-commerce success**. Every public-facing content model MUST include comprehensive SEO metadata.
+
+**All products and categories need**:
+- ✅ `slug` - URL-friendly identifier (unique per store)
+- ✅ `meta_title` - SEO title (50-60 characters)
+- ✅ `meta_description` - SEO description (150-160 characters)
+- ✅ `meta_keywords` - Optional keywords (comma-separated)
+- ✅ `canonical_url` - Optional canonical URL override
+- ✅ `og_title` - Open Graph title (for Facebook/LinkedIn sharing)
+- ✅ `og_description` - Open Graph description
+- ✅ `og_image` - Open Graph image URL (1200x630px)
+- ✅ `twitter_card` - Twitter card type (summary_large_image)
+- ✅ `schema_markup` - JSON-LD structured data (Schema.org)
+- ✅ `robots_meta` - Robots directive (index,follow)
+
+**Product SEO Example**:
+```php
+// Database fields
+$table->string('slug')->unique();
+$table->string('meta_title', 100)->nullable();
+$table->text('meta_description')->nullable();
+$table->string('meta_keywords')->nullable();
+$table->json('schema_markup')->nullable(); // Product Schema.org
+
+// API Response - Include SEO data
+public function show($slug) {
+    $product = Product::where('slug', $slug)->first();
+    
+    return [
+        'data' => $product,
+        'seo' => [
+            'meta_title' => $product->meta_title ?? "{$product->name} | Store",
+            'meta_description' => $product->meta_description,
+            'schema_markup' => $this->seoService->generateProductSchema($product),
+            'og_image' => $product->og_image ?? $product->primaryImage?->url,
+            'breadcrumbs' => $this->seoService->getBreadcrumbs($product),
+        ],
+    ];
+}
+```
+
+**Schema.org Structured Data** (required for products):
+```json
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "Premium Laptop Pro",
+  "image": "https://example.com/laptop.jpg",
+  "description": "High-performance laptop...",
+  "sku": "LAP-001",
+  "brand": {"@type": "Brand", "name": "StoreName"},
+  "offers": {
+    "@type": "Offer",
+    "price": "999.99",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  }
+}
+```
+
+**Sitemap Generation**:
+- All stores need `sitemap.xml` and `robots.txt`
+- Update sitemap daily for products, weekly for categories
+- Submit to Google Search Console
+
+**Frontend (Next.js) Requirements**:
+```typescript
+// Use generateMetadata for SEO
+export async function generateMetadata({ params }) {
+  const product = await getProduct(params.slug);
+  
+  return {
+    title: product.seo.meta_title,
+    description: product.seo.meta_description,
+    openGraph: {
+      title: product.seo.og_title,
+      description: product.seo.og_description,
+      images: [product.seo.og_image],
+    },
+  };
+}
+```
+
+See [docs/17-seo-implementation.md](docs/17-seo-implementation.md) for complete SEO strategy and [.github/skills/ecommerce-seo/SKILL.md](.github/skills/ecommerce-seo/SKILL.md) for implementation patterns.
+
 ## API Design
 
 **REST conventions**:
@@ -469,6 +556,7 @@ git commit -m "docs: Update PROGRESS.md - Phase 2 Product Catalog 60% complete"
 - [docs/03-database-schema.md](docs/03-database-schema.md) - Complete schema
 - [docs/04-api-design.md](docs/04-api-design.md) - API specifications
 - [docs/16-api-documentation-system.md](docs/16-api-documentation-system.md) - API docs setup
+- [docs/17-seo-implementation.md](docs/17-seo-implementation.md) - SEO strategy & best practices
 
 ### Business
 - [docs/12-business-model-strategy.md](docs/12-business-model-strategy.md) - White-label model
@@ -479,8 +567,14 @@ git commit -m "docs: Update PROGRESS.md - Phase 2 Product Catalog 60% complete"
 ❌ **Tenant data leakage** - Always verify tenant isolation
 ❌ **Missing API documentation** - Document controllers with Scribe
 ❌ **Not updating PROGRESS.md** - Update after every significant milestone
+❌ **Missing SEO metadata** - All products/categories need meta tags, schema markup
+❌ **Poor URL slugs** - Use lowercase, hyphen-separated, keyword-rich slugs
+❌ **No structured data** - Products need Schema.org Product markup for rich snippets
+❌ **Missing alt text** - All images need descriptive alt text for accessibility + SEO
+❌ **Duplicate meta tags** - Every product needs unique title/description
+❌ **Client-side only rendering** - Use SSG for storefronts (SEO critical)
+❌ **No sitemap.xml** - Each store needs sitemap for search engine discovery
 ❌ **Hardcoded store IDs** - Use `tenant()->id`
-❌ **Client-side only rendering** - Use SSG for storefronts (SEO)
 ❌ **Editing old migrations** - Create new ones
 ❌ **Business logic in controllers** - Use service classes
 ❌ **Missing TypeScript types** - Type everything
