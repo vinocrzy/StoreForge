@@ -3,7 +3,7 @@
 **Project**: Multi-Tenant E-Commerce Platform  
 **Started**: March 30, 2026  
 **Status**: 🚧 In Progress  
-**Current Phase**: Phase 1 - Backend Foundation (COMPLETE ✅)  
+**Current Phase**: Phase 2 - Core E-Commerce Features (50% Complete)  
 
 ---
 
@@ -13,7 +13,7 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 
 1. ✅ **Phase 0**: Documentation & Setup (COMPLETE)
 2. ✅ **Phase 1**: Backend Foundation & Multi-Tenancy (COMPLETE)
-3. ⏳ **Phase 2**: Core E-Commerce Features (NEXT)
+3. 🚧 **Phase 2**: Core E-Commerce Features (50% COMPLETE - Product Catalog in progress)
 4. ⏳ **Phase 3**: Admin Panel
 5. ⏳ **Phase 4**: Storefront Template
 6. ⏳ **Phase 5**: Production Ready
@@ -176,16 +176,105 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 
 ---
 
-## Phase 2: Core E-Commerce Features ⏳ NOT STARTED
+## Phase 2: Core E-Commerce Features 🚧 IN PROGRESS
 
 **Duration**: 3-4 weeks (estimated)  
-**Status**: ⏳ 0% Complete
-- [ ] Product search & filtering
+**Status**: 🚧 50% Complete  
+**Started**: April 6, 2026
+
+### Tasks Breakdown
+
+#### 2.1 Product Catalog 🚧 IN PROGRESS (60% Complete)
+
+**Database** ✅ COMPLETE:
+- [x] Categories table (hierarchical with parent_id)
+- [x] Products table (comprehensive fields: name, slug, SKU, pricing, inventory, status)
+- [x] Product images table (gallery support with sort order)
+- [x] Product variants table (size, color, attributes)
+- [x] Product categories pivot table (many-to-many)
+- [x] Migrations executed successfully
+
+**Models** ✅ COMPLETE:
+- [x] Category model with tenant scoping
+  - [x] Hierarchical relationships (parent/children)
+  - [x] Global scope for tenant isolation
+  - [x] Business logic methods (isRoot, descendants)
+  - [x] Query scopes (active, roots)
+- [x] Product model with tenant scoping
+  - [x] Relationships (categories, images, variants)
+  - [x] Inventory tracking methods (inStock, isLowStock)
+  - [x] Business logic (discount calculation, status checks)
+  - [x] Search and filter scopes
+- [x] ProductImage model with tenant scoping
+  - [x] Primary image support
+  - [x] URL attribute accessor
+- [x] ProductVariant model with tenant scoping
+  - [x] Attributes (color, size, etc.)
+  - [x] Stock and price management
+  - [x] Effective price calculation
+
+**Factories & Seeders** ✅ COMPLETE:
+- [x] CategoryFactory (realistic hierarchical data)
+- [x] ProductFactory (diverse product catalog)
+- [x] ProductImageFactory (gallery images)
+- [x] ProductVariantFactory (product variations)
+- [x] CategorySeeder (28 categories per store: 5 parent + 23 children)
+- [x] ProductSeeder (30 products per store with images and variants)
+- [x] Seeded test data:
+  - 84 total categories (28 per store × 3 stores)
+  - 90 total products (30 per store × 3 stores)
+  - 228 product images
+  - 131 product variants
+
+**Service Layer** ✅ COMPLETE:
+- [x] ProductService
+  - [x] getProducts() with filtering (search, status, category, stock, featured)
+  - [x] getProduct() with relationships
+  - [x] createProduct() with auto-slug generation
+  - [x] updateProduct() with slug validation
+  - [x] deleteProduct() soft delete
+  - [x] updateStock() with operations (set, increment, decrement)
+  - [x] getLowStockProducts()
+  - [x] getOutOfStockProducts()
+- [x] CategoryService
+  - [x] getCategories() with tree support
+  - [x] getCategory() with relationships
+  - [x] createCategory() with auto-slug
+  - [x] updateCategory() with circular reference prevention
+  - [x] deleteCategory() with children handling
+  - [x] getCategoryTree() hierarchical structure
+  - [x] reorderCategories()
+  - [x] moveCategory() with validation
+
+**API Layer** 🚧 IN PROGRESS:
+- [ ] ProductRequest validation
+- [ ] CategoryRequest validation
+- [ ] ProductController with Scribe documentation
+- [ ] CategoryController with Scribe documentation
+- [ ] API routes (products, categories)
+- [ ] Authorization middleware
+
+**Testing** ⏳ PENDING:
+- [ ] Product CRUD tests
+- [ ] Category CRUD tests
+- [ ] Tenant isolation tests for products
+- [ ] Stock management tests
+- [ ] Category tree tests
+
+**Documentation** ⏳ PENDING:
+- [ ] Generate Scribe API documentation
+- [ ] Test all product endpoints
+- [ ] Test all category endpoints
+
+**Additional Features** ⏳ PENDING:
+- [ ] Product search & filtering (advanced)
 - [ ] Product import/export (CSV)
+- [ ] Bulk operations (status update, category assignment)
 
-**Estimated Time**: 1 week
+**Estimated Time**: 1-2 weeks
 
-#### 2.2 Inventory Management
+#### 2.2 Inventory Management ⏳ NOT STARTED
+
 - [ ] Inventory tracking system
 - [ ] Stock levels per product
 - [ ] Multi-warehouse support
@@ -195,7 +284,8 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 
 **Estimated Time**: 1 week
 
-#### 2.3 Order Management
+#### 2.3 Order Management ⏳ NOT STARTED
+
 - [ ] Orders table structure
 - [ ] Order items & line items
 - [ ] Order status workflow
@@ -205,7 +295,8 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 
 **Estimated Time**: 1 week
 
-#### 2.4 Customer Management
+#### 2.4 Customer Management ⏳ NOT STARTED
+
 - [ ] Customers table
 - [ ] Customer addresses
 - [ ] Customer orders relationship
@@ -213,6 +304,29 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 - [ ] Customer authentication (storefront)
 
 **Estimated Time**: 3-4 days
+
+### Phase 2 Progress Summary
+
+**Completed**:
+- ✅ Product catalog database schema (5 tables, all migrated)
+- ✅ 4 product-related models with full tenant scoping
+- ✅ Comprehensive service layer for products and categories
+- ✅ Factory and seeder infrastructure with realistic test data
+- ✅ 84 categories and 90 products seeded across 3 stores
+
+**In Progress**:
+- 🚧 API controllers (created, need implementation)
+- 🚧 Request validation classes
+- 🚧 API routes configuration
+
+**Pending**:
+- ⏳ API endpoint implementation and documentation
+- ⏳ Product catalog tests
+- ⏳ Inventory management module
+- ⏳ Order management module
+- ⏳ Customer management module
+
+**Overall Phase 2 Status**: 🚧 50% Complete (Product Catalog: 60%)
 
 ---
 
