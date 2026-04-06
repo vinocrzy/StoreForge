@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CustomerController;
+use App\Http\Controllers\Api\V1\WarehouseController;
+use App\Http\Controllers\Api\V1\InventoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,4 +48,17 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::delete('/customers/{customerId}/addresses/{addressId}', [CustomerController::class, 'destroyAddress']);
     Route::post('/customers/{customerId}/addresses/{addressId}/default', [CustomerController::class, 'setDefaultAddress']);
     Route::apiResource('customers', CustomerController::class);
+    
+    // Warehouses
+    Route::apiResource('warehouses', WarehouseController::class);
+    
+    // Inventory
+    Route::get('/inventory/movements', [InventoryController::class, 'movements']);
+    Route::get('/inventory/product/{productId}', [InventoryController::class, 'byProduct']);
+    Route::post('/inventory/adjust', [InventoryController::class, 'adjust']);
+    Route::post('/inventory/reserve', [InventoryController::class, 'reserve']);
+    Route::post('/inventory/release', [InventoryController::class, 'release']);
+    Route::post('/inventory/fulfill', [InventoryController::class, 'fulfill']);
+    Route::post('/inventory/transfer', [InventoryController::class, 'transfer']);
+    Route::apiResource('inventory', InventoryController::class)->only(['index', 'show', 'store']);
 });
