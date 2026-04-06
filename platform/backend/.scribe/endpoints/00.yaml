@@ -107,6 +107,168 @@ endpoints:
     custom: []
     httpMethods:
       - POST
+    uri: api/v1/auth/forgot-password
+    metadata:
+      custom: []
+      groupName: Authentication
+      groupDescription: |-
+
+        APIs for user authentication and token management
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Forgot Password'
+      description: "Send password reset link to user's email or phone."
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      login:
+        custom: []
+        name: login
+        description: 'User phone number or email.'
+        required: true
+        example: '+12025551234'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      login: '+12025551234'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Password reset link sent to your email/phone"
+          }
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "We couldn't find a user with that phone number or email"
+          }
+        headers: []
+        description: 'User not found'
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/auth/reset-password
+    metadata:
+      custom: []
+      groupName: Authentication
+      groupDescription: |-
+
+        APIs for user authentication and token management
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Reset Password'
+      description: 'Reset user password using reset token.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      token:
+        custom: []
+        name: token
+        description: 'Password reset token.'
+        required: true
+        example: abc123defg456
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      login:
+        custom: []
+        name: login
+        description: 'User phone number or email.'
+        required: true
+        example: '+12025551234'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      password:
+        custom: []
+        name: password
+        description: 'New password (min 8 characters).'
+        required: true
+        example: newpassword123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      password_confirmation:
+        custom: []
+        name: password_confirmation
+        description: 'Confirm new password.'
+        required: true
+        example: newpassword123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      token: abc123defg456
+      login: '+12025551234'
+      password: newpassword123
+      password_confirmation: newpassword123
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Password reset successfully"
+          }
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "Invalid or expired reset token"
+          }
+        headers: []
+        description: 'Invalid token'
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
     uri: api/v1/auth/logout
     metadata:
       custom: []

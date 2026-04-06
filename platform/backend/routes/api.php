@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\V1\AuthController;
 
 // Public routes
 Route::post('/v1/auth/login', [AuthController::class, 'login']);
+Route::post('/v1/auth/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/v1/auth/reset-password', [AuthController::class, 'resetPassword']);
 
 // Protected routes (require authentication + tenant scope)
 Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {

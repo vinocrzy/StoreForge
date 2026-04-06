@@ -47,6 +47,25 @@ return [
             'report' => false,
         ],
 
+        // Tenant-aware: Store files organized by store_id
+        'tenant' => [
+            'driver' => 'local',
+            'root' => storage_path('app/tenants'),
+            'visibility' => 'private',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        // Tenant-aware public: Public files organized by store_id
+        'tenant_public' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/tenants'),
+            'url' => env('APP_URL').'/storage/tenants',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
