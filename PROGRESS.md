@@ -3,7 +3,7 @@
 **Project**: Multi-Tenant E-Commerce Platform  
 **Started**: March 30, 2026  
 **Status**: 🚧 In Progress  
-**Current Phase**: Phase 2 - Core E-Commerce Features (50% Complete)  
+**Current Phase**: Phase 2 - Core E-Commerce Features (60% Complete - Starting Customer Management)  
 
 ---
 
@@ -13,7 +13,7 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 
 1. ✅ **Phase 0**: Documentation & Setup (COMPLETE)
 2. ✅ **Phase 1**: Backend Foundation & Multi-Tenancy (COMPLETE)
-3. 🚧 **Phase 2**: Core E-Commerce Features (50% COMPLETE - Product Catalog in progress)
+3. 🚧 **Phase 2**: Core E-Commerce Features (60% COMPLETE - Product Catalog ✅, Customer Management 🚧)
 4. ⏳ **Phase 3**: Admin Panel
 5. ⏳ **Phase 4**: Storefront Template
 6. ⏳ **Phase 5**: Production Ready
@@ -309,9 +309,48 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 
 **Estimated Time**: 1 week
 
-#### 2.4 Customer Management ⏳ NOT STARTED
+#### 2.4 Customer Management 🚧 IN PROGRESS (0% Complete)
 
-- [ ] Customers table
+**Database** 🚧 IN PROGRESS:
+- [ ] Customers table (name, email, phone, status)
+- [ ] Customer addresses table (shipping/billing addresses)
+- [ ] Customer groups table (optional segmentation)
+- [ ] Migrations executed
+
+**Models** ⏳ PENDING:
+- [ ] Customer model with tenant scoping
+- [ ] CustomerAddress model
+- [ ] Relationships (addresses, orders, store)
+- [ ] Business logic methods
+
+**Service Layer** ⏳ PENDING:
+- [ ] CustomerService
+  - [ ] CRUD operations
+  - [ ] Address management
+  - [ ] Customer search and filtering
+  - [ ] Customer statistics
+
+**API Layer** ⏳ PENDING:
+- [ ] CustomerRequest validation
+- [ ] CustomerAddressRequest validation
+- [ ] CustomerController with Scribe docs
+- [ ] API routes
+
+**Authentication** ⏳ PENDING:
+- [ ] Customer authentication (phone-first)
+- [ ] Customer registration
+- [ ] Customer password reset
+
+**Testing** ⏳ PENDING:
+- [ ] Customer CRUD tests
+- [ ] Tenant isolation tests
+- [ ] Authentication tests
+
+**Documentation** ⏳ PENDING:
+- [ ] API documentation generation
+- [ ] Endpoint testing
+
+**Estimated Time**: 2-3 days
 - [ ] Customer addresses
 - [ ] Customer orders relationship
 - [ ] Customer API endpoints
