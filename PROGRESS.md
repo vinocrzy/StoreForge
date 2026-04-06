@@ -309,23 +309,38 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 
 **Estimated Time**: 1 week
 
-#### 2.4 Customer Management 🚧 IN PROGRESS (0% Complete)
+#### 2.4 Customer Management 🚧 IN PROGRESS (40% Complete)
 
-**Database** 🚧 IN PROGRESS:
-- [ ] Customers table (name, email, phone, status)
-- [ ] Customer addresses table (shipping/billing addresses)
-- [ ] Customer groups table (optional segmentation)
-- [ ] Migrations executed
+**Database** ✅ COMPLETE:
+- [x] Customers table (name, email, phone, status, verification)
+- [x] Customer addresses table (shipping/billing with default support)
+- [x] Migrations executed successfully
 
-**Models** ⏳ PENDING:
-- [ ] Customer model with tenant scoping
-- [ ] CustomerAddress model
-- [ ] Relationships (addresses, orders, store)
-- [ ] Business logic methods
+**Models** ✅ COMPLETE:
+- [x] Customer model with tenant scoping
+  - [x] Extends Authenticatable (for storefront login)
+  - [x] HasApiTokens for Sanctum authentication
+  - [x] Phone-first authentication support
+  - [x] Email and phone verification methods
+  - [x] Relationships (store, addresses)
+  - [x] Business logic (isActive, isBanned, verification)
+  - [x] Scopes (active, search)
+- [x] CustomerAddress model with tenant scoping
+  - [x] Automatic default address handling
+  - [x] Address type validation (shipping, billing, both)
+  - [x] Relationships (customer, store)
+  - [x] Scopes (shipping, billing, default)
+  - [x] Full address formatting
+
+**Factories & Seeders** ✅ COMPLETE:
+- [x] CustomerFactory (realistic data with phone/email)
+- [x] CustomerAddressFactory (multiple address types)
+- [x] CustomerSeeder (15 customers per store with 1-3 addresses)
+- [x] Seeded data: 45 customers across 3 stores
 
 **Service Layer** ⏳ PENDING:
 - [ ] CustomerService
-  - [ ] CRUD operations
+  - [ ] CRUD operations with tenant isolation
   - [ ] Address management
   - [ ] Customer search and filtering
   - [ ] Customer statistics
@@ -334,10 +349,12 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 - [ ] CustomerRequest validation
 - [ ] CustomerAddressRequest validation
 - [ ] CustomerController with Scribe docs
-- [ ] API routes
+  - [ ] List, show, create, update, delete
+  - [ ] Address management endpoints
+- [ ] API routes configuration
 
 **Authentication** ⏳ PENDING:
-- [ ] Customer authentication (phone-first)
+- [ ] Customer authentication endpoints (phone-first)
 - [ ] Customer registration
 - [ ] Customer password reset
 
@@ -350,7 +367,15 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 - [ ] API documentation generation
 - [ ] Endpoint testing
 
-**Estimated Time**: 2-3 days
+**Customer Management Deliverables (So Far)**:
+- ✅ 2 database tables with proper indexing
+- ✅ 2 models with full tenant isolation and authentication support
+- ✅ 45 customers seeded with multiple addresses
+- ⏳ Service layer pending
+- ⏳ API controllers pending
+- ⏳ Tests pending
+
+**Estimated Time Remaining**: 1-2 days
 - [ ] Customer addresses
 - [ ] Customer orders relationship
 - [ ] Customer API endpoints
