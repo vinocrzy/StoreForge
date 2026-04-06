@@ -2,7 +2,34 @@
 
 ## Critical Improvements (Do Before First Client)
 
-### 0. Manual Payment System ⭐⭐⭐
+### 0. Phone-First Authentication ⭐⭐⭐
+**Priority**: CRITICAL - **REQUIRED FROM START**  
+**Time**: Included in Phase 1  
+**Why**: Phone numbers are mandatory for orders and primary login method
+
+**Implementation**:
+- Phone number REQUIRED for all users and customers
+- Phone is PRIMARY login method (email is fallback)
+- Phone format: E.164 standard (+12025551234)
+- Phone unique per store (tenant isolation)
+- Guest checkout REQUIRES phone number
+- All addresses REQUIRE phone numbers (delivery contact)
+
+**Database**:
+- `users.phone` NOT NULL, unique per store
+- `customers.phone` NOT NULL, unique per store  
+- `customer_addresses.phone` NOT NULL
+- Indexes on phone fields for login lookups
+
+**Authentication:**
+```
+POST /api/v1/admin/auth/login
+{ "login": "+12025551234" or "email@example.com", "password": "..." }
+```
+
+**See**: [docs/18-phone-authentication-strategy.md](18-phone-authentication-strategy.md) for complete guide
+
+### 1. Manual Payment System ⭐⭐⭐
 **Priority**: CRITICAL  
 **Time**: 1 week  
 **Why**: Essential for basic order processing before gateway integration

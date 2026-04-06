@@ -605,12 +605,72 @@ public function markAsPaid(Request $request, int $id)
 
 **Future**: Payment gateway integration (Stripe, PayPal, etc.) will be added in Phase 3+. See [docs/17-payment-strategy.md](../../docs/17-payment-strategy.md) for migration path. The manual payment system will remain available alongside automated gateways.
 
+## Phone-First Authentication
+
+### CRITICAL: Phone Numbers Are Required
+
+**All users and customers MUST have phone numbers**:
+- Phone number is the **primary** authentication method
+- Email is **secondary** (required but used for communications)
+- Phone numbers must be in E.164 format: `+12025551234`
+- Phone numbers must be unique per store (tenant isolation)
+
+**Login Implementation**:
+```php
+public function login(Request $request)
+{
+    $request->validate([
+        'login' => 'required|string',  // Accept phone or email
+        'password' => 'required|string',
+    ]);
+    
+    // Detect if login is phone or email
+    $loginField = preg_match('/^[\d\s\-\+\(\)]+$/', $request->login) 
+        ? 'phone' 
+        : 'email';
+    
+    $user = User::where($loginField, $request->login)->first();
+    
+    if (!$user || !Hash::check($request->password, $user->password)) {
+        throw ValidationException::withMessages([
+            'login' => ['The provided credentials are incorrect.'],
+        ]);
+    }
+    
+    // Track login method
+    $user->update([
+        'last_login_at' => now(),
+        'last_login_method' => $loginField,
+    ]);
+    
+    return response()->json([
+        'user' => $user,
+        'token' => $user->createToken('device')->plainTextToken,
+    ]);
+}
+```
+
+**Checkout Validation** - Phone Required:
+```php
+// CRITICAL: Phone number MANDATORY for all checkouts
+$request->validate([
+    'customer.phone' => 'required|string|max:20',
+    'customer.email' => 'required|email|max:255',
+    'shipping_address.phone' => 'required|string|max:20',  // For delivery
+    'billing_address.phone' => 'required|string|max:20',
+    // ... other fields
+]);
+```
+
+**See**: [docs/18-phone-authentication-strategy.md](../../docs/18-phone-authentication-strategy.md) for complete phone authentication implementation.
+
 ## Reference Documentation
 
 - [docs/07-multi-tenancy.md](../../docs/07-multi-tenancy.md) - Complete multi-tenancy strategy
 - [docs/01-system-architecture.md](../../docs/01-system-architecture.md) - System architecture
 - [docs/03-database-schema.md](../../docs/03-database-schema.md) - Database schema with tenant tables
 - [docs/17-payment-strategy.md](../../docs/17-payment-strategy.md) - Payment implementation strategy
+- [docs/18-phone-authentication-strategy.md](../../docs/18-phone-authentication-strategy.md) - Phone-first authentication
 
 ## Checklist for New Tenant Features
 

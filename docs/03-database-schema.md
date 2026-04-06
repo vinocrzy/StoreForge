@@ -103,23 +103,32 @@ CREATE TABLE users (
     id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     store_id BIGINT UNSIGNED NULL,  -- NULL for super admin
     name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(20) NOT NULL,                    -- REQUIRED: Primary login method
+    email VARCHAR(255) NOT NULL,                   -- REQUIRED: Secondary login + communications
     email_verified_at TIMESTAMP NULL,
+    phone_verified_at TIMESTAMP NULL,              -- Track phone verification
     password VARCHAR(255) NOT NULL,
     role ENUM('super_admin', 'admin', 'manager', 'staff') DEFAULT 'staff',
     status ENUM('active', 'inactive', 'suspended') DEFAULT 'active',
     avatar_url VARCHAR(500) NULL,
     last_login_at TIMESTAMP NULL,
+    last_login_method VARCHAR(20) DEFAULT 'phone', -- 'phone' or 'email'
     remember_token VARCHAR(100) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL,
     
     FOREIGN KEY (store_id) REFERENCES stores(id) ON DELETE CASCADE,
+    UNIQUE KEY uk_store_phone (store_id, phone),   -- Phone unique per store
+    UNIQUE KEY uk_store_email (store_id, email),   -- Email unique per store
+    INDEX idx_phone (phone),                        -- For phone-based login (primary)
+    INDEX idx_email (email),                        -- For email-based login (fallback)
     INDEX idx_store_id (store_id),
-    INDEX idx_email (email),
     INDEX idx_role (role)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- NOTE: Phone numbers are stored in E.164 format (+12025551234)
+-- See docs/18-phone-authentication-strategy.md for complete implementation
 ```
 
 ### roles
@@ -579,14 +588,15 @@ Customer accounts
 CREATE TABLE customers (
     id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     store_id BIGINT UNSIGNED NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NULL,            -- NULL for guest customers
+    phone VARCHAR(20) NOT NULL,                    -- REQUIRED: Primary login method
+    email VARCHAR(255) NOT NULL,                   -- REQUIRED: Order confirmations
+    password VARCHAR(255) NULL,                    -- NULL for guest customers
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-    phone VARCHAR(50) NULL,
     birthday DATE NULL,
     gender ENUM('male', 'female', 'other') NULL,
     status ENUM('active', 'inactive', 'blocked') DEFAULT 'active',
+    phone_verified_at TIMESTAMP NULL,              -- Track phone verification
     email_verified_at TIMESTAMP NULL,
     accepts_marketing BOOLEAN DEFAULT FALSE,
     total_orders INT DEFAULT 0,
@@ -600,11 +610,17 @@ CREATE TABLE customers (
     deleted_at TIMESTAMP NULL,
     
     FOREIGN KEY (store_id) REFERENCES stores(id) ON DELETE CASCADE,
-    UNIQUE KEY uk_store_email (store_id, email),
+    UNIQUE KEY uk_store_phone (store_id, phone),   -- Phone unique per store (PRIMARY)
+    UNIQUE KEY uk_store_email (store_id, email),   -- Email unique per store (SECONDARY)
+    INDEX idx_phone (phone),                        -- For phone-based login (priority)
+    INDEX idx_email (email),                        -- For email-based login (fallback)
     INDEX idx_store_id (store_id),
-    INDEX idx_email (email),
     INDEX idx_status (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- NOTE: Phone numbers are MANDATORY for checkout and account creation
+-- Phone numbers stored in E.164 format (+12025551234)
+-- See docs/18-phone-authentication-strategy.md
 ```
 
 ### customer_addresses
@@ -624,7 +640,7 @@ CREATE TABLE customer_addresses (
     state VARCHAR(100) NULL,
     postal_code VARCHAR(20) NOT NULL,
     country VARCHAR(2) NOT NULL,
-    phone VARCHAR(50) NULL,
+    phone VARCHAR(20) NOT NULL,                    -- REQUIRED for delivery contact
     is_default BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -633,6 +649,8 @@ CREATE TABLE customer_addresses (
     INDEX idx_customer_id (customer_id),
     INDEX idx_default (is_default)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- NOTE: Phone number REQUIRED for all addresses (delivery contact)
 ```
 
 Due to character limits, I'll continue with Order tables in the next section...

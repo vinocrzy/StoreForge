@@ -42,6 +42,32 @@ See [docs/15-repository-structure.md](docs/15-repository-structure.md) for workf
 
 ### Backend (Laravel)
 
+**Authentication**: Phone-first strategy
+```php
+// ✅ Good - Accept phone or email, prioritize phone
+$request->validate([
+    'login' => 'required|string',  // Phone (+12025551234) or email
+    'password' => 'required|string',
+]);
+
+$loginField = preg_match('/^[\d\s\-\+\(\)]+$/', $request->login) ? 'phone' : 'email';
+$user = User::where($loginField, $request->login)->first();
+
+// ❌ Bad - Email-only login (phone is primary method)
+$request->validate([
+    'email' => 'required|email',
+    'password' => 'required',
+]);
+```
+
+**CRITICAL**: All users and customers MUST have phone numbers:
+- Phone is **required** field (NOT NULL)
+- Phone is **primary** authentication method
+- Phone in E.164 format: `+12025551234`
+- Phone unique per store (tenant isolation)
+
+See [docs/18-phone-authentication-strategy.md](docs/18-phone-authentication-strategy.md) for complete implementation.
+
 **Service Pattern**: Controllers delegate to services
 ```php
 // ✅ Good

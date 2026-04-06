@@ -16,7 +16,29 @@ Development: http://localhost:8000/api/v1
 ### Admin API
 **Method**: Laravel Sanctum (Token-based)
 
-**Login Request**:
+**Login Request (Phone-First)**:
+```http
+POST /api/v1/admin/auth/login
+Content-Type: application/json
+
+{
+  "login": "+12025551234",  // or "admin@example.com" (auto-detected)
+  "password": "password"
+}
+```
+
+**Alternative: Explicit Phone Login**:
+```http
+POST /api/v1/admin/auth/login
+Content-Type: application/json
+
+{
+  "phone": "+12025551234",
+  "password": "password"
+}
+```
+
+**Alternative: Email Login (Fallback)**:
 ```http
 POST /api/v1/admin/auth/login
 Content-Type: application/json
@@ -34,6 +56,7 @@ Content-Type: application/json
     "user": {
       "id": 1,
       "name": "Admin User",
+      "phone": "+12025551234",
       "email": "admin@example.com",
       "role": "admin",
       "store_id": 1
@@ -42,6 +65,9 @@ Content-Type: application/json
   }
 }
 ```
+
+**NOTE**: Phone number is the **primary** authentication method. Email login is available as fallback.
+See [docs/18-phone-authentication-strategy.md](18-phone-authentication-strategy.md) for complete implementation.
 
 **Authenticated Requests**:
 ```http
