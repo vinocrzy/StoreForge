@@ -352,12 +352,106 @@ php artisan scribe:generate  # Update API docs
 npm test
 npm run lint
 npm run type-check
+
+# CRITICAL: Update PROGRESS.md
+# 1. Mark completed tasks with [x]
+# 2. Update phase completion percentages
+# 3. Add deliverables summary
+# 4. Commit PROGRESS.md with descriptive message
+git add PROGRESS.md
+git commit -m "docs: Update PROGRESS.md - [describe milestone]"
 ```
 
 ### Creating Client Storefront
 ```bash
 scripts/create-client-store.bat "Client Name" store_id
 ```
+
+### Progress Tracking & Documentation (CRITICAL)
+
+**ALWAYS update PROGRESS.md after completing significant work**. This is not optional - it's a critical habit for tracking development progress.
+
+**When to update PROGRESS.md**:
+- ✅ After completing a major task or milestone
+- ✅ After finishing a database migration batch
+- ✅ After implementing a complete feature (models + services + controllers)
+- ✅ After completing a phase or sub-phase
+- ✅ After seeding test data
+- ✅ At the end of each work session (daily summary)
+- ✅ Before committing significant changes
+
+**What to update**:
+1. **Task Status**: Mark completed tasks with `[x]` checkboxes
+2. **Phase Progress**: Update completion percentages (e.g., "50% Complete")
+3. **Deliverables**: List what was actually completed with specifics
+4. **Current Status**: Update the current phase status (🚧 IN PROGRESS, ✅ COMPLETE, ⏳ PENDING)
+5. **Summary Section**: Add progress summary showing what's done vs. what remains
+
+**How to update**:
+```bash
+# After completing work
+1. Edit PROGRESS.md with detailed updates
+2. Update task checkboxes: [ ] → [x]
+3. Update percentages: "0%" → "50%" → "100%"
+4. Add completion dates for finished phases
+5. Commit with descriptive message
+
+# Example commit message
+git add PROGRESS.md
+git commit -m "docs: Update PROGRESS.md - Phase 2 Product Catalog 60% complete"
+```
+
+**Progress Update Template**:
+```markdown
+## Phase X: [Phase Name] 🚧 IN PROGRESS
+
+**Status**: 🚧 XX% Complete
+**Started**: [Date]
+**Completed**: [Date or N/A]
+
+### Tasks Breakdown
+
+#### X.X [Feature Name] ✅ COMPLETE (or 🚧 IN PROGRESS)
+- [x] Task 1 (completed)
+- [x] Task 2 (completed)
+- [ ] Task 3 (pending)
+
+**Deliverables**:
+- ✅ Item 1 with specific details
+- ✅ Item 2 with metrics (e.g., "90 products seeded")
+- 🚧 Item 3 in progress
+
+**Overall Phase X Status**: 🚧 XX% Complete
+```
+
+**Example of good progress tracking**:
+```markdown
+**Completed**:
+- ✅ Product catalog database schema (5 migrations)
+- ✅ 4 models with tenant scoping
+- ✅ Service layer (ProductService, CategoryService)
+- ✅ Seeded data: 84 categories, 90 products, 228 images
+
+**In Progress**:
+- 🚧 API controllers (created, need implementation)
+
+**Pending**:
+- ⏳ API documentation
+- ⏳ Tests
+```
+
+**Why this matters**:
+- 📊 Clear visibility into project progress
+- 🎯 Easy to resume work after breaks
+- 📝 Documentation for stakeholders
+- ✅ Prevents forgetting completed work
+- 🔄 Shows incremental progress towards goals
+
+**Emoji Guide**:
+- ✅ COMPLETE - Task is 100% done
+- 🚧 IN PROGRESS - Currently working on it
+- ⏳ PENDING/NOT STARTED - Scheduled but not started
+- ❌ BLOCKED - Cannot proceed (with reason)
 
 ## Key Documentation
 
@@ -384,12 +478,14 @@ scripts/create-client-store.bat "Client Name" store_id
 
 ❌ **Tenant data leakage** - Always verify tenant isolation
 ❌ **Missing API documentation** - Document controllers with Scribe
+❌ **Not updating PROGRESS.md** - Update after every significant milestone
 ❌ **Hardcoded store IDs** - Use `tenant()->id`
 ❌ **Client-side only rendering** - Use SSG for storefronts (SEO)
 ❌ **Editing old migrations** - Create new ones
 ❌ **Business logic in controllers** - Use service classes
 ❌ **Missing TypeScript types** - Type everything
 ❌ **Committing secrets** - Use `.env`, never commit
+❌ **Forgetting to commit progress** - Commit frequently with clear messages
 
 ## Performance Targets
 
