@@ -658,6 +658,14 @@ CREATE TABLE orders (
     coupon_code VARCHAR(50) NULL,
     customer_note TEXT NULL,
     admin_note TEXT NULL,
+    
+    -- Payment fields (manual payment support)
+    payment_method VARCHAR(100) NULL,           -- 'manual', 'bank_transfer', 'cash_on_delivery', 'card', etc.
+    paid_at TIMESTAMP NULL,                     -- When payment was marked as received
+    paid_by_user_id BIGINT UNSIGNED NULL,       -- Which admin/vendor marked it as paid
+    payment_notes TEXT NULL,                    -- Internal notes (reference numbers, etc.)
+    payment_proof_url VARCHAR(500) NULL,        -- Customer uploaded payment proof
+    
     billing_address_id BIGINT UNSIGNED NULL,
     shipping_address_id BIGINT UNSIGNED NULL,
     ip_address VARCHAR(45) NULL,
@@ -673,13 +681,18 @@ CREATE TABLE orders (
     
     FOREIGN KEY (store_id) REFERENCES stores(id) ON DELETE CASCADE,
     FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE,
+    FOREIGN KEY (paid_by_user_id) REFERENCES users(id) ON DELETE SET NULL,
     INDEX idx_store_id (store_id),
     INDEX idx_customer_id (customer_id),
     INDEX idx_order_number (order_number),
     INDEX idx_status (status),
     INDEX idx_payment_status (payment_status),
+    INDEX idx_paid_at (paid_at),
     INDEX idx_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- NOTE: Manual payment system active. See docs/17-payment-strategy.md for details.
+-- Payment gateway integration (Stripe, PayPal, etc.) planned for Phase 3+
 ```
 
 ### order_items
@@ -709,21 +722,21 @@ CREATE TABLE order_items (
 ```
 
 ### payments
-Payment records
+Payment transaction records
 
 ```sql
 CREATE TABLE payments (
     id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     store_id BIGINT UNSIGNED NOT NULL,
     order_id BIGINT UNSIGNED NOT NULL,
-    transaction_id VARCHAR(255) NULL,
-    gateway VARCHAR(50) NOT NULL,
-    payment_method VARCHAR(50) NOT NULL,
+    transaction_id VARCHAR(255) NULL,               -- Gateway transaction ID (null for manual)
+    gateway VARCHAR(50) NOT NULL DEFAULT 'manual',  -- 'manual', 'stripe', 'paypal', 'razorpay', etc.
+    payment_method VARCHAR(50) NOT NULL,            -- 'bank_transfer', 'cash', 'card', 'upi', etc.
     amount DECIMAL(10, 2) NOT NULL,
     currency VARCHAR(3) DEFAULT 'USD',
     status ENUM('pending', 'processing', 'completed', 'failed', 'refunded') DEFAULT 'pending',
     failure_reason TEXT NULL,
-    metadata JSON NULL,
+    metadata JSON NULL,                              -- Store reference numbers, gateway data, etc.
     processed_at TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -733,8 +746,13 @@ CREATE TABLE payments (
     INDEX idx_store_id (store_id),
     INDEX idx_order_id (order_id),
     INDEX idx_transaction_id (transaction_id),
+    INDEX idx_gateway (gateway),
     INDEX idx_status (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- NOTE: Currently supports manual payments (gateway = 'manual')
+-- Automated payment gateways (Stripe, PayPal) planned for Phase 3+
+-- See docs/17-payment-strategy.md for implementation details
 ```
 
 ## Indexes Summary

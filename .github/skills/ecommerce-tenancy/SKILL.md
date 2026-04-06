@@ -550,11 +550,67 @@ if ($user->isPlatformAdmin()) {
 }
 ```
 
+## Payment Handling (Current Implementation)
+
+### Manual Payment Processing
+
+**Current Phase**: Orders use manual payment processing - no automated payment gateways yet.
+
+**Implementation Pattern**:
+```php
+// Order Controller - Mark as Paid
+public function markAsPaid(Request $request, int $id)
+{
+    // ✅ Tenant-scoped query (automatic via global scope)
+    $order = Order::findOrFail($id);
+    
+    $request->validate([
+        'payment_method' => 'required|string|max:100',
+        'payment_notes' => 'nullable|string',
+        'amount' => 'required|numeric|min:0',
+    ]);
+    
+    // Verify amount matches order total
+    if ($request->amount != $order->total) {
+        return response()->json([
+            'message' => 'Payment amount must match order total'
+        ], 422);
+    }
+    
+    $order->update([
+        'payment_status' => 'paid',
+        'payment_method' => $request->payment_method,
+        'paid_at' => now(),
+        'paid_by_user_id' => auth()->id(),
+        'payment_notes' => $request->payment_notes,
+    ]);
+    
+    // Create payment record
+    $order->payments()->create([
+        'store_id' => tenant()->id,  // ✅ Tenant isolation
+        'gateway' => 'manual',
+        'payment_method' => $request->payment_method,
+        'amount' => $request->amount,
+        'currency' => $order->currency,
+        'status' => 'completed',
+        'processed_at' => now(),
+    ]);
+    
+    // Send payment confirmation email
+    event(new OrderPaid($order));
+    
+    return response()->json(['data' => $order]);
+}
+```
+
+**Future**: Payment gateway integration (Stripe, PayPal, etc.) will be added in Phase 3+. See [docs/17-payment-strategy.md](../../docs/17-payment-strategy.md) for migration path. The manual payment system will remain available alongside automated gateways.
+
 ## Reference Documentation
 
 - [docs/07-multi-tenancy.md](../../docs/07-multi-tenancy.md) - Complete multi-tenancy strategy
 - [docs/01-system-architecture.md](../../docs/01-system-architecture.md) - System architecture
 - [docs/03-database-schema.md](../../docs/03-database-schema.md) - Database schema with tenant tables
+- [docs/17-payment-strategy.md](../../docs/17-payment-strategy.md) - Payment implementation strategy
 
 ## Checklist for New Tenant Features
 

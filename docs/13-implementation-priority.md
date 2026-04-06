@@ -2,6 +2,37 @@
 
 ## Critical Improvements (Do Before First Client)
 
+### 0. Manual Payment System ⭐⭐⭐
+**Priority**: CRITICAL  
+**Time**: 1 week  
+**Why**: Essential for basic order processing before gateway integration
+
+**Current Implementation**:
+- Orders created with `payment_status: 'pending'`
+- Vendors manually mark orders as paid after receiving payment
+- No automated payment gateway integration (coming in Phase 3+)
+
+**What to Build**:
+- Admin endpoint: `POST /api/v1/admin/orders/{id}/mark-as-paid`
+- Admin UI: Pending payments dashboard
+- Permission checks: Only authorized users can mark as paid
+- Payment history logging
+- Email notifications on payment confirmation
+- Optional: Customer payment proof upload
+
+**Database Changes**:
+```sql
+ALTER TABLE orders ADD (
+    payment_method VARCHAR(100),
+    paid_at TIMESTAMP NULL,
+    paid_by_user_id BIGINT UNSIGNED NULL,
+    payment_notes TEXT NULL,
+    payment_proof_url VARCHAR(500) NULL
+);
+```
+
+**See**: [docs/17-payment-strategy.md](17-payment-strategy.md) for complete manual payment implementation guide and future gateway migration path.
+
 ### 1. Theme System ⭐⭐⭐
 **Priority**: CRITICAL  
 **Time**: 1-2 weeks  
