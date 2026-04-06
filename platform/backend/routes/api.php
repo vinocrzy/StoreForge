@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\WarehouseController;
 use App\Http\Controllers\Api\V1\InventoryController;
+use App\Http\Controllers\Api\V1\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,4 +62,12 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::post('/inventory/fulfill', [InventoryController::class, 'fulfill']);
     Route::post('/inventory/transfer', [InventoryController::class, 'transfer']);
     Route::apiResource('inventory', InventoryController::class)->only(['index', 'show', 'store']);
+    
+    // Orders
+    Route::get('/orders/statistics', [OrderController::class, 'statistics']);
+    Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus']);
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel']);
+    Route::post('/orders/{order}/payment', [OrderController::class, 'recordPayment']);
+    Route::post('/orders/{order}/fulfill', [OrderController::class, 'fulfill']);
+    Route::apiResource('orders', OrderController::class);
 });
