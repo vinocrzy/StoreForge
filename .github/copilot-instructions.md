@@ -669,8 +669,10 @@ git commit -m "docs: Update PROGRESS.md - Phase 2 Product Catalog 60% complete"
 - [docs/02-backend-architecture.md](docs/02-backend-architecture.md) - Laravel patterns
 - [docs/03-database-schema.md](docs/03-database-schema.md) - Complete schema
 - [docs/04-api-design.md](docs/04-api-design.md) - API specifications
+- [docs/API-REFERENCE.md](docs/API-REFERENCE.md) - **Complete API endpoint reference (60 endpoints)**
 - [docs/16-api-documentation-system.md](docs/16-api-documentation-system.md) - API docs setup
 - [docs/17-seo-implementation.md](docs/17-seo-implementation.md) - SEO strategy & best practices
+- [.github/skills/ecommerce-api-integration/SKILL.md](.github/skills/ecommerce-api-integration/SKILL.md) - **Copilot skill for API integration**
 
 ### Business
 - [docs/12-business-model-strategy.md](docs/12-business-model-strategy.md) - White-label model
