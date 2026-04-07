@@ -2,22 +2,25 @@
 import { useAppSelector } from "./store/hooks";
 import SignIn from "./pages/AuthPages/SignIn";
 import NotFound from "./pages/OtherPage/NotFound";
-import UserProfiles from "./pages/UserProfiles";
-import Videos from "./pages/UiElements/Videos";
-import Images from "./pages/UiElements/Images";
-import Alerts from "./pages/UiElements/Alerts";
-import Badges from "./pages/UiElements/Badges";
-import Avatars from "./pages/UiElements/Avatars";
-import Buttons from "./pages/UiElements/Buttons";
-import LineChart from "./pages/Charts/LineChart";
-import BarChart from "./pages/Charts/BarChart";
-import Calendar from "./pages/Calendar";
-import BasicTables from "./pages/Tables/BasicTables";
-import FormElements from "./pages/Forms/FormElements";
-import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
+import UserProfiles from "./pages/UserProfiles";
+
+// E-commerce Pages
+import ProductsPage from "./pages/Products";
+import NewProductPage from "./pages/Products/NewProduct";
+import EditProductPage from "./pages/Products/EditProduct";
+import CategoriesPage from "./pages/Categories";
+import OrdersPage from "./pages/Orders";
+import PendingOrdersPage from "./pages/Orders/PendingOrders";
+import CompletedOrdersPage from "./pages/Orders/CompletedOrders";
+import CustomersPage from "./pages/Customers";
+import NewCustomerPage from "./pages/Customers/NewCustomer";
+import InventoryPage from "./pages/Inventory";
+import WarehousesPage from "./pages/Inventory/Warehouses";
+import StockMovementsPage from "./pages/Inventory/StockMovements";
+import StoreSettingsPage from "./pages/Settings/StoreSettings";
 
 // Protected Route Component
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -42,30 +45,32 @@ function App() {
               <AppLayout />
             </ProtectedRoute>
           }>
+            {/* Dashboard */}
             <Route index path="/" element={<Home />} />
 
-            {/* Others Page */}
+            {/* Products */}
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/products/new" element={<NewProductPage />} />
+            <Route path="/products/:id" element={<EditProductPage />} />
+            <Route path="/categories" element={<CategoriesPage />} />
+
+            {/* Orders */}
+            <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/orders/pending" element={<PendingOrdersPage />} />
+            <Route path="/orders/completed" element={<CompletedOrdersPage />} />
+
+            {/* Customers */}
+            <Route path="/customers" element={<CustomersPage />} />
+            <Route path="/customers/new" element={<NewCustomerPage />} />
+
+            {/* Inventory */}
+            <Route path="/inventory" element={<InventoryPage />} />
+            <Route path="/warehouses" element={<WarehousesPage />} />
+            <Route path="/inventory/movements" element={<StockMovementsPage />} />
+
+            {/* Settings */}
+            <Route path="/settings/store" element={<StoreSettingsPage />} />
             <Route path="/profile" element={<UserProfiles />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/blank" element={<Blank />} />
-
-            {/* Forms */}
-            <Route path="/form-elements" element={<FormElements />} />
-
-            {/* Tables */}
-            <Route path="/basic-tables" element={<BasicTables />} />
-
-            {/* Ui Elements */}
-            <Route path="/alerts" element={<Alerts />} />
-            <Route path="/avatars" element={<Avatars />} />
-            <Route path="/badge" element={<Badges />} />
-            <Route path="/buttons" element={<Buttons />} />
-            <Route path="/images" element={<Images />} />
-            <Route path="/videos" element={<Videos />} />
-
-            {/* Charts */}
-            <Route path="/line-chart" element={<LineChart />} />
-            <Route path="/bar-chart" element={<BarChart />} />
           </Route>
 
           {/* Auth Routes - Public */}

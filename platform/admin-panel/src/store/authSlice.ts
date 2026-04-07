@@ -8,10 +8,27 @@ interface AuthState {
   isAuthenticated: boolean;
 }
 
+const loadStoreFromStorage = (): Store | null => {
+  const storeId = localStorage.getItem('store_id');
+  const storeName = localStorage.getItem('store_name');
+  
+  if (storeId) {
+    return {
+      id: parseInt(storeId),
+      name: storeName || 'Store',
+      domain: '',
+      status: 'active',
+      created_at: '',
+      updated_at: '',
+    };
+  }
+  return null;
+};
+
 const initialState: AuthState = {
   user: null,
   token: localStorage.getItem('auth_token'),
-  currentStore: null,
+  currentStore: loadStoreFromStorage(),
   isAuthenticated: !!localStorage.getItem('auth_token'),
 };
 
@@ -29,11 +46,13 @@ const authSlice = createSlice({
       localStorage.setItem('auth_token', action.payload.token);
       if (action.payload.store) {
         localStorage.setItem('store_id', action.payload.store.id.toString());
+        localStorage.setItem('store_name', action.payload.store.name);
       }
     },
     setCurrentStore: (state, action: PayloadAction<Store>) => {
       state.currentStore = action.payload;
       localStorage.setItem('store_id', action.payload.id.toString());
+      localStorage.setItem('store_name', action.payload.name);
     },
     logout: (state) => {
       state.user = null;
@@ -44,6 +63,7 @@ const authSlice = createSlice({
       // Clear localStorage
       localStorage.removeItem('auth_token');
       localStorage.removeItem('store_id');
+      localStorage.removeItem('store_name');
     },
   },
 });

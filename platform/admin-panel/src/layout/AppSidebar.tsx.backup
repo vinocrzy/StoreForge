@@ -1,17 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 
 // E-commerce specific icons
 import {
   BoxCubeIcon,
   GridIcon,
   ChevronDownIcon,
+  ListIcon,
   UserCircleIcon,
   DollarLineIcon,
   BoxIconLine,
   ShootingStarIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
+import SidebarWidget from "./SidebarWidget";
 
 type NavItem = {
   name: string;
@@ -75,30 +77,39 @@ const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation();
 
-  const [openSubmenu, setOpenSubmenu] = useState<number | null>(null);
-  const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>({});
+  const [openSubmenu, setOpenSubmenu] = useState<{
+    type: "main";
+    index: number;
+    index: number;
+  } | null>(null);
+  const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
+    {}
+  );
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
+  // const isActive = (path: string) => location.pathname === path;
   const isActive = useCallback(
-    (path: string) => {
-      return location.pathname === path;
-    },
-    [location],
+    (path: string) => location.pathname === path,
+    [location.pathname]
   );
 
-  // Auto-open submenu if current path matches
   useEffect(() => {
     let submenuMatched = false;
-
-    navItems.forEach((nav, index) => {
-      if (nav.subItems) {
-        nav.subItems.forEach((subItem) => {
-          if (isActive(subItem.path)) {
-            setOpenSubmenu(index);
-            submenuMatched = true;
-          }
-        });
-      }
+    ["main", "others"].forEach((menuType) => {
+      const items = menuType === "main" ? navItems : othersItems;
+      items.forEach((nav, index) => {
+        if (nav.subItems) {
+          nav.subItems.forEach((subItem) => {
+            if (isActive(subItem.path)) {
+              setOpenSubmenu({
+                type: menuType as "main" | "others",
+                index,
+              });
+              submenuMatched = true;
+            }
+          });
+        }
+      });
     });
 
     if (!submenuMatched) {
@@ -106,7 +117,6 @@ const AppSidebar: React.FC = () => {
     }
   }, [location, isActive]);
 
-  // Update submenu height when opened
   useEffect(() => {
     if (openSubmenu !== null) {
       const key = `main-${openSubmenu}`;
@@ -133,73 +143,40 @@ const AppSidebar: React.FC = () => {
       {items.map((nav, index) => (
         <li key={nav.name}>
           {nav.subItems ? (
-            <div>
-              <button
-                onClick={() => handleSubmenuToggle(index)}
-                className={`menu-item group ${
+            <button
+              onClick={() => handleSubmenuToggle(index)}
+              className={`menu-item group ${
+                openSubmenu === index
+                  ? "menu-item-active"
+                  : "menu-item-inactive"
+              } cursor-pointer ${
+                !isExpanded && !isHovered
+                  ? "lg:justify-center"
+                  : "lg:justify-start"
+              }`}
+            >
+              <span
+                className={`menu-item-icon-size  ${
                   openSubmenu === index
-                    ? "menu-item-active"
-                    : "menu-item-inactive"
-                } cursor-pointer ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "lg:justify-start"
+                    ? "menu-item-icon-active"
+                    : "menu-item-icon-inactive"
                 }`}
               >
-                <span
-                  className={`menu-item-icon-size  ${
-                    openSubmenu === index
-                      ? "menu-item-icon-active"
-                      : "menu-item-icon-inactive"
-                  }`}
-                >
-                  {nav.icon}
-                </span>
-                {(isExpanded || isHovered || isMobileOpen) && (
-                  <span className="menu-item-text">{nav.name}</span>
-                )}
-                {(isExpanded || isHovered || isMobileOpen) && (
-                  <ChevronDownIcon
-                    className={`ml-auto w-5 h-5 transition-transform duration-200 ${
-                      openSubmenu === index
-                        ? "rotate-180 text-brand-500"
-                        : ""
-                    }`}
-                  />
-                )}
-              </button>
+                {nav.icon}
+              </span>
               {(isExpanded || isHovered || isMobileOpen) && (
-                <div
-                  ref={(el) => {
-                    subMenuRefs.current[`main-${index}`] = el;
-                  }}
-                  className="overflow-hidden transition-all duration-300"
-                  style={{
-                    height:
-                      openSubmenu === index
-                        ? `${subMenuHeight[`main-${index}`]}px`
-                        : "0px",
-                  }}
-                >
-                  <ul className="mt-2 space-y-1 ml-9">
-                    {nav.subItems.map((subItem) => (
-                      <li key={subItem.name}>
-                        <Link
-                          to={subItem.path}
-                          className={`menu-dropdown-item ${
-                            isActive(subItem.path)
-                              ? "menu-dropdown-item-active"
-                              : "menu-dropdown-item-inactive"
-                          }`}
-                        >
-                          {subItem.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <span className="menu-item-text">{nav.name}</span>
               )}
-            </div>
+              {(isExpanded || isHovered || isMobileOpen) && (
+                <ChevronDownIcon
+                  className={`ml-auto w-5 h-5 transition-transform duration-200 ${
+                    openSubmenu === index
+                      ? "rotate-180 text-brand-500"
+                      : ""
+                  }`}
+                />
+              )}
+            </button>
           ) : (
             nav.path && (
               <Link
@@ -222,6 +199,37 @@ const AppSidebar: React.FC = () => {
                 )}
               </Link>
             )
+          )}
+          {nav.subItems && (isExpanded || isHovered || isMobileOpen) && (
+            <div
+              ref={(el) => {
+                subMenuRefs.current[`main-${index}`] = el;
+              }}
+              className="overflow-hidden transition-all duration-300"
+              style={{
+                height:
+                  openSubmenu === index
+                    ? `${subMenuHeight[`main-${index}`]}px`
+                    : "0px",
+              }}
+            >
+              <ul className="mt-2 space-y-1 ml-9">
+                {nav.subItems.map((subItem) => (
+                  <li key={subItem.name}>
+                    <Link
+                      to={subItem.path}
+                      className={`menu-dropdown-item ${
+                        isActive(subItem.path)
+                          ? "menu-dropdown-item-active"
+                          : "menu-dropdown-item-inactive"
+                      }`}
+                    >
+                      {subItem.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </li>
       ))}
@@ -269,15 +277,20 @@ const AppSidebar: React.FC = () => {
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             <div>
-              {(isExpanded || isHovered || isMobileOpen) && (
-                <h2 className="mb-4 text-xs uppercase leading-[20px] text-gray-400 font-semibold">
-                  NAVIGATION
-                </h2>
-              )}
+              <h2
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 font-semibold ${
+                  !isExpanded && !isHovered
+                    ? "lg:justify-center"
+                    : "justify-start"
+                }`}
+              >
+                {isExpanded || isHovered || isMobileOpen && "NAVIGATION"}
+              </h2>
               {renderMenuItems(navItems)}
             </div>
           </div>
         </nav>
+        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
       </div>
     </aside>
   );

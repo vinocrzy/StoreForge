@@ -26,7 +26,16 @@ export default function SignInForm() {
 
     try {
       const result = await loginMutation({ login, password }).unwrap();
-      dispatch(setCredentials(result));
+      
+      // Extract first store from stores array
+      const store = result.stores && result.stores.length > 0 ? result.stores[0] : undefined;
+      
+      dispatch(setCredentials({
+        user: result.user,
+        token: result.token,
+        store: store,
+      }));
+      
       navigate("/");
     } catch (err: any) {
       setError(err?.data?.message || "Invalid credentials. Please try again.");
@@ -114,6 +123,7 @@ export default function SignInForm() {
                 </div>
                 <div>
                   <Button 
+                    type="submit"
                     className="w-full" 
                     size="sm" 
                     disabled={isLoading}

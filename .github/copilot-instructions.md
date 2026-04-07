@@ -30,13 +30,13 @@ See [docs/15-repository-structure.md](docs/15-repository-structure.md) for workf
 | Component | Technology | Version | Purpose |
 |-----------|-----------|---------|---------|
 | Backend | Laravel | 11.x | REST API, multi-tenant logic |
-| Admin | React + TypeScript | 18+ | Store management dashboard |
+| Admin | React + TypeScript | 19+ | Store management dashboard |
+| Admin UI | TailAdmin + Tailwind CSS | 4.0 | Custom design system |
 | Storefront | Next.js | 14+ | Client-facing stores (SSG) |
 | Database | MySQL/PostgreSQL | 8.0+/14+ | Multi-tenant data |
 | Cache | Redis | 7+ | Sessions, cache, queues |
 | Auth | Laravel Sanctum | - | Token-based API auth |
-| UI | Ant Design / Tailwind | - | Component libraries |
-| State | Redux Toolkit | - | Admin panel state |
+| State | Redux Toolkit | 2.11 | Admin panel state |
 
 ## Code Standards
 
@@ -117,7 +117,8 @@ See [docs/API-DOCS-QUICK-REFERENCE.md](docs/API-DOCS-QUICK-REFERENCE.md) for tem
 ### Frontend (React Admin Panel)
 
 **Admin Panel Stack**: React 19 + TypeScript 6 + Vite 8
-- **UI Library**: Ant Design 6 (consistent components)
+- **UI Library**: TailAdmin (custom components with Tailwind CSS 4)
+- **Design System**: See [docs/19-admin-panel-design-system.md](docs/19-admin-panel-design-system.md)
 - **State Management**: Redux Toolkit 2 + RTK Query
 - **Routing**: React Router 7 with protected routes
 - **HTTP Client**: Axios with auto-auth headers
@@ -137,7 +138,7 @@ import { AxiosInstance, PayloadAction } from 'axios';
 
 **Component Structure**:
 ```typescript
-// ✅ Good - typed props, RTK Query, Ant Design
+// ✅ Good - typed props, RTK Query, TailAdmin components
 interface ProductListProps {
   storeId: number;
   status?: 'active' | 'draft';
@@ -146,10 +147,10 @@ interface ProductListProps {
 export const ProductList: React.FC<ProductListProps> = ({ storeId, status }) => {
   const { data, isLoading, error } = useGetProductsQuery({ storeId, status });
   
-  if (isLoading) return <Spin />;
-  if (error) return <Alert message="Error" type="error" />;
+  if (isLoading) return <div className="p-6 text-center">Loading...</div>;
+  if (error) return <Alert type="error">Error loading products</Alert>;
   
-  return <Table dataSource={data} columns={columns} />;
+  return <Table data={data} columns={columns} />;
 };
 
 // ❌ Bad - no types, unclear structure, manual fetch
@@ -212,29 +213,40 @@ const response = await apiClient.get<ProductsResponse>('/products');
 <Route path="/" element={<DashboardPage />} />
 ```
 
-**Ant Design Usage**: Consistent UI components
+**TailAdmin Components**: Custom UI components with Tailwind CSS
 ```typescript
-// ✅ Good - Ant Design components
-import { Table, Button, Form, Input, Modal, message, Space } from 'antd';
+// ✅ Good - TailAdmin components
+import { Table } from '../components/ui/table';
+import { Button } from '../components/ui/button/Button';
+import { Alert } from '../components/ui/alert/Alert';
+import { Modal } from '../components/ui/modal';
 
-const [form] = Form.useForm();
+const [alert, setAlert] = useState<{type: 'success' | 'error', message: string} | null>(null);
 
 const onFinish = async (values) => {
   try {
     await createProduct(values).unwrap();
-    message.success('Product created!');
+    setAlert({ type: 'success', message: 'Product created!' });
   } catch (error) {
-    message.error('Failed to create product');
+    setAlert({ type: 'error', message: 'Failed to create product' });
   }
 };
 
 return (
-  <Form form={form} onFinish={onFinish} layout="vertical">
-    <Form.Item name="name" label="Product Name" rules={[{ required: true }]}>
-      <Input />
-    </Form.Item>
-    <Button type="primary" htmlType="submit">Save</Button>
-  </Form>
+  <form onSubmit={handleSubmit} className="space-y-6">
+    {alert && <Alert type={alert.type}>{alert.message}</Alert>}
+    
+    <div>
+      <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+        Product Name
+      </label>
+      <input
+        type="text"
+        className="w-full rounded-lg border border-stroke bg-white py-3 px-4.5 text-dark focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white"
+      />
+    </div>
+    <Button variant="primary" type="submit">Save</Button>
+  </form>
 );
 ```
 
@@ -242,7 +254,7 @@ return (
 ```typescript
 // ✅ Good - React 19 style (no React import needed)
 import { useState } from 'react';
-import { Button } from 'antd';
+import { Button } from '../components/ui/button/Button';
 
 export const MyComponent = () => {
   const [count, setCount] = useState(0);
@@ -677,11 +689,13 @@ git commit -m "docs: Update PROGRESS.md - Phase 2 Product Catalog 60% complete"
 - [docs/02-backend-architecture.md](docs/02-backend-architecture.md) - Laravel patterns
 - [docs/03-database-schema.md](docs/03-database-schema.md) - Complete schema
 - [docs/04-api-design.md](docs/04-api-design.md) - API specifications
+- [docs/19-admin-panel-design-system.md](docs/19-admin-panel-design-system.md) - **TailAdmin design system & UI components**
 - [docs/API-REFERENCE.md](docs/API-REFERENCE.md) - **Complete API endpoint reference (60 endpoints)**
 - [docs/API-DOCUMENTATION-WORKFLOW.md](docs/API-DOCUMENTATION-WORKFLOW.md) - **API documentation update workflow (CRITICAL)**
 - [docs/16-api-documentation-system.md](docs/16-api-documentation-system.md) - API docs setup
 - [docs/17-seo-implementation.md](docs/17-seo-implementation.md) - SEO strategy & best practices
 - [.github/skills/ecommerce-api-integration/SKILL.md](.github/skills/ecommerce-api-integration/SKILL.md) - **Copilot skill for API integration**
+- [.github/skills/ecommerce-admin-ui/SKILL.md](.github/skills/ecommerce-admin-ui/SKILL.md) - **Copilot skill for admin panel UI development**
 
 ### Business
 - [docs/12-business-model-strategy.md](docs/12-business-model-strategy.md) - White-label model

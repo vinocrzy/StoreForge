@@ -3,18 +3,18 @@ export interface User {
   name: string;
   email: string;
   phone: string;
-  stores: Store[];
-  roles: Role[];
-  permissions: string[];
+  status: string;
 }
 
 export interface Store {
   id: number;
   name: string;
-  domain: string;
-  status: 'active' | 'inactive' | 'suspended';
-  created_at: string;
-  updated_at: string;
+  slug?: string;
+  role?: string;
+  domain?: string;
+  status?: 'active' | 'inactive' | 'suspended';
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Role {
@@ -36,7 +36,7 @@ export interface LoginRequest {
 export interface LoginResponse {
   user: User;
   token: string;
-  store?: Store;
+  stores: Store[];  // Backend returns array of stores
 }
 
 export interface ApiError {
