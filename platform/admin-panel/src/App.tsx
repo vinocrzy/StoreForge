@@ -13,6 +13,7 @@ import NewProductPage from "./pages/Products/NewProduct";
 import EditProductPage from "./pages/Products/EditProduct";
 import CategoriesPage from "./pages/Categories";
 import OrdersPage from "./pages/Orders";
+import OrderDetailsPage from "./pages/Orders/OrderDetails";
 import PendingOrdersPage from "./pages/Orders/PendingOrders";
 import CompletedOrdersPage from "./pages/Orders/CompletedOrders";
 import CustomersPage from "./pages/Customers";
@@ -56,6 +57,7 @@ function App() {
 
             {/* Orders */}
             <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/orders/:id" element={<OrderDetailsPage />} />
             <Route path="/orders/pending" element={<PendingOrdersPage />} />
             <Route path="/orders/completed" element={<CompletedOrdersPage />} />
 

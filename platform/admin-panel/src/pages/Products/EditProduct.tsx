@@ -5,6 +5,7 @@ import Button from '../../components/ui/button/Button';
 import Alert from '../../components/ui/alert/Alert';
 import ImageUpload, { type ImageFile } from '../../components/ui/image-upload/ImageUpload';
 import type { UpdateProductData } from '../../types/product';
+import { getCurrencySymbol, getStoreCurrency } from '../../utils/currency';
 
 interface FormErrors {
   name?: string;
@@ -18,6 +19,7 @@ const EditProductPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const productId = parseInt(id!, 10);
+  const currencySymbol = getCurrencySymbol(getStoreCurrency());
 
   const { data: productData, isLoading: isLoadingProduct, error: loadError } = useGetProductQuery(productId);
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
@@ -317,7 +319,7 @@ const EditProductPage = () => {
                 Price <span className="text-danger">*</span>
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-3.5 text-gray-500">$</span>
+                <span className="absolute left-4 top-3.5 text-gray-500">{currencySymbol}</span>
                 <input
                   type="number"
                   name="price"
@@ -342,7 +344,7 @@ const EditProductPage = () => {
                 Compare at Price
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-3.5 text-gray-500">$</span>
+                <span className="absolute left-4 top-3.5 text-gray-500">{currencySymbol}</span>
                 <input
                   type="number"
                   name="compare_price"
@@ -363,7 +365,7 @@ const EditProductPage = () => {
                 Cost Price
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-3.5 text-gray-500">$</span>
+                <span className="absolute left-4 top-3.5 text-gray-500">{currencySymbol}</span>
                 <input
                   type="number"
                   name="cost_price"

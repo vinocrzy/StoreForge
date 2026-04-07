@@ -5,6 +5,7 @@ import Button from '../../components/ui/button/Button';
 import Alert from '../../components/ui/alert/Alert';
 import ImageUpload, { type ImageFile } from '../../components/ui/image-upload/ImageUpload';
 import type { CreateProductData } from '../../types/product';
+import { getCurrencySymbol, getStoreCurrency } from '../../utils/currency';
 
 interface FormErrors {
   name?: string;
@@ -18,6 +19,7 @@ const NewProductPage = () => {
   const navigate = useNavigate();
   const [createProduct, { isLoading }] = useCreateProductMutation();
   const { data: categoriesData } = useGetCategoriesQuery();
+  const currencySymbol = getCurrencySymbol(getStoreCurrency());
 
   const [formData, setFormData] = useState<CreateProductData>({
     name: '',
@@ -250,7 +252,7 @@ const NewProductPage = () => {
                 Price <span className="text-danger">*</span>
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-3.5 text-gray-500">$</span>
+                <span className="absolute left-4 top-3.5 text-gray-500">{currencySymbol}</span>
                 <input
                   type="number"
                   name="price"
@@ -275,7 +277,7 @@ const NewProductPage = () => {
                 Compare at Price
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-3.5 text-gray-500">$</span>
+                <span className="absolute left-4 top-3.5 text-gray-500">{currencySymbol}</span>
                 <input
                   type="number"
                   name="compare_price"
@@ -296,7 +298,7 @@ const NewProductPage = () => {
                 Cost Price
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-3.5 text-gray-500">$</span>
+                <span className="absolute left-4 top-3.5 text-gray-500">{currencySymbol}</span>
                 <input
                   type="number"
                   name="cost_price"

@@ -13,6 +13,9 @@ export interface Store {
   role?: string;
   domain?: string;
   status?: 'active' | 'inactive' | 'suspended';
+  currency?: string;
+  timezone?: string;
+  language?: string;
   created_at?: string;
   updated_at?: string;
 }

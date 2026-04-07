@@ -11,6 +11,7 @@ interface AuthState {
 const loadStoreFromStorage = (): Store | null => {
   const storeId = localStorage.getItem('store_id');
   const storeName = localStorage.getItem('store_name');
+  const storeCurrency = localStorage.getItem('store_currency');
   
   if (storeId) {
     return {
@@ -18,6 +19,7 @@ const loadStoreFromStorage = (): Store | null => {
       name: storeName || 'Store',
       domain: '',
       status: 'active',
+      currency: storeCurrency || 'INR',
       created_at: '',
       updated_at: '',
     };
@@ -47,12 +49,18 @@ const authSlice = createSlice({
       if (action.payload.store) {
         localStorage.setItem('store_id', action.payload.store.id.toString());
         localStorage.setItem('store_name', action.payload.store.name);
+        if (action.payload.store.currency) {
+          localStorage.setItem('store_currency', action.payload.store.currency);
+        }
       }
     },
     setCurrentStore: (state, action: PayloadAction<Store>) => {
       state.currentStore = action.payload;
       localStorage.setItem('store_id', action.payload.id.toString());
       localStorage.setItem('store_name', action.payload.name);
+      if (action.payload.currency) {
+        localStorage.setItem('store_currency', action.payload.currency);
+      }
     },
     logout: (state) => {
       state.user = null;
@@ -64,6 +72,7 @@ const authSlice = createSlice({
       localStorage.removeItem('auth_token');
       localStorage.removeItem('store_id');
       localStorage.removeItem('store_name');
+      localStorage.removeItem('store_currency');
     },
   },
 });

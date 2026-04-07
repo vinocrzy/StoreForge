@@ -5,6 +5,7 @@ import Button from '../../components/ui/button/Button';
 import Badge from '../../components/ui/badge/Badge';
 import Alert from '../../components/ui/alert/Alert';
 import type { ProductFilters } from '../../types/product';
+import { formatPrice, getStoreCurrency } from '../../utils/currency';
 
 const ProductsPage = () => {
   const navigate = useNavigate();
@@ -261,10 +262,10 @@ const ProductsPage = () => {
                       {product.sku}
                     </td>
                     <td className="px-6 py-4 text-gray-700 dark:text-gray-300">
-                      ${Number(product.price).toFixed(2)}
+                      {formatPrice(product.price, getStoreCurrency())}
                       {product.compare_price && Number(product.compare_price) > Number(product.price) && (
                         <span className="ml-2 text-sm text-gray-500 line-through">
-                          ${Number(product.compare_price).toFixed(2)}
+                          {formatPrice(product.compare_price, getStoreCurrency())}
                         </span>
                       )}
                     </td>
