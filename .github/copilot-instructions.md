@@ -114,42 +114,144 @@ public function index(Request $request) { }
 
 See [docs/API-DOCS-QUICK-REFERENCE.md](docs/API-DOCS-QUICK-REFERENCE.md) for templates.
 
-### Frontend (React)
+### Frontend (React Admin Panel)
 
-**TypeScript Always**: No `.jsx` files, use `.tsx`
+**Admin Panel Stack**: React 19 + TypeScript 6 + Vite 8
+- **UI Library**: Ant Design 6 (consistent components)
+- **State Management**: Redux Toolkit 2 + RTK Query
+- **Routing**: React Router 7 with protected routes
+- **HTTP Client**: Axios with auto-auth headers
+
+**TypeScript Always**: No `.jsx` files, use `.tsx` with strict mode
+
+**Type-Only Imports**: Use `type` keyword for type imports (required by `verbatimModuleSyntax`)
+```typescript
+// ✅ Good - type-only imports
+import { type AxiosInstance, type AxiosResponse } from 'axios';
+import { type PayloadAction } from '@reduxjs/toolkit';
+import type { User, Store } from '../types/auth';
+
+// ❌ Bad - will cause TS build errors
+import { AxiosInstance, PayloadAction } from 'axios';
+```
 
 **Component Structure**:
 ```typescript
-// ✅ Good - typed props, hooks, clear return
+// ✅ Good - typed props, RTK Query, Ant Design
 interface ProductListProps {
   storeId: number;
   status?: 'active' | 'draft';
 }
 
 export const ProductList: React.FC<ProductListProps> = ({ storeId, status }) => {
-  const { data, isLoading } = useGetProductsQuery({ storeId, status });
+  const { data, isLoading, error } = useGetProductsQuery({ storeId, status });
   
   if (isLoading) return <Spin />;
-  return <Table dataSource={data} />;
+  if (error) return <Alert message="Error" type="error" />;
+  
+  return <Table dataSource={data} columns={columns} />;
 };
 
-// ❌ Bad - no types, unclear structure
+// ❌ Bad - no types, unclear structure, manual fetch
 export default function ProductList(props) {
-  const data = useGetProductsQuery(props.storeId);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    fetch('/api/products').then(r => r.json()).then(setData);
+  }, []);
   return <Table dataSource={data} />;
 }
 ```
 
-**State Management**: Use RTK Query for API calls
+**State Management**: Use RTK Query for API calls, Redux for global state
 ```typescript
-// ✅ Good - RTK Query
-const { data: products } = useGetProductsQuery({ storeId, page: 1 });
+// ✅ Good - RTK Query for API data
+import { useGetProductsQuery, useUpdateProductMutation } from '../services/products';
 
-// ❌ Bad - manual fetch
+const { data: products, isLoading } = useGetProductsQuery({ page: 1 });
+const [updateProduct] = useUpdateProductMutation();
+
+// ✅ Good - Redux slice for auth state
+import { useAppSelector } from '../store/hooks';
+const { user, currentStore } = useAppSelector((state) => state.auth);
+
+// ❌ Bad - manual fetch with useState
 const [products, setProducts] = useState([]);
 useEffect(() => {
   fetch('/api/products').then(r => r.json()).then(setProducts);
 }, []);
+```
+
+**API Integration**: Use centralized API client
+```typescript
+// services/apiClient.ts - Auto-injects auth headers
+import { apiClient } from '../services/apiClient';
+
+// Headers automatically added:
+// - Authorization: Bearer {token}
+// - X-Store-ID: {store_id}
+
+const response = await apiClient.get<ProductsResponse>('/products');
+```
+
+**Protected Routes**: Wrap authenticated pages
+```typescript
+// ✅ Good - protected route wrapper
+<Route
+  path="/"
+  element={
+    <ProtectedRoute>
+      <MainLayout />
+    </ProtectedRoute>
+  }
+>
+  <Route index element={<DashboardPage />} />
+  <Route path="products" element={<ProductsPage />} />
+</Route>
+
+// ❌ Bad - no authentication guard
+<Route path="/" element={<DashboardPage />} />
+```
+
+**Ant Design Usage**: Consistent UI components
+```typescript
+// ✅ Good - Ant Design components
+import { Table, Button, Form, Input, Modal, message, Space } from 'antd';
+
+const [form] = Form.useForm();
+
+const onFinish = async (values) => {
+  try {
+    await createProduct(values).unwrap();
+    message.success('Product created!');
+  } catch (error) {
+    message.error('Failed to create product');
+  }
+};
+
+return (
+  <Form form={form} onFinish={onFinish} layout="vertical">
+    <Form.Item name="name" label="Product Name" rules={[{ required: true }]}>
+      <Input />
+    </Form.Item>
+    <Button type="primary" htmlType="submit">Save</Button>
+  </Form>
+);
+```
+
+**React 19 Notes**: No longer need to import React for JSX
+```typescript
+// ✅ Good - React 19 style (no React import needed)
+import { useState } from 'react';
+import { Button } from 'antd';
+
+export const MyComponent = () => {
+  const [count, setCount] = useState(0);
+  return <Button onClick={() => setCount(count + 1)}>{count}</Button>;
+};
+
+// ❌ Old style - unnecessary in React 19
+import React, { useState } from 'react';
+```
 ```
 
 ### Storefront (Next.js)
@@ -435,7 +537,13 @@ php artisan test
 php artisan scribe:generate  # Update API docs
 ./vendor/bin/phpstan analyse # Static analysis
 
-# Frontend
+# Admin Panel (CRITICAL - Always check types!)
+cd platform/admin-panel
+npm run build                # TypeScript type check + build
+npm run lint                 # ESLint check
+# Fix any type errors before committing!
+
+# Storefront (when implemented)
 npm test
 npm run lint
 npm run type-check
@@ -448,6 +556,12 @@ npm run type-check
 git add PROGRESS.md
 git commit -m "docs: Update PROGRESS.md - [describe milestone]"
 ```
+
+**Admin Panel TypeScript Rules**:
+- Always use type-only imports: `import { type AxiosInstance } from 'axios'`
+- No unused imports (React 19 doesn't need React import for JSX)
+- Fix all type errors before committing
+- Run `npm run build` to verify no type errors
 
 ### Creating Client Storefront
 ```bash
