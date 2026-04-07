@@ -19,7 +19,9 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: Login
-      description: 'Authenticate user and generate API token.'
+      description: |-
+        Authenticate user and generate API token.
+        Phone-first authentication: accepts phone (+12025551234) or email.
       authenticated: false
       deprecated: false
     headers:
@@ -30,12 +32,12 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      email:
+      login:
         custom: []
-        name: email
-        description: 'User email address.'
+        name: login
+        description: 'User phone or email.'
         required: true
-        example: admin@store.com
+        example: '+12025551234'
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -64,7 +66,7 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      email: admin@store.com
+      login: '+12025551234'
       password: password123
       device_name: web-browser
     fileParameters: []
@@ -78,6 +80,7 @@ endpoints:
               "id": 1,
               "name": "Admin User",
               "email": "admin@store.com",
+              "phone": "+12025551234",
               "status": "active"
             },
             "token": "1|abc123...",

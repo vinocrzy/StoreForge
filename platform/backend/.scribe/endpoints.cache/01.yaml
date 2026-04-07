@@ -711,7 +711,7 @@ endpoints:
         name: track_inventory
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -755,7 +755,7 @@ endpoints:
         name: weight_unit
         description: ''
         required: false
-        example: oz
+        example: g
         type: string
         enumValues:
           - kg
@@ -814,7 +814,7 @@ endpoints:
         name: dimensions.unit
         description: 'This field is required when <code>dimensions</code> is present.'
         required: false
-        example: ft
+        example: cm
         type: string
         enumValues:
           - cm
@@ -890,16 +890,16 @@ endpoints:
       price: 899.99
       compare_price: 24
       cost_price: 13
-      track_inventory: false
+      track_inventory: true
       stock_quantity: 40
       low_stock_threshold: 1
       weight: 89
-      weight_unit: oz
+      weight_unit: g
       dimensions:
         length: 21
         width: 26
         height: 11
-        unit: ft
+        unit: cm
       status: active
       is_featured: true
       meta_title: tqtqxbajwbpilpmufinll

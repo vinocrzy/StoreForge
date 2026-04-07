@@ -277,7 +277,7 @@ endpoints:
         name: gateway
         description: ''
         required: false
-        example: manual
+        example: square
         type: string
         enumValues:
           - manual
@@ -337,7 +337,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: refunded
+        example: pending
         type: string
         enumValues:
           - pending
@@ -373,12 +373,12 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       order_id: 17
-      gateway: manual
+      gateway: square
       payment_method: bank_transfer
       amount: 170.5
       currency: qeo
       transaction_id: TXN-123456
-      status: refunded
+      status: pending
       payment_notes: 'Received via bank transfer'
       metadata:
         bank: Chase
@@ -650,7 +650,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: refunded
+        example: delivered
         type: string
         enumValues:
           - pending
@@ -668,7 +668,7 @@ endpoints:
         name: payment_status
         description: ''
         required: false
-        example: paid
+        example: pending
         type: string
         enumValues:
           - pending
@@ -891,8 +891,8 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       customer_id: 5
-      status: refunded
-      payment_status: paid
+      status: delivered
+      payment_status: pending
       currency: mqe
       customer_note: 'Please gift wrap'
       admin_note: 'Priority order'
@@ -1044,7 +1044,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: processing
+        example: confirmed
         type: string
         enumValues:
           - pending
@@ -1062,7 +1062,7 @@ endpoints:
         name: payment_status
         description: ''
         required: false
-        example: refunded
+        example: partially_refunded
         type: string
         enumValues:
           - pending
@@ -1111,7 +1111,7 @@ endpoints:
         name: payment_method
         description: ''
         required: false
-        example: wallet
+        example: manual
         type: string
         enumValues:
           - manual
@@ -1246,12 +1246,12 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       customer_id: 17
-      status: processing
-      payment_status: refunded
+      status: confirmed
+      payment_status: partially_refunded
       currency: mqe
       customer_note: 'Updated note'
       admin_note: 'Admin updated'
-      payment_method: wallet
+      payment_method: manual
       billing_address_id: 17
       shipping_address_id: 17
       coupon_code: mqeopfuudtdsufvyvddqa

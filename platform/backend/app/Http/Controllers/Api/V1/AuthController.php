@@ -23,8 +23,9 @@ class AuthController extends Controller
      * Login
      * 
      * Authenticate user and generate API token.
+     * Phone-first authentication: accepts phone (+12025551234) or email.
      * 
-     * @bodyParam email string required User email address. Example: admin@store.com
+     * @bodyParam login string required User phone or email. Example: +12025551234
      * @bodyParam password string required User password. Example: password123
      * @bodyParam device_name string Device name for token. Example: web-browser
      * 
@@ -33,6 +34,7 @@ class AuthController extends Controller
      *     "id": 1,
      *     "name": "Admin User",
      *     "email": "admin@store.com",
+     *     "phone": "+12025551234",
      *     "status": "active"
      *   },
      *   "token": "1|abc123...",
@@ -52,16 +54,18 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'login' => 'required|string',
             'password' => 'required',
             'device_name' => 'string|max:255',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        // Determine if login is phone or email
+        $loginField = preg_match('/^[\d\s\-\+\(\)]+$/', $request->login) ? 'phone' : 'email';
+        $user = User::where($loginField, $request->login)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'login' => ['The provided credentials are incorrect.'],
             ]);
         }
 
@@ -88,6 +92,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'phone' => $user->phone,
                 'status' => $user->status,
             ],
             'token' => $token,
