@@ -33,19 +33,19 @@ const Button: React.FC<ButtonProps> = ({
   // Variant Classes
   const variantClasses = {
     primary:
-      "bg-primary text-white shadow-theme-xs hover:bg-primary/90 disabled:bg-primary/50",
+      "bg-primary text-white shadow-theme-xs hover:bg-primary/90 disabled:bg-primary/50 dark:bg-primary dark:hover:bg-primary/90",
     secondary:
-      "bg-secondary text-white shadow-theme-xs hover:bg-secondary/90 disabled:bg-secondary/50",
+      "bg-gray-600 text-white shadow-theme-xs hover:bg-gray-700 disabled:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 dark:disabled:bg-gray-800",
     success:
-      "bg-success text-white shadow-theme-xs hover:bg-success/90 disabled:bg-success/50",
+      "bg-success text-white shadow-theme-xs hover:bg-success/90 disabled:bg-success/50 dark:bg-success dark:hover:bg-success/90",
     warning:
-      "bg-warning text-white shadow-theme-xs hover:bg-warning/90 disabled:bg-warning/50",
+      "bg-warning text-white shadow-theme-xs hover:bg-warning/90 disabled:bg-warning/50 dark:bg-warning dark:hover:bg-warning/90",
     danger:
-      "bg-danger text-white shadow-theme-xs hover:bg-danger/90 disabled:bg-danger/50",
+      "bg-danger text-white shadow-theme-xs hover:bg-danger/90 disabled:bg-danger/50 dark:bg-danger dark:hover:bg-danger/90",
     ghost:
-      "bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-white/[0.03]",
+      "bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/[0.08]",
     outline:
-      "bg-white text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03] dark:hover:text-gray-300",
+      "bg-white text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-boxdark dark:text-gray-300 dark:ring-strokedark dark:hover:bg-meta-4",
   };
 
   return (
