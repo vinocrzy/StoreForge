@@ -71,3 +71,5 @@ composer.phar
 *.log
 *.tmp
 *.temp
+
+/free-react-tailwind-admin-dashboard-main
