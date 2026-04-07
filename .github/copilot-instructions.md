@@ -665,6 +665,7 @@ git commit -m "docs: Update PROGRESS.md - Phase 2 Product Catalog 60% complete"
 
 ### Getting Started
 - [docs/11-getting-started.md](docs/11-getting-started.md) - Setup guide
+- [docs/TEST-ACCOUNTS.md](docs/TEST-ACCOUNTS.md) - **Test accounts for development (13 admin users, 45 customers)**
 - [docs/13-implementation-priority.md](docs/13-implementation-priority.md) - What to build first
 
 ### Architecture
