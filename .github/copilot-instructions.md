@@ -474,7 +474,14 @@ Content-Type: application/json
 php artisan scribe:generate
 ```
 
-See [docs/16-api-documentation-system.md](docs/16-api-documentation-system.md) for complete guide.
+**CRITICAL - API Documentation Workflow**: When creating or updating API endpoints, you MUST update:
+1. **Scribe annotations** in controller (for interactive docs)
+2. **[docs/API-REFERENCE.md](docs/API-REFERENCE.md)** - Add/update endpoint with request/response examples
+3. **[.github/skills/ecommerce-api-integration/SKILL.md](.github/skills/ecommerce-api-integration/SKILL.md)** - Update endpoint list and examples
+4. **Regenerate Scribe docs**: `php artisan scribe:generate`
+
+See [docs/API-DOCUMENTATION-WORKFLOW.md](docs/API-DOCUMENTATION-WORKFLOW.md) for complete checklist and workflow.
+See [docs/16-api-documentation-system.md](docs/16-api-documentation-system.md) for Scribe annotation guide.
 
 ### Code Comments
 - PHPDoc for all public methods
@@ -670,6 +677,7 @@ git commit -m "docs: Update PROGRESS.md - Phase 2 Product Catalog 60% complete"
 - [docs/03-database-schema.md](docs/03-database-schema.md) - Complete schema
 - [docs/04-api-design.md](docs/04-api-design.md) - API specifications
 - [docs/API-REFERENCE.md](docs/API-REFERENCE.md) - **Complete API endpoint reference (60 endpoints)**
+- [docs/API-DOCUMENTATION-WORKFLOW.md](docs/API-DOCUMENTATION-WORKFLOW.md) - **API documentation update workflow (CRITICAL)**
 - [docs/16-api-documentation-system.md](docs/16-api-documentation-system.md) - API docs setup
 - [docs/17-seo-implementation.md](docs/17-seo-implementation.md) - SEO strategy & best practices
 - [.github/skills/ecommerce-api-integration/SKILL.md](.github/skills/ecommerce-api-integration/SKILL.md) - **Copilot skill for API integration**

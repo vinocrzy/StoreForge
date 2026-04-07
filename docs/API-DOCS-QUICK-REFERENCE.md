@@ -2,6 +2,11 @@
 
 Quick copy-paste templates for documenting Laravel API controllers with Scribe.
 
+> **📋 IMPORTANT**: When creating or updating API endpoints, follow the complete workflow in [API-DOCUMENTATION-WORKFLOW.md](API-DOCUMENTATION-WORKFLOW.md) to ensure all documentation files are updated:
+> - Controller Scribe annotations (this guide)
+> - [docs/API-REFERENCE.md](API-REFERENCE.md) - Complete endpoint reference
+> - [.github/skills/ecommerce-api-integration/SKILL.md](../.github/skills/ecommerce-api-integration/SKILL.md) - Copilot skill
+
 ## Installation (One-Time Setup)
 
 ```bash
