@@ -67,10 +67,10 @@ export interface CreateStoreData {
   currency?: string;
   timezone?: string;
   language?: string;
-  owner_name: string;
-  owner_phone: string;
-  owner_email?: string;
-  owner_password: string;
+  admin_name: string;
+  admin_phone: string;
+  admin_email?: string;
+  admin_password: string;
   settings?: Partial<StoreSettings>;
 }
 
@@ -106,7 +106,7 @@ export interface StoreDetailsResponse {
 export interface StoreCreateResponse {
   data: {
     store: Store;
-    owner: StoreUser;
+    admin: StoreUser;
   };
 }
 

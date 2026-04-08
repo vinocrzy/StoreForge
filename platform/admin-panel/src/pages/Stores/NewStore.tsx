@@ -14,9 +14,9 @@ interface FormErrors {
   name?: string;
   slug?: string;
   domain?: string;
-  owner_name?: string;
-  owner_phone?: string;
-  owner_password?: string;
+  admin_name?: string;
+  admin_phone?: string;
+  admin_password?: string;
 }
 
 const NewStorePage = () => {
@@ -31,10 +31,10 @@ const NewStorePage = () => {
     currency: 'USD',
     timezone: 'UTC',
     language: 'en',
-    owner_name: '',
-    owner_phone: '',
-    owner_email: '',
-    owner_password: '',
+    admin_name: '',
+    admin_phone: '',
+    admin_email: '',
+    admin_password: '',
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -71,18 +71,18 @@ const NewStorePage = () => {
     } else if (!/^[a-z0-9-]+$/.test(formData.slug)) {
       newErrors.slug = 'Slug can only contain lowercase letters, numbers, and hyphens';
     }
-    if (!formData.owner_name.trim()) {
-      newErrors.owner_name = 'Owner name is required';
+    if (!formData.admin_name.trim()) {
+      newErrors.admin_name = 'Store admin name is required';
     }
-    if (!formData.owner_phone.trim()) {
-      newErrors.owner_phone = 'Owner phone is required';
-    } else if (!/^\+[1-9]\d{1,14}$/.test(formData.owner_phone)) {
-      newErrors.owner_phone = 'Owner phone must be in E.164 format (e.g., +12025551234)';
+    if (!formData.admin_phone.trim()) {
+      newErrors.admin_phone = 'Store admin phone is required';
+    } else if (!/^\+[1-9]\d{1,14}$/.test(formData.admin_phone)) {
+      newErrors.admin_phone = 'Store admin phone must be in E.164 format (e.g., +12025551234)';
     }
-    if (!formData.owner_password.trim()) {
-      newErrors.owner_password = 'Owner password is required';
-    } else if (formData.owner_password.length < 8) {
-      newErrors.owner_password = 'Owner password must be at least 8 characters';
+    if (!formData.admin_password.trim()) {
+      newErrors.admin_password = 'Store admin password is required';
+    } else if (formData.admin_password.length < 8) {
+      newErrors.admin_password = 'Store admin password must be at least 8 characters';
     }
 
     setErrors(newErrors);
@@ -255,71 +255,71 @@ const NewStorePage = () => {
             </div>
           </div>
 
-          {/* Owner Account */}
+          {/* Store Admin Account */}
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Owner Account</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Store Admin Account</h2>
             <div className="space-y-4">
               <div>
                 <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                  Owner Name <span className="text-danger">*</span>
+                  Store Admin Name <span className="text-danger">*</span>
                 </label>
                 <input
                   type="text"
-                  name="owner_name"
-                  value={formData.owner_name}
+                  name="admin_name"
+                  value={formData.admin_name}
                   onChange={handleChange}
                   className={`w-full rounded-lg border ${
-                    errors.owner_name ? 'border-danger' : 'border-stroke dark:border-strokedark'
+                    errors.admin_name ? 'border-danger' : 'border-stroke dark:border-strokedark'
                   } bg-white dark:bg-boxdark py-3 px-4 text-dark dark:text-white focus:border-primary focus:outline-none`}
                 />
-                {errors.owner_name && <p className="mt-1 text-sm text-danger">{errors.owner_name}</p>}
+                {errors.admin_name && <p className="mt-1 text-sm text-danger">{errors.admin_name}</p>}
               </div>
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                  Owner Phone <span className="text-danger">*</span>
+                  Store Admin Phone <span className="text-danger">*</span>
                 </label>
                 <input
                   type="text"
-                  name="owner_phone"
-                  value={formData.owner_phone}
+                  name="admin_phone"
+                  value={formData.admin_phone}
                   onChange={handleChange}
                   placeholder="+12025551234"
                   className={`w-full rounded-lg border ${
-                    errors.owner_phone ? 'border-danger' : 'border-stroke dark:border-strokedark'
+                    errors.admin_phone ? 'border-danger' : 'border-stroke dark:border-strokedark'
                   } bg-white dark:bg-boxdark py-3 px-4 text-dark dark:text-white focus:border-primary focus:outline-none`}
                 />
-                {errors.owner_phone && <p className="mt-1 text-sm text-danger">{errors.owner_phone}</p>}
+                {errors.admin_phone && <p className="mt-1 text-sm text-danger">{errors.admin_phone}</p>}
               </div>
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                  Owner Email (Optional)
+                  Store Admin Email (Optional)
                 </label>
                 <input
                   type="email"
-                  name="owner_email"
-                  value={formData.owner_email || ''}
+                  name="admin_email"
+                  value={formData.admin_email || ''}
                   onChange={handleChange}
-                  placeholder="owner@store.com"
+                  placeholder="admin@store.com"
                   className="w-full rounded-lg border border-stroke dark:border-strokedark bg-white dark:bg-boxdark py-3 px-4 text-dark dark:text-white focus:border-primary focus:outline-none"
                 />
               </div>
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                  Owner Password <span className="text-danger">*</span>
+                  Store Admin Password <span className="text-danger">*</span>
                 </label>
                 <input
                   type="password"
-                  name="owner_password"
-                  value={formData.owner_password}
+                  name="admin_password"
+                  value={formData.admin_password}
                   onChange={handleChange}
                   className={`w-full rounded-lg border ${
-                    errors.owner_password ? 'border-danger' : 'border-stroke dark:border-strokedark'
+                    errors.admin_password ? 'border-danger' : 'border-stroke dark:border-strokedark'
                   } bg-white dark:bg-boxdark py-3 px-4 text-dark dark:text-white focus:border-primary focus:outline-none`}
                 />
-                {errors.owner_password && <p className="mt-1 text-sm text-danger">{errors.owner_password}</p>}
+                {errors.admin_password && <p className="mt-1 text-sm text-danger">{errors.admin_password}</p>}
               </div>
             </div>
           </div>

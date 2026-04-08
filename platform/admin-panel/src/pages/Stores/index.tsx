@@ -140,6 +140,9 @@ const StoresPage = () => {
               <thead className="border-b border-stroke bg-gray-50 dark:border-strokedark dark:bg-meta-4">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    ID
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Store
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
@@ -162,6 +165,11 @@ const StoresPage = () => {
                     key={store.id}
                     className="border-b border-stroke dark:border-strokedark hover:bg-gray-50 dark:hover:bg-meta-4"
                   >
+                    {/* Store ID */}
+                    <td className="px-6 py-4">
+                      <p className="font-mono text-sm font-semibold text-gray-900 dark:text-white">#{store.id}</p>
+                    </td>
+
                     {/* Store Name */}
                     <td className="px-6 py-4">
                       <div

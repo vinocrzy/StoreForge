@@ -39,6 +39,36 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function SuperAdminOnlyRoute({ children }: { children: React.ReactNode }) {
+  const { user } = useAppSelector((state) => state.auth);
+
+  if (!user?.is_super_admin) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+function StoreAdminOnlyRoute({ children }: { children: React.ReactNode }) {
+  const { user } = useAppSelector((state) => state.auth);
+
+  if (user?.is_super_admin) {
+    return <Navigate to="/stores" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+function RoleAwareHomeRoute() {
+  const { user } = useAppSelector((state) => state.auth);
+
+  if (user?.is_super_admin) {
+    return <Navigate to="/stores" replace />;
+  }
+
+  return <Home />;
+}
+
 function App() {
   return (
     <>
@@ -52,39 +82,39 @@ function App() {
             </ProtectedRoute>
           }>
             {/* Dashboard */}
-            <Route index path="/" element={<Home />} />
+            <Route index path="/" element={<RoleAwareHomeRoute />} />
 
             {/* Products */}
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/products/new" element={<NewProductPage />} />
-            <Route path="/products/:id" element={<EditProductPage />} />
-            <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/products" element={<StoreAdminOnlyRoute><ProductsPage /></StoreAdminOnlyRoute>} />
+            <Route path="/products/new" element={<StoreAdminOnlyRoute><NewProductPage /></StoreAdminOnlyRoute>} />
+            <Route path="/products/:id" element={<StoreAdminOnlyRoute><EditProductPage /></StoreAdminOnlyRoute>} />
+            <Route path="/categories" element={<StoreAdminOnlyRoute><CategoriesPage /></StoreAdminOnlyRoute>} />
 
             {/* Orders */}
-            <Route path="/orders" element={<OrdersPage />} />
-            <Route path="/orders/:id" element={<OrderDetailsPage />} />
-            <Route path="/orders/pending" element={<PendingOrdersPage />} />
-            <Route path="/orders/completed" element={<CompletedOrdersPage />} />
+            <Route path="/orders" element={<StoreAdminOnlyRoute><OrdersPage /></StoreAdminOnlyRoute>} />
+            <Route path="/orders/:id" element={<StoreAdminOnlyRoute><OrderDetailsPage /></StoreAdminOnlyRoute>} />
+            <Route path="/orders/pending" element={<StoreAdminOnlyRoute><PendingOrdersPage /></StoreAdminOnlyRoute>} />
+            <Route path="/orders/completed" element={<StoreAdminOnlyRoute><CompletedOrdersPage /></StoreAdminOnlyRoute>} />
 
             {/* Customers */}
-            <Route path="/customers" element={<CustomersPage />} />
-            <Route path="/customers/new" element={<NewCustomerPage />} />
-            <Route path="/customers/:id/edit" element={<EditCustomerPage />} />
-            <Route path="/customers/:id" element={<CustomerDetailsPage />} />
+            <Route path="/customers" element={<StoreAdminOnlyRoute><CustomersPage /></StoreAdminOnlyRoute>} />
+            <Route path="/customers/new" element={<StoreAdminOnlyRoute><NewCustomerPage /></StoreAdminOnlyRoute>} />
+            <Route path="/customers/:id/edit" element={<StoreAdminOnlyRoute><EditCustomerPage /></StoreAdminOnlyRoute>} />
+            <Route path="/customers/:id" element={<StoreAdminOnlyRoute><CustomerDetailsPage /></StoreAdminOnlyRoute>} />
 
             {/* Stores (Super Admin) */}
-            <Route path="/stores" element={<StoresPage />} />
-            <Route path="/stores/new" element={<NewStorePage />} />
-            <Route path="/stores/:id" element={<StoreDetailsPage />} />
+            <Route path="/stores" element={<SuperAdminOnlyRoute><StoresPage /></SuperAdminOnlyRoute>} />
+            <Route path="/stores/new" element={<SuperAdminOnlyRoute><NewStorePage /></SuperAdminOnlyRoute>} />
+            <Route path="/stores/:id" element={<SuperAdminOnlyRoute><StoreDetailsPage /></SuperAdminOnlyRoute>} />
 
             {/* Inventory */}
-            <Route path="/inventory" element={<InventoryPage />} />
-            <Route path="/warehouses" element={<WarehousesPage />} />
-            <Route path="/inventory/movements" element={<StockMovementsPage />} />
+            <Route path="/inventory" element={<StoreAdminOnlyRoute><InventoryPage /></StoreAdminOnlyRoute>} />
+            <Route path="/warehouses" element={<StoreAdminOnlyRoute><WarehousesPage /></StoreAdminOnlyRoute>} />
+            <Route path="/inventory/movements" element={<StoreAdminOnlyRoute><StockMovementsPage /></StoreAdminOnlyRoute>} />
 
             {/* Settings */}
-            <Route path="/settings/store" element={<StoreSettingsPage />} />
-            <Route path="/profile" element={<UserProfiles />} />
+            <Route path="/settings/store" element={<StoreAdminOnlyRoute><StoreSettingsPage /></StoreAdminOnlyRoute>} />
+            <Route path="/profile" element={<StoreAdminOnlyRoute><UserProfiles /></StoreAdminOnlyRoute>} />
           </Route>
 
           {/* Auth Routes - Public */}

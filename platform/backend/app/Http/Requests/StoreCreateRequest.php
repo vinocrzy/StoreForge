@@ -25,10 +25,10 @@ class StoreCreateRequest extends FormRequest
             'language' => 'sometimes|string|size:2',
             'settings' => 'sometimes|array',
 
-            'owner_name' => 'required|string|max:255',
-            'owner_phone' => ['required', 'string', 'regex:/^\+[1-9]\d{1,14}$/'],
-            'owner_email' => 'nullable|email|max:255|unique:users,email',
-            'owner_password' => 'required|string|min:8|max:255',
+            'admin_name' => 'required|string|max:255',
+            'admin_phone' => ['required', 'string', 'regex:/^\+[1-9]\d{1,14}$/'],
+            'admin_email' => 'nullable|email|max:255|unique:users,email',
+            'admin_password' => 'required|string|min:8|max:255',
         ];
     }
 
@@ -36,8 +36,8 @@ class StoreCreateRequest extends FormRequest
     {
         return [
             'phone.regex' => 'Store phone must be in E.164 format (e.g., +12025551234).',
-            'owner_phone.required' => 'Owner phone is required.',
-            'owner_phone.regex' => 'Owner phone must be in E.164 format (e.g., +12025551234).',
+            'admin_phone.required' => 'Store admin phone is required.',
+            'admin_phone.regex' => 'Store admin phone must be in E.164 format (e.g., +12025551234).',
         ];
     }
 }

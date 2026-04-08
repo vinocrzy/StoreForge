@@ -2,7 +2,7 @@
 
 **Base URL**: `http://localhost:8000/api/v1`  
 **Authentication**: Bearer Token via Laravel Sanctum  
-**Tenant Header**: `X-Store-ID: {store_id}` (required for all authenticated endpoints)
+**Tenant Header**: `X-Store-ID: {store_id}` (required for tenant-scoped authenticated endpoints)
 
 ---
 
@@ -778,10 +778,10 @@ Content-Type: application/json
   "currency": "USD",
   "timezone": "America/New_York",
   "language": "en",
-  "owner_name": "Honey Owner",
-  "owner_phone": "+12025550112",
-  "owner_email": "owner@honeybee.com",
-  "owner_password": "SecurePass123"
+  "admin_name": "Honey Admin",
+  "admin_phone": "+12025550112",
+  "admin_email": "admin@honeybee.com",
+  "admin_password": "SecurePass123"
 }
 ```
 

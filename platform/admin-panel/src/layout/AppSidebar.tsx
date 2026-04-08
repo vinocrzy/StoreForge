@@ -12,6 +12,7 @@ import {
   ShootingStarIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
+import { useAppSelector } from "../store/hooks";
 
 type NavItem = {
   name: string;
@@ -82,6 +83,8 @@ const navItems: NavItem[] = [
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation();
+  const user = useAppSelector((state) => state.auth.user);
+  const isSuperAdmin = !!user?.is_super_admin;
 
   const [openSubmenu, setOpenSubmenu] = useState<number | null>(null);
   const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>({});
@@ -282,7 +285,15 @@ const AppSidebar: React.FC = () => {
                   NAVIGATION
                 </h2>
               )}
-              {renderMenuItems(navItems)}
+              {renderMenuItems(
+                navItems.filter((item) => {
+                  if (isSuperAdmin) {
+                    return item.name === "Stores";
+                  }
+
+                  return item.name !== "Stores";
+                })
+              )}
             </div>
           </div>
         </nav>

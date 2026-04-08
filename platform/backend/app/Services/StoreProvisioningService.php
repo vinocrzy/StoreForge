@@ -54,18 +54,18 @@ class StoreProvisioningService
                 ],
             ]);
 
-            $ownerEmail = $data['owner_email'] ?? $this->generateFallbackOwnerEmail($store->slug);
+            $adminEmail = $data['admin_email'] ?? $this->generateFallbackAdminEmail($store->slug);
 
-            $owner = User::create([
-                'name' => $data['owner_name'],
-                'email' => $ownerEmail,
-                'phone' => $data['owner_phone'],
-                'password' => Hash::make($data['owner_password']),
+            $admin = User::create([
+                'name' => $data['admin_name'],
+                'email' => $adminEmail,
+                'phone' => $data['admin_phone'],
+                'password' => Hash::make($data['admin_password']),
                 'status' => 'active',
             ]);
 
-            $owner->assignRole('owner');
-            $owner->stores()->attach($store->id, ['role' => 'owner']);
+            $admin->assignRole('admin');
+            $admin->stores()->attach($store->id, ['role' => 'admin']);
 
             $superAdmin = User::query()->where('email', 'admin@ecommerce-platform.com')->first();
             if ($superAdmin) {
@@ -76,7 +76,7 @@ class StoreProvisioningService
 
             return [
                 'store' => $store->fresh(),
-                'owner' => $owner->fresh(),
+                'admin' => $admin->fresh(),
             ];
         });
     }
@@ -94,14 +94,14 @@ class StoreProvisioningService
         return $store->fresh();
     }
 
-    private function generateFallbackOwnerEmail(string $slug): string
+    private function generateFallbackAdminEmail(string $slug): string
     {
-        $base = "owner+{$slug}@example.local";
+        $base = "admin+{$slug}@example.local";
         $candidate = $base;
         $counter = 1;
 
         while (User::query()->where('email', $candidate)->exists()) {
-            $candidate = "owner+{$slug}+{$counter}@example.local";
+            $candidate = "admin+{$slug}+{$counter}@example.local";
             $counter++;
         }
 

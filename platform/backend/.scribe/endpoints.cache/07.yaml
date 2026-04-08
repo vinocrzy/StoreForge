@@ -337,7 +337,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: completed
+        example: refunded
         type: string
         enumValues:
           - pending
@@ -378,7 +378,7 @@ endpoints:
       amount: 170.5
       currency: qeo
       transaction_id: TXN-123456
-      status: completed
+      status: refunded
       payment_notes: 'Received via bank transfer'
       metadata:
         bank: Chase
@@ -650,7 +650,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: pending
+        example: delivered
         type: string
         enumValues:
           - pending
@@ -668,7 +668,7 @@ endpoints:
         name: payment_status
         description: ''
         required: false
-        example: pending
+        example: partially_refunded
         type: string
         enumValues:
           - pending
@@ -891,8 +891,8 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       customer_id: 5
-      status: pending
-      payment_status: pending
+      status: delivered
+      payment_status: partially_refunded
       currency: mqe
       customer_note: 'Please gift wrap'
       admin_note: 'Priority order'
@@ -1044,7 +1044,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: confirmed
+        example: refunded
         type: string
         enumValues:
           - pending
@@ -1111,7 +1111,7 @@ endpoints:
         name: payment_method
         description: ''
         required: false
-        example: bank_transfer
+        example: upi
         type: string
         enumValues:
           - manual
@@ -1246,12 +1246,12 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       customer_id: 17
-      status: confirmed
+      status: refunded
       payment_status: failed
       currency: mqe
       customer_note: 'Updated note'
       admin_note: 'Admin updated'
-      payment_method: bank_transfer
+      payment_method: upi
       billing_address_id: 17
       shipping_address_id: 17
       coupon_code: mqeopfuudtdsufvyvddqa

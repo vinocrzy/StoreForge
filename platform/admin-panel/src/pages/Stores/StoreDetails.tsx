@@ -65,6 +65,7 @@ const StoreDetailsPage = () => {
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{store.name}</h1>
             <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">/{store.slug}</p>
+            <p className="mt-1 text-sm font-mono text-gray-700 dark:text-gray-300">Store ID: {store.id}</p>
           </div>
           <div className="flex gap-3">
             <Button variant="success" onClick={() => void handleStatusChange('active')} disabled={isUpdatingStatus || store.status === 'active'}>
@@ -89,6 +90,12 @@ const StoreDetailsPage = () => {
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Store Information</h2>
             </div>
             <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Store ID
+                </label>
+                <p className="font-mono text-gray-900 dark:text-white">{store.id}</p>
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Store Name

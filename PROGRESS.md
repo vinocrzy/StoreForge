@@ -28,8 +28,9 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 - [x] Added `app:purge-mock-tenant-data` artisan command with dry-run support
 - [x] Validated `migrate:fresh --seed` with new seed flow
 - [x] Implemented Super Admin store APIs (`GET/POST /v1/stores`, `GET /v1/stores/{id}`, `PATCH /v1/stores/{id}/status`)
-- [x] Added store provisioning service with transactional store + owner creation
+- [x] Added store provisioning service with transactional store + store-admin credential creation
 - [x] Regenerated Scribe docs including Stores endpoint group
+- [x] Enforced admin-panel role access: super admin sees Stores only, store admins cannot access Stores pages
 
 ---
 

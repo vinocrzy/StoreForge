@@ -71,15 +71,15 @@ class StoreController extends Controller
      * @bodyParam currency string 3-letter currency code. Example: USD
      * @bodyParam timezone string Store timezone. Example: America/New_York
      * @bodyParam language string 2-letter language code. Example: en
-     * @bodyParam owner_name string required Store owner name. Example: Honey Owner
-     * @bodyParam owner_phone string required Owner phone in E.164 format. Example: +12025550112
-     * @bodyParam owner_email string Owner email (optional). Example: owner@honeybee.com
-     * @bodyParam owner_password string required Owner password (min 8). Example: SecurePass123
+    * @bodyParam admin_name string required Store admin name. Example: Honey Admin
+    * @bodyParam admin_phone string required Store admin phone in E.164 format. Example: +12025550112
+    * @bodyParam admin_email string Store admin email (optional). Example: admin@honeybee.com
+    * @bodyParam admin_password string required Store admin password (min 8). Example: SecurePass123
      *
      * @response 201 {
      *   "data": {
      *     "store": {"id": 2, "slug": "honey-bee"},
-     *     "owner": {"id": 10, "email": "owner@honeybee.com"}
+    *     "admin": {"id": 10, "email": "admin@honeybee.com"}
      *   }
      * }
      */

@@ -4983,8 +4983,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"status\": \"active\",
     \"date_of_birth\": \"1990-01-15\",
     \"gender\": \"male\",
-    \"email_verified_at\": \"2026-04-08T10:58:05\",
-    \"phone_verified_at\": \"2026-04-08T10:58:05\",
+    \"email_verified_at\": \"2026-04-08T11:17:24\",
+    \"phone_verified_at\": \"2026-04-08T11:17:24\",
     \"address\": {
         \"type\": \"both\",
         \"label\": \"Home\",
@@ -5022,8 +5022,8 @@ let body = {
     "status": "active",
     "date_of_birth": "1990-01-15",
     "gender": "male",
-    "email_verified_at": "2026-04-08T10:58:05",
-    "phone_verified_at": "2026-04-08T10:58:05",
+    "email_verified_at": "2026-04-08T11:17:24",
+    "phone_verified_at": "2026-04-08T11:17:24",
     "address": {
         "type": "both",
         "label": "Home",
@@ -5259,10 +5259,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email_verified_at"                data-endpoint="POSTapi-v1-customers"
-               value="2026-04-08T10:58:05"
+               value="2026-04-08T11:17:24"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-04-08T10:58:05</code></p>
+<p>Must be a valid date. Example: <code>2026-04-08T11:17:24</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>phone_verified_at</code></b>&nbsp;&nbsp;
@@ -5271,10 +5271,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="phone_verified_at"                data-endpoint="POSTapi-v1-customers"
-               value="2026-04-08T10:58:05"
+               value="2026-04-08T11:17:24"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-04-08T10:58:05</code></p>
+<p>Must be a valid date. Example: <code>2026-04-08T11:17:24</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
         <details>
@@ -5618,10 +5618,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"status\": \"active\",
     \"date_of_birth\": \"1990-01-15\",
     \"gender\": \"male\",
-    \"email_verified_at\": \"2026-04-08T10:58:05\",
-    \"phone_verified_at\": \"2026-04-08T10:58:05\",
+    \"email_verified_at\": \"2026-04-08T11:17:24\",
+    \"phone_verified_at\": \"2026-04-08T11:17:24\",
     \"address\": {
-        \"type\": \"both\",
+        \"type\": \"billing\",
         \"label\": \"mqeopfuudtdsufvyvddqa\",
         \"first_name\": \"mniihfqcoynlazghdtqtq\",
         \"last_name\": \"xbajwbpilpmufinllwloa\",
@@ -5657,10 +5657,10 @@ let body = {
     "status": "active",
     "date_of_birth": "1990-01-15",
     "gender": "male",
-    "email_verified_at": "2026-04-08T10:58:05",
-    "phone_verified_at": "2026-04-08T10:58:05",
+    "email_verified_at": "2026-04-08T11:17:24",
+    "phone_verified_at": "2026-04-08T11:17:24",
     "address": {
-        "type": "both",
+        "type": "billing",
         "label": "mqeopfuudtdsufvyvddqa",
         "first_name": "mniihfqcoynlazghdtqtq",
         "last_name": "xbajwbpilpmufinllwloa",
@@ -5903,10 +5903,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email_verified_at"                data-endpoint="PUTapi-v1-customers--id-"
-               value="2026-04-08T10:58:05"
+               value="2026-04-08T11:17:24"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-04-08T10:58:05</code></p>
+<p>Must be a valid date. Example: <code>2026-04-08T11:17:24</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>phone_verified_at</code></b>&nbsp;&nbsp;
@@ -5915,10 +5915,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="phone_verified_at"                data-endpoint="PUTapi-v1-customers--id-"
-               value="2026-04-08T10:58:05"
+               value="2026-04-08T11:17:24"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-04-08T10:58:05</code></p>
+<p>Must be a valid date. Example: <code>2026-04-08T11:17:24</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
         <details>
@@ -5937,10 +5937,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="address.type"                data-endpoint="PUTapi-v1-customers--id-"
-               value="both"
+               value="billing"
                data-component="body">
     <br>
-<p>This field is required when <code>address</code> is present. Example: <code>both</code></p>
+<p>This field is required when <code>address</code> is present. Example: <code>billing</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>billing</code></li> <li><code>shipping</code></li> <li><code>both</code></li></ul>
                     </div>
@@ -8782,7 +8782,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"amount\": 170.5,
     \"currency\": \"qeo\",
     \"transaction_id\": \"TXN-123456\",
-    \"status\": \"completed\",
+    \"status\": \"refunded\",
     \"payment_notes\": \"Received via bank transfer\",
     \"metadata\": {
         \"bank\": \"Chase\",
@@ -8809,7 +8809,7 @@ let body = {
     "amount": 170.5,
     "currency": "qeo",
     "transaction_id": "TXN-123456",
-    "status": "completed",
+    "status": "refunded",
     "payment_notes": "Received via bank transfer",
     "metadata": {
         "bank": "Chase",
@@ -9020,10 +9020,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="POSTapi-v1-orders--order_id--payment"
-               value="completed"
+               value="refunded"
                data-component="body">
     <br>
-<p>Example: <code>completed</code></p>
+<p>Example: <code>refunded</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>completed</code></li> <li><code>failed</code></li> <li><code>refunded</code></li></ul>
         </div>
@@ -9451,8 +9451,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"customer_id\": 5,
-    \"status\": \"pending\",
-    \"payment_status\": \"pending\",
+    \"status\": \"delivered\",
+    \"payment_status\": \"partially_refunded\",
     \"currency\": \"mqe\",
     \"customer_note\": \"Please gift wrap\",
     \"admin_note\": \"Priority order\",
@@ -9480,8 +9480,8 @@ const headers = {
 
 let body = {
     "customer_id": 5,
-    "status": "pending",
-    "payment_status": "pending",
+    "status": "delivered",
+    "payment_status": "partially_refunded",
     "currency": "mqe",
     "customer_note": "Please gift wrap",
     "admin_note": "Priority order",
@@ -9613,10 +9613,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="POSTapi-v1-orders"
-               value="pending"
+               value="delivered"
                data-component="body">
     <br>
-<p>Example: <code>pending</code></p>
+<p>Example: <code>delivered</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>confirmed</code></li> <li><code>processing</code></li> <li><code>shipped</code></li> <li><code>delivered</code></li> <li><code>cancelled</code></li> <li><code>refunded</code></li></ul>
         </div>
@@ -9627,10 +9627,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="payment_status"                data-endpoint="POSTapi-v1-orders"
-               value="pending"
+               value="partially_refunded"
                data-component="body">
     <br>
-<p>Example: <code>pending</code></p>
+<p>Example: <code>partially_refunded</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>paid</code></li> <li><code>failed</code></li> <li><code>refunded</code></li> <li><code>partially_refunded</code></li></ul>
         </div>
@@ -10036,12 +10036,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"customer_id\": 17,
-    \"status\": \"confirmed\",
+    \"status\": \"refunded\",
     \"payment_status\": \"failed\",
     \"currency\": \"mqe\",
     \"customer_note\": \"Updated note\",
     \"admin_note\": \"Admin updated\",
-    \"payment_method\": \"bank_transfer\",
+    \"payment_method\": \"upi\",
     \"billing_address_id\": 17,
     \"shipping_address_id\": 17,
     \"coupon_code\": \"mqeopfuudtdsufvyvddqa\",
@@ -10072,12 +10072,12 @@ const headers = {
 
 let body = {
     "customer_id": 17,
-    "status": "confirmed",
+    "status": "refunded",
     "payment_status": "failed",
     "currency": "mqe",
     "customer_note": "Updated note",
     "admin_note": "Admin updated",
-    "payment_method": "bank_transfer",
+    "payment_method": "upi",
     "billing_address_id": 17,
     "shipping_address_id": 17,
     "coupon_code": "mqeopfuudtdsufvyvddqa",
@@ -10225,10 +10225,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="PUTapi-v1-orders--id-"
-               value="confirmed"
+               value="refunded"
                data-component="body">
     <br>
-<p>Example: <code>confirmed</code></p>
+<p>Example: <code>refunded</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>confirmed</code></li> <li><code>processing</code></li> <li><code>shipped</code></li> <li><code>delivered</code></li> <li><code>cancelled</code></li> <li><code>refunded</code></li></ul>
         </div>
@@ -10289,10 +10289,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="payment_method"                data-endpoint="PUTapi-v1-orders--id-"
-               value="bank_transfer"
+               value="upi"
                data-component="body">
     <br>
-<p>Example: <code>bank_transfer</code></p>
+<p>Example: <code>upi</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>manual</code></li> <li><code>bank_transfer</code></li> <li><code>cash_on_delivery</code></li> <li><code>card</code></li> <li><code>upi</code></li> <li><code>wallet</code></li></ul>
         </div>
@@ -11509,19 +11509,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"price\": 899.99,
     \"compare_price\": 24,
     \"cost_price\": 13,
-    \"track_inventory\": true,
+    \"track_inventory\": false,
     \"stock_quantity\": 40,
     \"low_stock_threshold\": 1,
     \"weight\": 89,
-    \"weight_unit\": \"kg\",
+    \"weight_unit\": \"oz\",
     \"dimensions\": {
         \"length\": 21,
         \"width\": 26,
         \"height\": 11,
-        \"unit\": \"ft\"
+        \"unit\": \"m\"
     },
     \"status\": \"active\",
-    \"is_featured\": false,
+    \"is_featured\": true,
     \"meta_title\": \"tqtqxbajwbpilpmufinll\",
     \"meta_description\": \"wloauydlsmsjuryvojcyb\",
     \"category_ids\": [
@@ -11551,19 +11551,19 @@ let body = {
     "price": 899.99,
     "compare_price": 24,
     "cost_price": 13,
-    "track_inventory": true,
+    "track_inventory": false,
     "stock_quantity": 40,
     "low_stock_threshold": 1,
     "weight": 89,
-    "weight_unit": "kg",
+    "weight_unit": "oz",
     "dimensions": {
         "length": 21,
         "width": 26,
         "height": 11,
-        "unit": "ft"
+        "unit": "m"
     },
     "status": "active",
-    "is_featured": false,
+    "is_featured": true,
     "meta_title": "tqtqxbajwbpilpmufinll",
     "meta_description": "wloauydlsmsjuryvojcyb",
     "category_ids": [
@@ -11809,7 +11809,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>stock_quantity</code></b>&nbsp;&nbsp;
@@ -11854,10 +11854,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="weight_unit"                data-endpoint="PUTapi-v1-products--id-"
-               value="kg"
+               value="oz"
                data-component="body">
     <br>
-<p>Example: <code>kg</code></p>
+<p>Example: <code>oz</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>kg</code></li> <li><code>g</code></li> <li><code>lb</code></li> <li><code>oz</code></li></ul>
         </div>
@@ -11914,10 +11914,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="dimensions.unit"                data-endpoint="PUTapi-v1-products--id-"
-               value="ft"
+               value="m"
                data-component="body">
     <br>
-<p>This field is required when <code>dimensions</code> is present. Example: <code>ft</code></p>
+<p>This field is required when <code>dimensions</code> is present. Example: <code>m</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>cm</code></li> <li><code>m</code></li> <li><code>in</code></li> <li><code>ft</code></li></ul>
                     </div>
@@ -11955,7 +11955,7 @@ Must be one of:
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>meta_title</code></b>&nbsp;&nbsp;
@@ -12539,10 +12539,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"currency\": \"USD\",
     \"timezone\": \"America\\/New_York\",
     \"language\": \"en\",
-    \"owner_name\": \"Honey Owner\",
-    \"owner_phone\": \"+12025550112\",
-    \"owner_email\": \"owner@honeybee.com\",
-    \"owner_password\": \"SecurePass123\"
+    \"admin_name\": \"Honey Admin\",
+    \"admin_phone\": \"+12025550112\",
+    \"admin_email\": \"admin@honeybee.com\",
+    \"admin_password\": \"SecurePass123\"
 }"
 </code></pre></div>
 
@@ -12567,10 +12567,10 @@ let body = {
     "currency": "USD",
     "timezone": "America\/New_York",
     "language": "en",
-    "owner_name": "Honey Owner",
-    "owner_phone": "+12025550112",
-    "owner_email": "owner@honeybee.com",
-    "owner_password": "SecurePass123"
+    "admin_name": "Honey Admin",
+    "admin_phone": "+12025550112",
+    "admin_email": "admin@honeybee.com",
+    "admin_password": "SecurePass123"
 };
 
 fetch(url, {
@@ -12593,9 +12593,9 @@ fetch(url, {
             &quot;id&quot;: 2,
             &quot;slug&quot;: &quot;honey-bee&quot;
         },
-        &quot;owner&quot;: {
+        &quot;admin&quot;: {
             &quot;id&quot;: 10,
-            &quot;email&quot;: &quot;owner@honeybee.com&quot;
+            &quot;email&quot;: &quot;admin@honeybee.com&quot;
         }
     }
 }</code>
@@ -12794,52 +12794,52 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>owner_name</code></b>&nbsp;&nbsp;
+            <b style="line-height: 2;"><code>admin_name</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="owner_name"                data-endpoint="POSTapi-v1-stores"
-               value="Honey Owner"
+                              name="admin_name"                data-endpoint="POSTapi-v1-stores"
+               value="Honey Admin"
                data-component="body">
     <br>
-<p>Store owner name. Example: <code>Honey Owner</code></p>
+<p>Store admin name. Example: <code>Honey Admin</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>owner_phone</code></b>&nbsp;&nbsp;
+            <b style="line-height: 2;"><code>admin_phone</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="owner_phone"                data-endpoint="POSTapi-v1-stores"
+                              name="admin_phone"                data-endpoint="POSTapi-v1-stores"
                value="+12025550112"
                data-component="body">
     <br>
-<p>Owner phone in E.164 format. Example: <code>+12025550112</code></p>
+<p>Store admin phone in E.164 format. Example: <code>+12025550112</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>owner_email</code></b>&nbsp;&nbsp;
+            <b style="line-height: 2;"><code>admin_email</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
 <i>optional</i> &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="owner_email"                data-endpoint="POSTapi-v1-stores"
-               value="owner@honeybee.com"
+                              name="admin_email"                data-endpoint="POSTapi-v1-stores"
+               value="admin@honeybee.com"
                data-component="body">
     <br>
-<p>Owner email (optional). Example: <code>owner@honeybee.com</code></p>
+<p>Store admin email (optional). Example: <code>admin@honeybee.com</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>owner_password</code></b>&nbsp;&nbsp;
+            <b style="line-height: 2;"><code>admin_password</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="owner_password"                data-endpoint="POSTapi-v1-stores"
+                              name="admin_password"                data-endpoint="POSTapi-v1-stores"
                value="SecurePass123"
                data-component="body">
     <br>
-<p>Owner password (min 8). Example: <code>SecurePass123</code></p>
+<p>Store admin password (min 8). Example: <code>SecurePass123</code></p>
         </div>
         </form>
 
@@ -13380,7 +13380,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"state\": \"NY\",
     \"postal_code\": \"10001\",
     \"country\": \"US\",
-    \"is_active\": false,
+    \"is_active\": true,
     \"is__active\": true
 }"
 </code></pre></div>
@@ -13404,7 +13404,7 @@ let body = {
     "state": "NY",
     "postal_code": "10001",
     "country": "US",
-    "is_active": false,
+    "is_active": true,
     "is__active": true
 };
 
@@ -13625,7 +13625,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>is__active</code></b>&nbsp;&nbsp;

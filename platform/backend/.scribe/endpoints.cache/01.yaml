@@ -249,21 +249,21 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
-      owner_name:
+      admin_name:
         custom: []
-        name: owner_name
-        description: 'Store owner name.'
+        name: admin_name
+        description: 'Store admin name.'
         required: true
-        example: 'Honey Owner'
+        example: 'Honey Admin'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      owner_phone:
+      admin_phone:
         custom: []
-        name: owner_phone
-        description: 'Owner phone in E.164 format.'
+        name: admin_phone
+        description: 'Store admin phone in E.164 format.'
         required: true
         example: '+12025550112'
         type: string
@@ -271,21 +271,21 @@ endpoints:
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      owner_email:
+      admin_email:
         custom: []
-        name: owner_email
-        description: 'Owner email (optional).'
+        name: admin_email
+        description: 'Store admin email (optional).'
         required: false
-        example: owner@honeybee.com
+        example: admin@honeybee.com
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         deprecated: false
-      owner_password:
+      admin_password:
         custom: []
-        name: owner_password
-        description: 'Owner password (min 8).'
+        name: admin_password
+        description: 'Store admin password (min 8).'
         required: true
         example: SecurePass123
         type: string
@@ -303,10 +303,10 @@ endpoints:
       currency: USD
       timezone: America/New_York
       language: en
-      owner_name: 'Honey Owner'
-      owner_phone: '+12025550112'
-      owner_email: owner@honeybee.com
-      owner_password: SecurePass123
+      admin_name: 'Honey Admin'
+      admin_phone: '+12025550112'
+      admin_email: admin@honeybee.com
+      admin_password: SecurePass123
     fileParameters: []
     responses:
       -
@@ -316,7 +316,7 @@ endpoints:
           {
             "data": {
               "store": {"id": 2, "slug": "honey-bee"},
-              "owner": {"id": 10, "email": "owner@honeybee.com"}
+              "admin": {"id": 10, "email": "admin@honeybee.com"}
             }
           }
         headers: []

@@ -94,6 +94,8 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'status' => $user->status,
+                'roles' => $user->getRoleNames()->values(),
+                'is_super_admin' => $user->hasRole('super-admin'),
             ],
             'token' => $token,
             'stores' => $stores,
@@ -164,6 +166,8 @@ class AuthController extends Controller
                 'phone' => $user->phone,
                 'avatar_url' => $user->avatar_url,
                 'status' => $user->status,
+                'roles' => $user->getRoleNames()->values(),
+                'is_super_admin' => $user->hasRole('super-admin'),
             ],
             'stores' => $stores,
         ]);

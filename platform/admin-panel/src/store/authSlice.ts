@@ -8,6 +8,20 @@ interface AuthState {
   isAuthenticated: boolean;
 }
 
+const loadUserFromStorage = (): User | null => {
+  const rawUser = localStorage.getItem('auth_user');
+
+  if (!rawUser) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(rawUser) as User;
+  } catch {
+    return null;
+  }
+};
+
 const loadStoreFromStorage = (): Store | null => {
   const storeId = localStorage.getItem('store_id');
   const storeName = localStorage.getItem('store_name');
@@ -28,7 +42,7 @@ const loadStoreFromStorage = (): Store | null => {
 };
 
 const initialState: AuthState = {
-  user: null,
+  user: loadUserFromStorage(),
   token: localStorage.getItem('auth_token'),
   currentStore: loadStoreFromStorage(),
   isAuthenticated: !!localStorage.getItem('auth_token'),
@@ -46,6 +60,7 @@ const authSlice = createSlice({
       
       // Save to localStorage
       localStorage.setItem('auth_token', action.payload.token);
+      localStorage.setItem('auth_user', JSON.stringify(action.payload.user));
       if (action.payload.store) {
         localStorage.setItem('store_id', action.payload.store.id.toString());
         localStorage.setItem('store_name', action.payload.store.name);
@@ -70,6 +85,7 @@ const authSlice = createSlice({
       
       // Clear localStorage
       localStorage.removeItem('auth_token');
+      localStorage.removeItem('auth_user');
       localStorage.removeItem('store_id');
       localStorage.removeItem('store_name');
       localStorage.removeItem('store_currency');

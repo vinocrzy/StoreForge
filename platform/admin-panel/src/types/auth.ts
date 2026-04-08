@@ -4,6 +4,8 @@ export interface User {
   email: string;
   phone: string;
   status: string;
+  roles?: string[];
+  is_super_admin?: boolean;
 }
 
 export interface Store {

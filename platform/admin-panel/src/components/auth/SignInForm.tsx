@@ -27,8 +27,10 @@ export default function SignInForm() {
     try {
       const result = await loginMutation({ login, password }).unwrap();
       
-      // Extract first store from stores array
-      const store = result.stores && result.stores.length > 0 ? result.stores[0] : undefined;
+      // Super admin works in global mode and should not be pinned to one tenant store.
+      const store = !result.user?.is_super_admin && result.stores && result.stores.length > 0
+        ? result.stores[0]
+        : undefined;
       
       dispatch(setCredentials({
         user: result.user,
