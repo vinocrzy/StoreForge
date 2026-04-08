@@ -47,6 +47,14 @@
 /storefront-template/yarn-debug.log*
 /storefront-template/yarn-error.log*
 
+# Client Storefronts (Separate Git Repositories)
+# These are independent repos and should NOT be tracked by main platform repo
+client-*/
+
+# Storefront Template (Separate Git Repository)
+# Base template is its own repo, not tracked by platform
+storefront-template/
+
 # IDE
 .vscode/*
 !.vscode/settings.json
