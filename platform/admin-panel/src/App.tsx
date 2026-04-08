@@ -20,6 +20,9 @@ import CustomersPage from "./pages/Customers";
 import NewCustomerPage from "./pages/Customers/NewCustomer";
 import EditCustomerPage from "./pages/Customers/EditCustomer";
 import CustomerDetailsPage from "./pages/Customers/CustomerDetails";
+import StoresPage from "./pages/Stores";
+import NewStorePage from "./pages/Stores/NewStore";
+import StoreDetailsPage from "./pages/Stores/StoreDetails";
 import InventoryPage from "./pages/Inventory";
 import WarehousesPage from "./pages/Inventory/Warehouses";
 import StockMovementsPage from "./pages/Inventory/StockMovements";
@@ -68,6 +71,11 @@ function App() {
             <Route path="/customers/new" element={<NewCustomerPage />} />
             <Route path="/customers/:id/edit" element={<EditCustomerPage />} />
             <Route path="/customers/:id" element={<CustomerDetailsPage />} />
+
+            {/* Stores (Super Admin) */}
+            <Route path="/stores" element={<StoresPage />} />
+            <Route path="/stores/new" element={<NewStorePage />} />
+            <Route path="/stores/:id" element={<StoreDetailsPage />} />
 
             {/* Inventory */}
             <Route path="/inventory" element={<InventoryPage />} />
