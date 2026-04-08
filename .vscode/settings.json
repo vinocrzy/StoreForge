@@ -3,6 +3,14 @@
         "/^cd c:\\\\poc\\\\e-com\\\\platform\\\\backend; php artisan make:migration create_warehouses_table; php artisan make:migration create_inventories_table; php artisan make:migration create_stock_movements_table$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^cd platform/admin-panel; npm run build$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd platform/admin-panel; git add \\.$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     }
 }

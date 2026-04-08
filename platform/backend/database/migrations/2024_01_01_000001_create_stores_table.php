@@ -22,8 +22,8 @@ return new class extends Migration
             $table->json('address')->nullable();
             
             // Localization
-            $table->string('currency', 3)->default('USD');
-            $table->string('timezone')->default('UTC');
+            $table->string('currency', 3)->default('INR');
+            $table->string('timezone')->default('Asia/Kolkata');
             $table->string('language', 2)->default('en');
             
             // Branding
