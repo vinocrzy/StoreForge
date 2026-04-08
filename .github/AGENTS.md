@@ -329,6 +329,65 @@ The Tech Lead agent can automatically delegate to specialist agents based on the
 
 ---
 
+### 7. 🍯 Honey Bee Dev
+
+**File**: `client-honey-bee/.github/agents/honey-bee-storefront-dev.agent.md`
+
+**Role**: Dedicated Honey Bee Artisan Soap Storefront Developer
+
+**Use for:**
+- **Building any page or component in the `client-honey-bee` storefront** (homepage, shop, PDP, Our Story)
+- **Implementing the Stitch "Luminous Alchemist" design system** — colors, utility classes, component patterns
+- Navigation (botanical-glass frosted sticky nav + mobile bottom bar)
+- Hero sections with hero-overlay gradient and editorial typography
+- Artisan product cards with honey-glow badges and sunlight-shadow
+- Shop listing with sidebar category filters
+- Product detail pages with image gallery, ingredient breakdown, schema markup
+- Our Story page with founder's journey + Nurse's Promise section
+- Cart and checkout UI with Honey Bee brand design
+- SEO metadata (`generateMetadata`) and Schema.org Product structured data
+
+**Expertise:**
+- Stitch design reference (`src/design-system/design-reference/stitch/`) — all 13 screen prototypes
+- Honey Bee MD3 color tokens (`primary: #7b5800`, `background: #fcf9f4`, `on-background: #1c1c19`)
+- Utility classes: `.honey-glow` (amber gradient), `.botanical-glass` (frosted nav), `.sunlight-shadow`, `.hero-overlay`
+- Next.js 14 App Router + SSG + Server Components
+- `next/font/google`: Noto Serif (display/headline) + Manrope (body/label/caption)
+- Material Symbols Outlined (ultra-fine, weight 100–300)
+- Tailwind CSS with Honey Bee token extension in `tailwind.config.ts`
+
+**Key Patterns:**
+- **Always reads `src/design-system/HONEY-BEE-DESIGN-SYSTEM.md` before writing any UI code**
+- No `#000000` text — always `text-on-background` (`#1c1c19`)
+- No visible borders between sections — background tone shifts only
+- Cards: `rounded-xl` + `surface-container-lowest` + `sunlight-shadow`
+- CTAs: `honey-glow` gradient (never flat primary)
+- Section rhythm: hero → featured → shop teaser → story teaser → dark CTA band → artisan promise
+
+**Example Tasks:**
+- *"Build the homepage hero section matching the Stitch design"*
+- *"Create the artisan product card with badges and hover state"*
+- *"Implement the shop page with sidebar filters and product grid"*
+- *"Build the product detail page with image gallery and ingredient list"*
+- *"Create the Our Story page with founder narrative and quality promise section"*
+- *"Add the sticky navigation with botanical-glass frosted effect"*
+- *"Implement SEO metadata and Schema.org markup for product pages"*
+- *"Build the footer with linked columns and dark brand band"*
+
+**Design System Files:**
+
+| File | Contents |
+|------|---------|
+| `client-honey-bee/src/design-system/HONEY-BEE-DESIGN-SYSTEM.md` | Full design doc (14 sections) |
+| `client-honey-bee/src/design-system/design-reference/stitch/` | HTML prototypes + `screen.png` |
+| `client-honey-bee/src/design-system/tokens/` | Color + typography token files |
+| `client-honey-bee/.github/skills/honey-bee-storefront-design/SKILL.md` | Quick component cheatsheet |
+| `.github/skills/honey-bee-storefront-design/SKILL.md` | Platform-level skill |
+
+**Scope**: Client-repo-specific — only for `client-honey-bee/` work.
+
+---
+
 ## Agent Coordination
 
 ### New Client Storefront Workflow

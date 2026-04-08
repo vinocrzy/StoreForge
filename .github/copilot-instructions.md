@@ -696,6 +696,7 @@ git commit -m "docs: Update PROGRESS.md - Phase 2 Product Catalog 60% complete"
 - [docs/17-seo-implementation.md](docs/17-seo-implementation.md) - SEO strategy & best practices
 - [.github/skills/ecommerce-api-integration/SKILL.md](.github/skills/ecommerce-api-integration/SKILL.md) - **Copilot skill for API integration**
 - [.github/skills/ecommerce-admin-ui/SKILL.md](.github/skills/ecommerce-admin-ui/SKILL.md) - **Copilot skill for admin panel UI development**
+- [.github/skills/honey-bee-storefront-design/SKILL.md](.github/skills/honey-bee-storefront-design/SKILL.md) - **Copilot skill for Honey Bee storefront (Stitch design system)**
 
 ### Business
 - [docs/12-business-model-strategy.md](docs/12-business-model-strategy.md) - White-label model
