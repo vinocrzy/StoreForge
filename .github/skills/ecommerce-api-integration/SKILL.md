@@ -200,6 +200,12 @@ deleteProduct: builder.mutation<void, number>({
 - `PUT /warehouses/{id}` - Update warehouse
 - `DELETE /warehouses/{id}` - Delete warehouse
 
+### Stores (4 endpoints, Super Admin)
+- `GET /stores` - List all stores
+- `POST /stores` - Create store + owner account
+- `GET /stores/{id}` - Get store details
+- `PATCH /stores/{id}/status` - Activate/deactivate/suspend store
+
 ## Status Enums
 
 ### Order Status

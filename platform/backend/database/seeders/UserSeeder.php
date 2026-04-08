@@ -11,80 +11,113 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        $seedSuperAdmin = filter_var(env('SEED_SUPER_ADMIN', true), FILTER_VALIDATE_BOOL);
+        $seedDemoStoreUsers = filter_var(env('SEED_DEMO_STORE_USERS', true), FILTER_VALIDATE_BOOL);
+
         // Get all stores
         $stores = Store::all();
 
-        // Create a super admin (has access to all stores)
-        $superAdmin = User::create([
-            'name' => 'Super Admin',
-            'email' => 'admin@ecommerce-platform.com',
-            'password' => Hash::make('password'),
-            'status' => 'active',
-        ]);
-        $superAdmin->assignRole('super-admin');
-        
-        // Attach super admin to all stores as owner
-        foreach ($stores as $store) {
-            $superAdmin->stores()->attach($store->id, ['role' => 'owner']);
+        if ($seedSuperAdmin) {
+            // Keep fixed super admin credentials for bootstrap operations.
+            $superAdmin = User::firstOrCreate(
+                ['email' => 'admin@ecommerce-platform.com'],
+                [
+                    'name' => 'Super Admin',
+                    'password' => Hash::make('password'),
+                    'phone' => '+12025550000',
+                    'status' => 'active',
+                ]
+            );
+
+            if (!$superAdmin->phone) {
+                $superAdmin->phone = '+12025550000';
+                $superAdmin->save();
+            }
+
+            $superAdmin->assignRole('super-admin');
+
+            // Attach super admin to all stores as owner.
+            foreach ($stores as $store) {
+                $superAdmin->stores()->syncWithoutDetaching([
+                    $store->id => ['role' => 'owner'],
+                ]);
+            }
+
+            $this->command->info('✓ Super admin ensured: admin@ecommerce-platform.com / password');
         }
 
-        $this->command->info('✓ Super admin created: admin@ecommerce-platform.com');
+        if (!$seedDemoStoreUsers) {
+            $this->command->info('✓ Demo store users skipped (SEED_DEMO_STORE_USERS=false)');
+            return;
+        }
 
         // Create users for each store
         foreach ($stores as $store) {
             // Store Owner
-            $owner = User::create([
-                'name' => $store->name . ' Owner',
+            $owner = User::firstOrCreate([
                 'email' => 'owner@' . $store->slug . '.com',
+            ], [
+                'name' => $store->name . ' Owner',
                 'password' => Hash::make('password'),
+                'phone' => '+12025551001',
                 'status' => 'active',
             ]);
             $owner->assignRole('owner');
-            $owner->stores()->attach($store->id, ['role' => 'owner']);
+            $owner->stores()->syncWithoutDetaching([$store->id => ['role' => 'owner']]);
 
             // Store Admin
-            $admin = User::create([
-                'name' => $store->name . ' Admin',
+            $admin = User::firstOrCreate([
                 'email' => 'admin@' . $store->slug . '.com',
+            ], [
+                'name' => $store->name . ' Admin',
                 'password' => Hash::make('password'),
+                'phone' => '+12025551002',
                 'status' => 'active',
             ]);
             $admin->assignRole('admin');
-            $admin->stores()->attach($store->id, ['role' => 'admin']);
+            $admin->stores()->syncWithoutDetaching([$store->id => ['role' => 'admin']]);
 
             // Store Manager
-            $manager = User::create([
-                'name' => $store->name . ' Manager',
+            $manager = User::firstOrCreate([
                 'email' => 'manager@' . $store->slug . '.com',
+            ], [
+                'name' => $store->name . ' Manager',
                 'password' => Hash::make('password'),
+                'phone' => '+12025551003',
                 'status' => 'active',
             ]);
             $manager->assignRole('manager');
-            $manager->stores()->attach($store->id, ['role' => 'manager']);
+            $manager->stores()->syncWithoutDetaching([$store->id => ['role' => 'manager']]);
 
             // Store Staff
-            $staff = User::create([
-                'name' => $store->name . ' Staff',
+            $staff = User::firstOrCreate([
                 'email' => 'staff@' . $store->slug . '.com',
+            ], [
+                'name' => $store->name . ' Staff',
                 'password' => Hash::make('password'),
+                'phone' => '+12025551004',
                 'status' => 'active',
             ]);
             $staff->assignRole('staff');
-            $staff->stores()->attach($store->id, ['role' => 'staff']);
+            $staff->stores()->syncWithoutDetaching([$store->id => ['role' => 'staff']]);
 
             $this->command->info('✓ Users created for ' . $store->name);
         }
 
         $this->command->info('');
         $this->command->info('=== TEST CREDENTIALS ===');
-        $this->command->info('Super Admin: admin@ecommerce-platform.com / password');
+        if ($seedSuperAdmin) {
+            $this->command->info('Super Admin: admin@ecommerce-platform.com / password');
+        }
         $this->command->info('');
-        foreach ($stores as $store) {
-            $this->command->info($store->name . ':');
-            $this->command->info('  Owner:   owner@' . $store->slug . '.com / password');
-            $this->command->info('  Admin:   admin@' . $store->slug . '.com / password');
-            $this->command->info('  Manager: manager@' . $store->slug . '.com / password');
-            $this->command->info('  Staff:   staff@' . $store->slug . '.com / password');
+        if ($seedDemoStoreUsers) {
+            foreach ($stores as $store) {
+                $this->command->info($store->name . ':');
+                $this->command->info('  Owner:   owner@' . $store->slug . '.com / password');
+                $this->command->info('  Admin:   admin@' . $store->slug . '.com / password');
+                $this->command->info('  Manager: manager@' . $store->slug . '.com / password');
+                $this->command->info('  Staff:   staff@' . $store->slug . '.com / password');
+            }
         }
     }
 }

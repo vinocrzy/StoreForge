@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,15 +11,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $seedDemoStore = filter_var(env('SEED_DEMO_STORE', true), FILTER_VALIDATE_BOOL);
+        $seedDemoData = filter_var(env('SEED_DEMO_DATA', false), FILTER_VALIDATE_BOOL);
+        $seedMockData = filter_var(env('SEED_MOCK_DATA', false), FILTER_VALIDATE_BOOL);
+
         $this->call([
-            RoleAndPermissionSeeder::class,
-            StoreSeeder::class,
-            UserSeeder::class,
-            CategorySeeder::class,
-            ProductSeeder::class,
-            CustomerSeeder::class,
-            WarehouseSeeder::class,
-            OrderSeeder::class,
+            CoreSeeder::class,
         ]);
+
+        if ($seedDemoStore) {
+            $this->call([
+                DemoStoreSeeder::class,
+            ]);
+        }
+
+        if ($seedDemoData || $seedMockData) {
+            $this->call([
+                DemoCatalogSeeder::class,
+            ]);
+        }
     }
 }

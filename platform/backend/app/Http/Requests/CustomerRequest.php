@@ -24,7 +24,9 @@ class CustomerRequest extends FormRequest
     {
         $customerId = $this->route('customer');
         $isUpdate = $this->isMethod('PUT') || $this->isMethod('PATCH');
-        $storeId = tenant()->id;
+
+        // Tenant may be absent during documentation generation or console validation.
+        $storeId = tenant()?->id;
 
         return [
             // Basic Information
@@ -36,9 +38,11 @@ class CustomerRequest extends FormRequest
                 $isUpdate ? 'sometimes' : 'required',
                 'string',
                 'regex:/^\+[1-9]\d{1,14}$/', // E.164 format: +12025551234
-                Rule::unique('customers')->where(function ($query) use ($storeId) {
-                    return $query->where('store_id', $storeId);
-                })->ignore($customerId),
+                Rule::unique('customers')
+                    ->when($storeId, function ($rule) use ($storeId) {
+                        $rule->where(fn ($query) => $query->where('store_id', $storeId));
+                    })
+                    ->ignore($customerId),
             ],
             
             // Email (optional, unique per store if provided)
@@ -46,9 +50,11 @@ class CustomerRequest extends FormRequest
                 'nullable',
                 'email',
                 'max:255',
-                Rule::unique('customers')->where(function ($query) use ($storeId) {
-                    return $query->where('store_id', $storeId);
-                })->ignore($customerId),
+                Rule::unique('customers')
+                    ->when($storeId, function ($rule) use ($storeId) {
+                        $rule->where(fn ($query) => $query->where('store_id', $storeId));
+                    })
+                    ->ignore($customerId),
             ],
             
             // Password (required for creation, optional for update)

@@ -1,491 +1,26 @@
-name: 'Order Management'
+name: Inventory
 description: |-
 
-  APIs for managing orders, order status, and payments
+  Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
+  Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/orders/statistics
+    uri: api/v1/inventory/movements
     metadata:
       custom: []
-      groupName: 'Order Management'
+      groupName: Inventory
       groupDescription: |-
 
-        APIs for managing orders, order status, and payments
+        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
+        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get order statistics'
-      description: 'Get order and revenue statistics for the current store.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-           "data": {
-             "total_orders": 45,
-             "pending_orders": 5,
-             "processing_orders": 8,
-             "shipped_orders": 10,
-             "delivered_orders": 20,
-             "cancelled_orders": 2,
-             "total_revenue": "12500.50",
-             "pending_payments": "350.00"
-           }
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: 'api/v1/orders/{order_id}/status'
-    metadata:
-      custom: []
-      groupName: 'Order Management'
-      groupDescription: |-
-
-        APIs for managing orders, order status, and payments
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Update order status'
-      description: 'Change order status (pending, confirmed, processing, shipped, delivered, cancelled).'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      order_id:
-        custom: []
-        name: order_id
-        description: 'The ID of the order.'
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      id:
-        custom: []
-        name: id
-        description: 'Order ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      order_id: 17
-      id: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      status:
-        custom: []
-        name: status
-        description: 'New status.'
-        required: true
-        example: confirmed
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      status: confirmed
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-           "data": {"id": 1, "status": "confirmed", "confirmed_at": "2024-04-06T10:30:00Z"}
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: 'api/v1/orders/{order_id}/cancel'
-    metadata:
-      custom: []
-      groupName: 'Order Management'
-      groupDescription: |-
-
-        APIs for managing orders, order status, and payments
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Cancel order'
-      description: 'Cancel an order and release inventory if fulfilled.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      order_id:
-        custom: []
-        name: order_id
-        description: 'The ID of the order.'
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      id:
-        custom: []
-        name: id
-        description: 'Order ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      order_id: 17
-      id: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      reason:
-        custom: []
-        name: reason
-        description: 'Optional cancellation reason.'
-        required: false
-        example: 'Customer requested'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      reason: 'Customer requested'
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-           "data": {"id": 1, "status": "cancelled", "cancelled_at": "2024-04-06T10:30:00Z"}
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: 'api/v1/orders/{order_id}/payment'
-    metadata:
-      custom: []
-      groupName: 'Order Management'
-      groupDescription: |-
-
-        APIs for managing orders, order status, and payments
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Record payment'
-      description: 'Record a manual payment for an order.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      order_id:
-        custom: []
-        name: order_id
-        description: 'The ID of the order.'
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      id:
-        custom: []
-        name: id
-        description: 'Order ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      order_id: 17
-      id: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      order_id:
-        custom: []
-        name: order_id
-        description: 'The <code>id</code> of an existing record in the orders table.'
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      gateway:
-        custom: []
-        name: gateway
-        description: ''
-        required: false
-        example: square
-        type: string
-        enumValues:
-          - manual
-          - stripe
-          - paypal
-          - razorpay
-          - square
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      payment_method:
-        custom: []
-        name: payment_method
-        description: 'Payment method.'
-        required: true
-        example: bank_transfer
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      amount:
-        custom: []
-        name: amount
-        description: 'Payment amount.'
-        required: true
-        example: 170.5
-        type: number
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      currency:
-        custom: []
-        name: currency
-        description: 'Must be 3 characters.'
-        required: false
-        example: qeo
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      transaction_id:
-        custom: []
-        name: transaction_id
-        description: 'Optional transaction/reference ID.'
-        required: false
-        example: TXN-123456
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      status:
-        custom: []
-        name: status
-        description: ''
-        required: false
-        example: pending
-        type: string
-        enumValues:
-          - pending
-          - completed
-          - failed
-          - refunded
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      payment_notes:
-        custom: []
-        name: payment_notes
-        description: 'Optional payment notes.'
-        required: false
-        example: 'Received via bank transfer'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      metadata:
-        custom: []
-        name: metadata
-        description: 'Optional payment metadata.'
-        required: false
-        example:
-          bank: Chase
-          ref: '123'
-        type: object
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      order_id: 17
-      gateway: square
-      payment_method: bank_transfer
-      amount: 170.5
-      currency: qeo
-      transaction_id: TXN-123456
-      status: pending
-      payment_notes: 'Received via bank transfer'
-      metadata:
-        bank: Chase
-        ref: '123'
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 201
-        content: |-
-          {
-           "data": {
-             "id": 1,
-             "order_id": 1,
-             "amount": "170.50",
-             "status": "completed",
-             "gateway": "manual"
-           }
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: 'api/v1/orders/{order_id}/fulfill'
-    metadata:
-      custom: []
-      groupName: 'Order Management'
-      groupDescription: |-
-
-        APIs for managing orders, order status, and payments
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Fulfill order'
-      description: 'Mark order as fulfilled and adjust inventory.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      order_id:
-        custom: []
-        name: order_id
-        description: 'The ID of the order.'
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      id:
-        custom: []
-        name: id
-        description: 'Order ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      order_id: 17
-      id: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-           "message": "Order fulfilled successfully",
-           "data": {"id": 1, "fulfillment_status": "fulfilled"}
-          }
-        headers: []
-        description: ''
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/orders
-    metadata:
-      custom: []
-      groupName: 'Order Management'
-      groupDescription: |-
-
-        APIs for managing orders, order status, and payments
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'List orders'
-      description: 'Get paginated list of orders with filtering options.'
-      authenticated: false
+      title: 'Get stock movements'
+      description: 'Get stock movement history with optional filtering.'
+      authenticated: true
       deprecated: false
     headers:
       Content-Type: application/json
@@ -493,13 +28,24 @@ endpoints:
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
-      page:
+      inventory_id:
         custom: []
-        name: page
-        description: 'Page number for pagination.'
+        name: inventory_id
+        description: 'Filter by inventory record.'
         required: false
         example: 1
         type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      type:
+        custom: []
+        name: type
+        description: 'Filter by movement type.'
+        required: false
+        example: purchase
+        type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
@@ -515,57 +61,10 @@ endpoints:
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      status:
-        custom: []
-        name: status
-        description: 'Filter by order status.'
-        required: false
-        example: pending
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      payment_status:
-        custom: []
-        name: payment_status
-        description: 'Filter by payment status.'
-        required: false
-        example: paid
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      search:
-        custom: []
-        name: search
-        description: 'Search by order number or customer name.'
-        required: false
-        example: ORD-001
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      customer_id:
-        custom: []
-        name: customer_id
-        description: 'Filter by customer ID.'
-        required: false
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
     cleanQueryParameters:
-      page: 1
+      inventory_id: 1
+      type: purchase
       per_page: 20
-      status: pending
-      payment_status: paid
-      search: ORD-001
-      customer_id: 5
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -575,351 +74,23 @@ endpoints:
         status: 200
         content: |-
           {
-           "data": [
-             {
-               "id": 1,
-               "order_number": "ORD-1-240406-0001",
-               "customer_id": 5,
-               "status": "confirmed",
-               "payment_status": "paid",
-               "fulfillment_status": "unfulfilled",
-               "subtotal": "150.00",
-               "discount_amount": "10.00",
-               "shipping_amount": "15.00",
-               "tax_amount": "15.50",
-               "total": "170.50",
-               "currency": "USD",
-               "placed_at": "2024-04-06T10:30:00Z",
-               "customer": {
-                 "id": 5,
-                 "first_name": "John",
-                 "last_name": "Doe",
-                 "email": "john@example.com"
-               }
-             }
-           ],
-           "meta": {"current_page": 1, "per_page": 20, "total": 45}
+            "data": [
+              {
+                "id": 1,
+                "inventory_id": 1,
+                "type": "purchase",
+                "quantity": 100,
+                "notes": "Initial stock",
+                "user": {
+                  "id": 1,
+                  "name": "Admin User"
+                },
+                "created_at": "2026-04-06T10:00:00Z"
+              }
+            ]
           }
         headers: []
-        description: ''
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: api/v1/orders
-    metadata:
-      custom: []
-      groupName: 'Order Management'
-      groupDescription: |-
-
-        APIs for managing orders, order status, and payments
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Create order'
-      description: 'Create a new order with items.'
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      customer_id:
-        custom: []
-        name: customer_id
-        description: 'Customer ID.'
-        required: true
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      status:
-        custom: []
-        name: status
-        description: ''
-        required: false
-        example: delivered
-        type: string
-        enumValues:
-          - pending
-          - confirmed
-          - processing
-          - shipped
-          - delivered
-          - cancelled
-          - refunded
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      payment_status:
-        custom: []
-        name: payment_status
-        description: ''
-        required: false
-        example: pending
-        type: string
-        enumValues:
-          - pending
-          - paid
-          - failed
-          - refunded
-          - partially_refunded
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      currency:
-        custom: []
-        name: currency
-        description: 'Must be 3 characters.'
-        required: false
-        example: mqe
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      customer_note:
-        custom: []
-        name: customer_note
-        description: 'Optional customer note.'
-        required: false
-        example: 'Please gift wrap'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      admin_note:
-        custom: []
-        name: admin_note
-        description: 'Optional admin note.'
-        required: false
-        example: 'Priority order'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      payment_method:
-        custom: []
-        name: payment_method
-        description: 'Payment method.'
-        required: false
-        example: bank_transfer
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      billing_address_id:
-        custom: []
-        name: billing_address_id
-        description: 'Optional billing address ID.'
-        required: false
-        example: 3
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      shipping_address_id:
-        custom: []
-        name: shipping_address_id
-        description: 'Optional shipping address ID.'
-        required: false
-        example: 3
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      coupon_code:
-        custom: []
-        name: coupon_code
-        description: 'Optional coupon code.'
-        required: false
-        example: SAVE10
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      shipping_amount:
-        custom: []
-        name: shipping_amount
-        description: 'Optional shipping cost override.'
-        required: false
-        example: 10.0
-        type: number
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      items:
-        custom: []
-        name: items
-        description: 'Array of order items.'
-        required: true
-        example:
-          - consequatur
-        type: 'string[]'
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items[].product_id':
-        custom: []
-        name: 'items[].product_id'
-        description: 'The <code>id</code> of an existing record in the products table.'
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items[].variant_id':
-        custom: []
-        name: 'items[].variant_id'
-        description: 'The <code>id</code> of an existing record in the product_variants table.'
-        required: false
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      'items[].quantity':
-        custom: []
-        name: 'items[].quantity'
-        description: 'Must be at least 1.'
-        required: true
-        example: 45
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items[].price':
-        custom: []
-        name: 'items[].price'
-        description: 'Must be at least 0.'
-        required: false
-        example: 56
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      'items[].discount_amount':
-        custom: []
-        name: 'items[].discount_amount'
-        description: 'Must be at least 0.'
-        required: false
-        example: 16
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      'items[].tax_rate':
-        custom: []
-        name: 'items[].tax_rate'
-        description: 'Must be at least 0. Must not be greater than 1.'
-        required: false
-        example: 1
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      'items.*.product_id':
-        custom: []
-        name: 'items.*.product_id'
-        description: 'Product ID.'
-        required: true
-        example: 10
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      'items.*.quantity':
-        custom: []
-        name: 'items.*.quantity'
-        description: Quantity.
-        required: true
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      'items.*.price':
-        custom: []
-        name: 'items.*.price'
-        description: 'Optional price override.'
-        required: false
-        example: 99.99
-        type: number
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      'items.*.discount_amount':
-        custom: []
-        name: 'items.*.discount_amount'
-        description: 'Optional item discount.'
-        required: false
-        example: 10.0
-        type: number
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      customer_id: 5
-      status: delivered
-      payment_status: pending
-      currency: mqe
-      customer_note: 'Please gift wrap'
-      admin_note: 'Priority order'
-      payment_method: bank_transfer
-      billing_address_id: 3
-      shipping_address_id: 3
-      coupon_code: SAVE10
-      shipping_amount: 10.0
-      items:
-        - consequatur
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 201
-        content: |-
-          {
-           "data": {
-             "id": 1,
-             "order_number": "ORD-1-240406-0001",
-             "customer_id": 5,
-             "status": "pending",
-             "payment_status": "pending",
-             "total": "170.50",
-             "items": []
-           }
-          }
-        headers: []
-        description: ''
+        description: Success
     responseFields: []
     auth: []
     controller: null
@@ -929,36 +100,37 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'api/v1/orders/{id}'
+    uri: 'api/v1/inventory/product/{productId}'
     metadata:
       custom: []
-      groupName: 'Order Management'
+      groupName: Inventory
       groupDescription: |-
 
-        APIs for managing orders, order status, and payments
+        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
+        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get order details'
-      description: 'Retrieve detailed information about a specific order.'
-      authenticated: false
+      title: 'Get product inventory'
+      description: 'Get all inventory records for a specific product across all warehouses.'
+      authenticated: true
       deprecated: false
     headers:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      id:
+      productId:
         custom: []
-        name: id
-        description: 'Order ID.'
+        name: productId
+        description: 'Product ID.'
         required: true
-        example: 1
+        example: 5
         type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: 1
+      productId: 5
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -970,19 +142,34 @@ endpoints:
         status: 200
         content: |-
           {
-           "data": {
-             "id": 1,
-             "order_number": "ORD-1-240406-0001",
-             "customer": {},
-             "items": [],
-             "payments": [],
-             "status": "confirmed",
-             "payment_status": "paid",
-             "total": "170.50"
-           }
+            "data": [
+              {
+                "id": 1,
+                "warehouse_id": 1,
+                "quantity": 100,
+                "reserved_quantity": 10,
+                "available_quantity": 90,
+                "warehouse": {
+                  "id": 1,
+                  "name": "Main Warehouse"
+                }
+              },
+              {
+                "id": 2,
+                "warehouse_id": 2,
+                "quantity": 50,
+                "reserved_quantity": 0,
+                "available_quantity": 50,
+                "warehouse": {
+                  "id": 2,
+                  "name": "Secondary Warehouse"
+                }
+              }
+            ],
+            "total_available": 140
           }
         headers: []
-        description: ''
+        description: Success
     responseFields: []
     auth: []
     controller: null
@@ -991,277 +178,104 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - PUT
-      - PATCH
-    uri: 'api/v1/orders/{id}'
+      - POST
+    uri: api/v1/inventory/adjust
     metadata:
       custom: []
-      groupName: 'Order Management'
+      groupName: Inventory
       groupDescription: |-
 
-        APIs for managing orders, order status, and payments
+        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
+        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
       subgroup: ''
       subgroupDescription: ''
-      title: 'Update order'
-      description: 'Update order details (not for status changes, use dedicated endpoints).'
-      authenticated: false
+      title: 'Adjust stock'
+      description: |-
+        Adjust inventory quantity for a product. Creates a stock movement record.
+        Use this for purchases, returns, adjustments, damage, or lost stock.
+      authenticated: true
       deprecated: false
     headers:
       Content-Type: application/json
       Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'Order ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: 1
+    urlParameters: []
+    cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      customer_id:
+      product_id:
         custom: []
-        name: customer_id
-        description: 'The <code>id</code> of an existing record in the customers table.'
-        required: false
-        example: 17
+        name: product_id
+        description: 'Product ID.'
+        required: true
+        example: 5
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
-      status:
+      variant_id:
         custom: []
-        name: status
-        description: ''
-        required: false
-        example: confirmed
-        type: string
-        enumValues:
-          - pending
-          - confirmed
-          - processing
-          - shipped
-          - delivered
-          - cancelled
-          - refunded
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      payment_status:
-        custom: []
-        name: payment_status
-        description: ''
-        required: false
-        example: partially_refunded
-        type: string
-        enumValues:
-          - pending
-          - paid
-          - failed
-          - refunded
-          - partially_refunded
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      currency:
-        custom: []
-        name: currency
-        description: 'Must be 3 characters.'
-        required: false
-        example: mqe
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      customer_note:
-        custom: []
-        name: customer_note
-        description: 'Optional customer note.'
-        required: false
-        example: 'Updated note'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      admin_note:
-        custom: []
-        name: admin_note
-        description: 'Optional admin note.'
-        required: false
-        example: 'Admin updated'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      payment_method:
-        custom: []
-        name: payment_method
-        description: ''
-        required: false
-        example: manual
-        type: string
-        enumValues:
-          - manual
-          - bank_transfer
-          - cash_on_delivery
-          - card
-          - upi
-          - wallet
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      billing_address_id:
-        custom: []
-        name: billing_address_id
-        description: 'The <code>id</code> of an existing record in the customer_addresses table.'
-        required: false
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      shipping_address_id:
-        custom: []
-        name: shipping_address_id
-        description: 'The <code>id</code> of an existing record in the customer_addresses table.'
-        required: false
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      coupon_code:
-        custom: []
-        name: coupon_code
-        description: 'Must not be greater than 50 characters.'
-        required: false
-        example: mqeopfuudtdsufvyvddqa
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      shipping_amount:
-        custom: []
-        name: shipping_amount
-        description: 'Optional shipping cost.'
-        required: false
-        example: 12.5
-        type: number
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      items:
-        custom: []
-        name: items
-        description: 'Must have at least 1 items.'
+        name: variant_id
+        description: 'Product variant ID (if applicable).'
         required: false
         example: null
-        type: 'object[]'
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
-        nullable: false
+        exampleWasSpecified: true
+        nullable: true
         deprecated: false
-      'items[].product_id':
+      warehouse_id:
         custom: []
-        name: 'items[].product_id'
-        description: 'The <code>id</code> of an existing record in the products table.'
+        name: warehouse_id
+        description: 'Warehouse ID.'
         required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items[].variant_id':
-        custom: []
-        name: 'items[].variant_id'
-        description: 'The <code>id</code> of an existing record in the product_variants table.'
-        required: false
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      'items[].quantity':
-        custom: []
-        name: 'items[].quantity'
-        description: 'Must be at least 1.'
-        required: true
-        example: 45
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'items[].price':
-        custom: []
-        name: 'items[].price'
-        description: 'Must be at least 0.'
-        required: false
-        example: 56
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      'items[].discount_amount':
-        custom: []
-        name: 'items[].discount_amount'
-        description: 'Must be at least 0.'
-        required: false
-        example: 16
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      'items[].tax_rate':
-        custom: []
-        name: 'items[].tax_rate'
-        description: 'Must be at least 0. Must not be greater than 1.'
-        required: false
         example: 1
-        type: number
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      quantity:
+        custom: []
+        name: quantity
+        description: 'Quantity to adjust (positive number).'
+        required: true
+        example: 50
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      type:
+        custom: []
+        name: type
+        description: 'Movement type: purchase, sale, return, adjustment, damage, lost.'
+        required: true
+        example: purchase
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      notes:
+        custom: []
+        name: notes
+        description: 'Optional notes for the movement.'
+        required: false
+        example: 'Received new shipment'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      customer_id: 17
-      status: confirmed
-      payment_status: partially_refunded
-      currency: mqe
-      customer_note: 'Updated note'
-      admin_note: 'Admin updated'
-      payment_method: manual
-      billing_address_id: 17
-      shipping_address_id: 17
-      coupon_code: mqeopfuudtdsufvyvddqa
-      shipping_amount: 12.5
-      items:
-        -
-          product_id: 17
-          variant_id: 17
-          quantity: 45
-          price: 56
-          discount_amount: 16
-          tax_rate: 1
+      product_id: 5
+      variant_id: null
+      warehouse_id: 1
+      quantity: 50
+      type: purchase
+      notes: 'Received new shipment'
     fileParameters: []
     responses:
       -
@@ -1269,10 +283,26 @@ endpoints:
         status: 200
         content: |-
           {
-           "data": {"id": 1, "status": "pending", "admin_note": "Admin updated"}
+            "data": {
+              "id": 1,
+              "product_id": 5,
+              "warehouse_id": 1,
+              "quantity": 150,
+              "available_quantity": 150,
+              "low_stock_threshold": 10
+            }
           }
         headers: []
-        description: ''
+        description: Success
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "Insufficient stock. Available: 10"
+          }
+        headers: []
+        description: 'Insufficient stock'
     responseFields: []
     auth: []
     controller: null
@@ -1281,19 +311,767 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - DELETE
-    uri: 'api/v1/orders/{id}'
+      - POST
+    uri: api/v1/inventory/reserve
     metadata:
       custom: []
-      groupName: 'Order Management'
+      groupName: Inventory
       groupDescription: |-
 
-        APIs for managing orders, order status, and payments
+        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
+        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
       subgroup: ''
       subgroupDescription: ''
-      title: 'Delete order'
-      description: 'Soft delete an order.'
-      authenticated: false
+      title: 'Reserve stock'
+      description: "Reserve stock for an order or checkout. Increases reserved_quantity but doesn't reduce total quantity."
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'Product ID.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      variant_id:
+        custom: []
+        name: variant_id
+        description: 'Product variant ID (if applicable).'
+        required: false
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      warehouse_id:
+        custom: []
+        name: warehouse_id
+        description: 'Warehouse ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      quantity:
+        custom: []
+        name: quantity
+        description: 'Quantity to reserve.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      product_id: 5
+      variant_id: null
+      warehouse_id: 1
+      quantity: 5
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "product_id": 5,
+              "warehouse_id": 1,
+              "quantity": 100,
+              "reserved_quantity": 15,
+              "available_quantity": 85
+            }
+          }
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "Insufficient stock. Available: 10, Requested: 15"
+          }
+        headers: []
+        description: 'Insufficient stock'
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/inventory/release
+    metadata:
+      custom: []
+      groupName: Inventory
+      groupDescription: |-
+
+        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
+        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Release reserved stock'
+      description: |-
+        Release previously reserved stock (e.g., when order is cancelled).
+        Decreases reserved_quantity without changing total quantity.
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'Product ID.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      variant_id:
+        custom: []
+        name: variant_id
+        description: 'Product variant ID (if applicable).'
+        required: false
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      warehouse_id:
+        custom: []
+        name: warehouse_id
+        description: 'Warehouse ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      quantity:
+        custom: []
+        name: quantity
+        description: 'Quantity to release.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      product_id: 5
+      variant_id: null
+      warehouse_id: 1
+      quantity: 5
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "product_id": 5,
+              "warehouse_id": 1,
+              "quantity": 100,
+              "reserved_quantity": 10,
+              "available_quantity": 90
+            }
+          }
+        headers: []
+        description: Success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/inventory/fulfill
+    metadata:
+      custom: []
+      groupName: Inventory
+      groupDescription: |-
+
+        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
+        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Fulfill reserved stock'
+      description: |-
+        Fulfill an order by reducing both quantity and reserved_quantity.
+        Creates a "sale" stock movement record.
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'Product ID.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      variant_id:
+        custom: []
+        name: variant_id
+        description: 'Product variant ID (if applicable).'
+        required: false
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      warehouse_id:
+        custom: []
+        name: warehouse_id
+        description: 'Warehouse ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      quantity:
+        custom: []
+        name: quantity
+        description: 'Quantity to fulfill.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      notes:
+        custom: []
+        name: notes
+        description: 'Optional notes.'
+        required: false
+        example: 'Order #12345 fulfilled'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      product_id: 5
+      variant_id: null
+      warehouse_id: 1
+      quantity: 5
+      notes: 'Order #12345 fulfilled'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "product_id": 5,
+              "warehouse_id": 1,
+              "quantity": 95,
+              "reserved_quantity": 10,
+              "available_quantity": 85
+            }
+          }
+        headers: []
+        description: Success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/inventory/transfer
+    metadata:
+      custom: []
+      groupName: Inventory
+      groupDescription: |-
+
+        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
+        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Transfer stock'
+      description: |-
+        Transfer stock between warehouses. Reduces stock in source warehouse and increases in destination warehouse.
+        Creates stock movement records for both warehouses.
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'Product ID.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      variant_id:
+        custom: []
+        name: variant_id
+        description: 'Product variant ID (if applicable).'
+        required: false
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      from_warehouse_id:
+        custom: []
+        name: from_warehouse_id
+        description: 'Source warehouse ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      to_warehouse_id:
+        custom: []
+        name: to_warehouse_id
+        description: 'Destination warehouse ID.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      quantity:
+        custom: []
+        name: quantity
+        description: 'Quantity to transfer.'
+        required: true
+        example: 20
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      notes:
+        custom: []
+        name: notes
+        description: 'Optional notes.'
+        required: false
+        example: 'Transfer to secondary warehouse'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      product_id: 5
+      variant_id: null
+      from_warehouse_id: 1
+      to_warehouse_id: 2
+      quantity: 20
+      notes: 'Transfer to secondary warehouse'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "from_inventory": {
+              "id": 1,
+              "warehouse_id": 1,
+              "quantity": 80,
+              "available_quantity": 80
+            },
+            "to_inventory": {
+              "id": 2,
+              "warehouse_id": 2,
+              "quantity": 120,
+              "available_quantity": 120
+            }
+          }
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "Insufficient stock in source warehouse. Available: 10"
+          }
+        headers: []
+        description: 'Insufficient stock'
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/inventory
+    metadata:
+      custom: []
+      groupName: Inventory
+      groupDescription: |-
+
+        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
+        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List inventory'
+      description: |-
+        Get a paginated list of inventory records with optional filtering.
+        Inventory is automatically scoped to the authenticated store.
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'Filter by product.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      warehouse_id:
+        custom: []
+        name: warehouse_id
+        description: 'Filter by warehouse.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      low_stock:
+        custom: []
+        name: low_stock
+        description: 'Filter low stock items.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      out_of_stock:
+        custom: []
+        name: out_of_stock
+        description: 'Filter out of stock items.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort_by:
+        custom: []
+        name: sort_by
+        description: 'Sort field.'
+        required: false
+        example: available_quantity
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      sort_order:
+        custom: []
+        name: sort_order
+        description: 'Sort direction: asc, desc.'
+        required: false
+        example: asc
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Items per page (max 100).'
+        required: false
+        example: 20
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      product_id: 1
+      warehouse_id: 1
+      low_stock: true
+      out_of_stock: true
+      sort_by: available_quantity
+      sort_order: asc
+      per_page: 20
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "product_id": 5,
+                "variant_id": null,
+                "warehouse_id": 1,
+                "quantity": 100,
+                "reserved_quantity": 10,
+                "available_quantity": 90,
+                "low_stock_threshold": 10,
+                "product": {
+                  "id": 5,
+                  "name": "Premium Laptop Pro"
+                },
+                "warehouse": {
+                  "id": 1,
+                  "name": "Main Warehouse"
+                }
+              }
+            ],
+            "meta": {
+              "current_page": 1,
+              "per_page": 20,
+              "total": 90
+            }
+          }
+        headers: []
+        description: Success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/inventory
+    metadata:
+      custom: []
+      groupName: Inventory
+      groupDescription: |-
+
+        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
+        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Set inventory'
+      description: |-
+        Create or update inventory for a product in a warehouse.
+        If inventory exists for the product/variant/warehouse combination, it will be updated.
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'Product ID.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      variant_id:
+        custom: []
+        name: variant_id
+        description: 'Product variant ID (if applicable).'
+        required: false
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      warehouse_id:
+        custom: []
+        name: warehouse_id
+        description: 'Warehouse ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      quantity:
+        custom: []
+        name: quantity
+        description: 'Stock quantity.'
+        required: true
+        example: 100
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      reserved_quantity:
+        custom: []
+        name: reserved_quantity
+        description: 'Reserved stock quantity.'
+        required: false
+        example: 0
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      low_stock_threshold:
+        custom: []
+        name: low_stock_threshold
+        description: 'Low stock alert threshold.'
+        required: false
+        example: 10
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      product_id: 5
+      variant_id: null
+      warehouse_id: 1
+      quantity: 100
+      reserved_quantity: 0
+      low_stock_threshold: 10
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "product_id": 5,
+              "warehouse_id": 1,
+              "quantity": 100,
+              "reserved_quantity": 0,
+              "available_quantity": 100,
+              "low_stock_threshold": 10
+            }
+          }
+        headers: []
+        description: Success
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "The given data was invalid",
+            "errors": {
+              "product_id": ["Product is required for inventory"],
+              "warehouse_id": ["Warehouse is required for inventory"]
+            }
+          }
+        headers: []
+        description: 'Validation failed'
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/inventory/{id}'
+    metadata:
+      custom: []
+      groupName: Inventory
+      groupDescription: |-
+
+        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
+        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get inventory details'
+      description: 'Retrieve a single inventory record with stock movement history.'
+      authenticated: true
       deprecated: false
     headers:
       Content-Type: application/json
@@ -1302,7 +1080,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'Order ID.'
+        description: 'Inventory ID.'
         required: true
         example: 1
         type: integer
@@ -1320,10 +1098,39 @@ endpoints:
     responses:
       -
         custom: []
-        status: 204
-        content: '{}'
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "product_id": 5,
+              "warehouse_id": 1,
+              "quantity": 100,
+              "reserved_quantity": 10,
+              "available_quantity": 90,
+              "low_stock_threshold": 10,
+              "product": {
+                "id": 5,
+                "name": "Premium Laptop Pro"
+              },
+              "warehouse": {
+                "id": 1,
+                "name": "Main Warehouse"
+              },
+              "stock_movements": []
+            }
+          }
         headers: []
-        description: ''
+        description: Success
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Inventory not found"
+          }
+        headers: []
+        description: 'Not found'
     responseFields: []
     auth: []
     controller: null

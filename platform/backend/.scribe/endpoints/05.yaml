@@ -1,25 +1,25 @@
-name: Inventory
+name: Warehouses
 description: |-
 
-  Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
-  Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
+  Manage warehouses for the authenticated store. All operations are automatically scoped to the current tenant.
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/inventory/movements
+    uri: api/v1/warehouses
     metadata:
       custom: []
-      groupName: Inventory
+      groupName: Warehouses
       groupDescription: |-
 
-        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
-        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
+        Manage warehouses for the authenticated store. All operations are automatically scoped to the current tenant.
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get stock movements'
-      description: 'Get stock movement history with optional filtering.'
+      title: 'List warehouses'
+      description: |-
+        Get a paginated list of warehouses with optional filtering.
+        Warehouses are automatically scoped to the authenticated store.
       authenticated: true
       deprecated: false
     headers:
@@ -28,805 +28,10 @@ endpoints:
     urlParameters: []
     cleanUrlParameters: []
     queryParameters:
-      inventory_id:
+      is_active:
         custom: []
-        name: inventory_id
-        description: 'Filter by inventory record.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      type:
-        custom: []
-        name: type
-        description: 'Filter by movement type.'
-        required: false
-        example: purchase
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      per_page:
-        custom: []
-        name: per_page
-        description: 'Items per page (max 100).'
-        required: false
-        example: 20
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      inventory_id: 1
-      type: purchase
-      per_page: 20
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [
-              {
-                "id": 1,
-                "inventory_id": 1,
-                "type": "purchase",
-                "quantity": 100,
-                "notes": "Initial stock",
-                "user": {
-                  "id": 1,
-                  "name": "Admin User"
-                },
-                "created_at": "2026-04-06T10:00:00Z"
-              }
-            ]
-          }
-        headers: []
-        description: Success
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/inventory/product/{productId}'
-    metadata:
-      custom: []
-      groupName: Inventory
-      groupDescription: |-
-
-        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
-        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get product inventory'
-      description: 'Get all inventory records for a specific product across all warehouses.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      productId:
-        custom: []
-        name: productId
-        description: 'Product ID.'
-        required: true
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      productId: 5
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [
-              {
-                "id": 1,
-                "warehouse_id": 1,
-                "quantity": 100,
-                "reserved_quantity": 10,
-                "available_quantity": 90,
-                "warehouse": {
-                  "id": 1,
-                  "name": "Main Warehouse"
-                }
-              },
-              {
-                "id": 2,
-                "warehouse_id": 2,
-                "quantity": 50,
-                "reserved_quantity": 0,
-                "available_quantity": 50,
-                "warehouse": {
-                  "id": 2,
-                  "name": "Secondary Warehouse"
-                }
-              }
-            ],
-            "total_available": 140
-          }
-        headers: []
-        description: Success
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: api/v1/inventory/adjust
-    metadata:
-      custom: []
-      groupName: Inventory
-      groupDescription: |-
-
-        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
-        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Adjust stock'
-      description: |-
-        Adjust inventory quantity for a product. Creates a stock movement record.
-        Use this for purchases, returns, adjustments, damage, or lost stock.
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      product_id:
-        custom: []
-        name: product_id
-        description: 'Product ID.'
-        required: true
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      variant_id:
-        custom: []
-        name: variant_id
-        description: 'Product variant ID (if applicable).'
-        required: false
-        example: null
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      warehouse_id:
-        custom: []
-        name: warehouse_id
-        description: 'Warehouse ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      quantity:
-        custom: []
-        name: quantity
-        description: 'Quantity to adjust (positive number).'
-        required: true
-        example: 50
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      type:
-        custom: []
-        name: type
-        description: 'Movement type: purchase, sale, return, adjustment, damage, lost.'
-        required: true
-        example: purchase
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      notes:
-        custom: []
-        name: notes
-        description: 'Optional notes for the movement.'
-        required: false
-        example: 'Received new shipment'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      product_id: 5
-      variant_id: null
-      warehouse_id: 1
-      quantity: 50
-      type: purchase
-      notes: 'Received new shipment'
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": {
-              "id": 1,
-              "product_id": 5,
-              "warehouse_id": 1,
-              "quantity": 150,
-              "available_quantity": 150,
-              "low_stock_threshold": 10
-            }
-          }
-        headers: []
-        description: Success
-      -
-        custom: []
-        status: 400
-        content: |-
-          {
-            "message": "Insufficient stock. Available: 10"
-          }
-        headers: []
-        description: 'Insufficient stock'
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: api/v1/inventory/reserve
-    metadata:
-      custom: []
-      groupName: Inventory
-      groupDescription: |-
-
-        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
-        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Reserve stock'
-      description: "Reserve stock for an order or checkout. Increases reserved_quantity but doesn't reduce total quantity."
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      product_id:
-        custom: []
-        name: product_id
-        description: 'Product ID.'
-        required: true
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      variant_id:
-        custom: []
-        name: variant_id
-        description: 'Product variant ID (if applicable).'
-        required: false
-        example: null
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      warehouse_id:
-        custom: []
-        name: warehouse_id
-        description: 'Warehouse ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      quantity:
-        custom: []
-        name: quantity
-        description: 'Quantity to reserve.'
-        required: true
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      product_id: 5
-      variant_id: null
-      warehouse_id: 1
-      quantity: 5
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": {
-              "id": 1,
-              "product_id": 5,
-              "warehouse_id": 1,
-              "quantity": 100,
-              "reserved_quantity": 15,
-              "available_quantity": 85
-            }
-          }
-        headers: []
-        description: Success
-      -
-        custom: []
-        status: 400
-        content: |-
-          {
-            "message": "Insufficient stock. Available: 10, Requested: 15"
-          }
-        headers: []
-        description: 'Insufficient stock'
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: api/v1/inventory/release
-    metadata:
-      custom: []
-      groupName: Inventory
-      groupDescription: |-
-
-        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
-        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Release reserved stock'
-      description: |-
-        Release previously reserved stock (e.g., when order is cancelled).
-        Decreases reserved_quantity without changing total quantity.
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      product_id:
-        custom: []
-        name: product_id
-        description: 'Product ID.'
-        required: true
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      variant_id:
-        custom: []
-        name: variant_id
-        description: 'Product variant ID (if applicable).'
-        required: false
-        example: null
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      warehouse_id:
-        custom: []
-        name: warehouse_id
-        description: 'Warehouse ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      quantity:
-        custom: []
-        name: quantity
-        description: 'Quantity to release.'
-        required: true
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      product_id: 5
-      variant_id: null
-      warehouse_id: 1
-      quantity: 5
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": {
-              "id": 1,
-              "product_id": 5,
-              "warehouse_id": 1,
-              "quantity": 100,
-              "reserved_quantity": 10,
-              "available_quantity": 90
-            }
-          }
-        headers: []
-        description: Success
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: api/v1/inventory/fulfill
-    metadata:
-      custom: []
-      groupName: Inventory
-      groupDescription: |-
-
-        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
-        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Fulfill reserved stock'
-      description: |-
-        Fulfill an order by reducing both quantity and reserved_quantity.
-        Creates a "sale" stock movement record.
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      product_id:
-        custom: []
-        name: product_id
-        description: 'Product ID.'
-        required: true
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      variant_id:
-        custom: []
-        name: variant_id
-        description: 'Product variant ID (if applicable).'
-        required: false
-        example: null
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      warehouse_id:
-        custom: []
-        name: warehouse_id
-        description: 'Warehouse ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      quantity:
-        custom: []
-        name: quantity
-        description: 'Quantity to fulfill.'
-        required: true
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      notes:
-        custom: []
-        name: notes
-        description: 'Optional notes.'
-        required: false
-        example: 'Order #12345 fulfilled'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      product_id: 5
-      variant_id: null
-      warehouse_id: 1
-      quantity: 5
-      notes: 'Order #12345 fulfilled'
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": {
-              "id": 1,
-              "product_id": 5,
-              "warehouse_id": 1,
-              "quantity": 95,
-              "reserved_quantity": 10,
-              "available_quantity": 85
-            }
-          }
-        headers: []
-        description: Success
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: api/v1/inventory/transfer
-    metadata:
-      custom: []
-      groupName: Inventory
-      groupDescription: |-
-
-        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
-        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Transfer stock'
-      description: |-
-        Transfer stock between warehouses. Reduces stock in source warehouse and increases in destination warehouse.
-        Creates stock movement records for both warehouses.
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      product_id:
-        custom: []
-        name: product_id
-        description: 'Product ID.'
-        required: true
-        example: 5
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      variant_id:
-        custom: []
-        name: variant_id
-        description: 'Product variant ID (if applicable).'
-        required: false
-        example: null
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      from_warehouse_id:
-        custom: []
-        name: from_warehouse_id
-        description: 'Source warehouse ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      to_warehouse_id:
-        custom: []
-        name: to_warehouse_id
-        description: 'Destination warehouse ID.'
-        required: true
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      quantity:
-        custom: []
-        name: quantity
-        description: 'Quantity to transfer.'
-        required: true
-        example: 20
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      notes:
-        custom: []
-        name: notes
-        description: 'Optional notes.'
-        required: false
-        example: 'Transfer to secondary warehouse'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      product_id: 5
-      variant_id: null
-      from_warehouse_id: 1
-      to_warehouse_id: 2
-      quantity: 20
-      notes: 'Transfer to secondary warehouse'
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "from_inventory": {
-              "id": 1,
-              "warehouse_id": 1,
-              "quantity": 80,
-              "available_quantity": 80
-            },
-            "to_inventory": {
-              "id": 2,
-              "warehouse_id": 2,
-              "quantity": 120,
-              "available_quantity": 120
-            }
-          }
-        headers: []
-        description: Success
-      -
-        custom: []
-        status: 400
-        content: |-
-          {
-            "message": "Insufficient stock in source warehouse. Available: 10"
-          }
-        headers: []
-        description: 'Insufficient stock'
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/inventory
-    metadata:
-      custom: []
-      groupName: Inventory
-      groupDescription: |-
-
-        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
-        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'List inventory'
-      description: |-
-        Get a paginated list of inventory records with optional filtering.
-        Inventory is automatically scoped to the authenticated store.
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters:
-      product_id:
-        custom: []
-        name: product_id
-        description: 'Filter by product.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      warehouse_id:
-        custom: []
-        name: warehouse_id
-        description: 'Filter by warehouse.'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      low_stock:
-        custom: []
-        name: low_stock
-        description: 'Filter low stock items.'
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      out_of_stock:
-        custom: []
-        name: out_of_stock
-        description: 'Filter out of stock items.'
+        name: is_active
+        description: 'Filter by active status.'
         required: false
         example: true
         type: boolean
@@ -839,7 +44,7 @@ endpoints:
         name: sort_by
         description: 'Sort field.'
         required: false
-        example: available_quantity
+        example: name
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -868,11 +73,8 @@ endpoints:
         nullable: false
         deprecated: false
     cleanQueryParameters:
-      product_id: 1
-      warehouse_id: 1
-      low_stock: true
-      out_of_stock: true
-      sort_by: available_quantity
+      is_active: true
+      sort_by: name
       sort_order: asc
       per_page: 20
     bodyParameters: []
@@ -887,27 +89,21 @@ endpoints:
             "data": [
               {
                 "id": 1,
-                "product_id": 5,
-                "variant_id": null,
-                "warehouse_id": 1,
-                "quantity": 100,
-                "reserved_quantity": 10,
-                "available_quantity": 90,
-                "low_stock_threshold": 10,
-                "product": {
-                  "id": 5,
-                  "name": "Premium Laptop Pro"
-                },
-                "warehouse": {
-                  "id": 1,
-                  "name": "Main Warehouse"
-                }
+                "name": "Main Warehouse",
+                "code": "WH-001",
+                "address": "123 Storage St",
+                "city": "New York",
+                "state": "NY",
+                "postal_code": "10001",
+                "country": "US",
+                "is_active": true,
+                "created_at": "2026-04-06T10:00:00Z"
               }
             ],
             "meta": {
               "current_page": 1,
               "per_page": 20,
-              "total": 90
+              "total": 2
             }
           }
         headers: []
@@ -921,20 +117,17 @@ endpoints:
     custom: []
     httpMethods:
       - POST
-    uri: api/v1/inventory
+    uri: api/v1/warehouses
     metadata:
       custom: []
-      groupName: Inventory
+      groupName: Warehouses
       groupDescription: |-
 
-        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
-        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
+        Manage warehouses for the authenticated store. All operations are automatically scoped to the current tenant.
       subgroup: ''
       subgroupDescription: ''
-      title: 'Set inventory'
-      description: |-
-        Create or update inventory for a product in a warehouse.
-        If inventory exists for the product/variant/warehouse combination, it will be updated.
+      title: 'Create warehouse'
+      description: 'Create a new warehouse for the authenticated store.'
       authenticated: true
       deprecated: false
     headers:
@@ -945,98 +138,134 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      product_id:
+      name:
         custom: []
-        name: product_id
-        description: 'Product ID.'
+        name: name
+        description: 'Warehouse name.'
         required: true
-        example: 5
-        type: integer
+        example: 'Main Warehouse'
+        type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      variant_id:
+      code:
         custom: []
-        name: variant_id
-        description: 'Product variant ID (if applicable).'
+        name: code
+        description: 'Warehouse code (unique per store).'
+        required: true
+        example: WH-001
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      address:
+        custom: []
+        name: address
+        description: 'Warehouse address.'
         required: false
-        example: null
-        type: integer
+        example: '123 Storage St'
+        type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: true
         deprecated: false
-      warehouse_id:
+      city:
         custom: []
-        name: warehouse_id
-        description: 'Warehouse ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      quantity:
-        custom: []
-        name: quantity
-        description: 'Stock quantity.'
-        required: true
-        example: 100
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      reserved_quantity:
-        custom: []
-        name: reserved_quantity
-        description: 'Reserved stock quantity.'
+        name: city
+        description: City.
         required: false
-        example: 0
-        type: integer
+        example: 'New York'
+        type: string
         enumValues: []
         exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      state:
+        custom: []
+        name: state
+        description: State/Province.
+        required: false
+        example: NY
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      postal_code:
+        custom: []
+        name: postal_code
+        description: 'Postal code.'
+        required: false
+        example: '10001'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      country:
+        custom: []
+        name: country
+        description: 'Country code (ISO 3166-1 alpha-2).'
+        required: false
+        example: US
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      is_active:
+        custom: []
+        name: is_active
+        description: ''
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
         nullable: false
         deprecated: false
-      low_stock_threshold:
+      is__active:
         custom: []
-        name: low_stock_threshold
-        description: 'Low stock alert threshold.'
+        name: is__active
+        description: 'Warehouse active status.'
         required: false
-        example: 10
-        type: integer
+        example: true
+        type: boolean
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      product_id: 5
-      variant_id: null
-      warehouse_id: 1
-      quantity: 100
-      reserved_quantity: 0
-      low_stock_threshold: 10
+      name: 'Main Warehouse'
+      code: WH-001
+      address: '123 Storage St'
+      city: 'New York'
+      state: NY
+      postal_code: '10001'
+      country: US
+      is_active: false
+      is__active: true
     fileParameters: []
     responses:
       -
         custom: []
-        status: 200
+        status: 201
         content: |-
           {
             "data": {
               "id": 1,
-              "product_id": 5,
-              "warehouse_id": 1,
-              "quantity": 100,
-              "reserved_quantity": 0,
-              "available_quantity": 100,
-              "low_stock_threshold": 10
+              "name": "Main Warehouse",
+              "code": "WH-001",
+              "address": "123 Storage St",
+              "city": "New York",
+              "is_active": true,
+              "created_at": "2026-04-06T10:00:00Z"
             }
           }
         headers: []
-        description: Success
+        description: Created
       -
         custom: []
         status: 422
@@ -1044,8 +273,7 @@ endpoints:
           {
             "message": "The given data was invalid",
             "errors": {
-              "product_id": ["Product is required for inventory"],
-              "warehouse_id": ["Warehouse is required for inventory"]
+              "code": ["Warehouse code is required"]
             }
           }
         headers: []
@@ -1059,18 +287,17 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'api/v1/inventory/{id}'
+    uri: 'api/v1/warehouses/{id}'
     metadata:
       custom: []
-      groupName: Inventory
+      groupName: Warehouses
       groupDescription: |-
 
-        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
-        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
+        Manage warehouses for the authenticated store. All operations are automatically scoped to the current tenant.
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get inventory details'
-      description: 'Retrieve a single inventory record with stock movement history.'
+      title: 'Get warehouse details'
+      description: 'Retrieve a single warehouse with inventory count.'
       authenticated: true
       deprecated: false
     headers:
@@ -1080,7 +307,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'Inventory ID.'
+        description: 'Warehouse ID.'
         required: true
         example: 1
         type: integer
@@ -1103,21 +330,16 @@ endpoints:
           {
             "data": {
               "id": 1,
-              "product_id": 5,
-              "warehouse_id": 1,
-              "quantity": 100,
-              "reserved_quantity": 10,
-              "available_quantity": 90,
-              "low_stock_threshold": 10,
-              "product": {
-                "id": 5,
-                "name": "Premium Laptop Pro"
-              },
-              "warehouse": {
-                "id": 1,
-                "name": "Main Warehouse"
-              },
-              "stock_movements": []
+              "name": "Main Warehouse",
+              "code": "WH-001",
+              "address": "123 Storage St",
+              "city": "New York",
+              "state": "NY",
+              "postal_code": "10001",
+              "country": "US",
+              "is_active": true,
+              "created_at": "2026-04-06T10:00:00Z",
+              "inventory_count": 90
             }
           }
         headers: []
@@ -1127,7 +349,236 @@ endpoints:
         status: 404
         content: |-
           {
-            "message": "Inventory not found"
+            "message": "Warehouse not found"
+          }
+        headers: []
+        description: 'Not found'
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/v1/warehouses/{id}'
+    metadata:
+      custom: []
+      groupName: Warehouses
+      groupDescription: |-
+
+        Manage warehouses for the authenticated store. All operations are automatically scoped to the current tenant.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update warehouse'
+      description: 'Update an existing warehouse. All fields are optional for updates.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'Warehouse ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Warehouse name.'
+        required: false
+        example: 'Main Warehouse Updated'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      code:
+        custom: []
+        name: code
+        description: 'Warehouse code.'
+        required: false
+        example: WH-001
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      address:
+        custom: []
+        name: address
+        description: 'Warehouse address.'
+        required: false
+        example: '123 Storage St'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      city:
+        custom: []
+        name: city
+        description: City.
+        required: false
+        example: 'New York'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      state:
+        custom: []
+        name: state
+        description: State/Province.
+        required: false
+        example: NY
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      postal_code:
+        custom: []
+        name: postal_code
+        description: 'Postal code.'
+        required: false
+        example: '10001'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      country:
+        custom: []
+        name: country
+        description: 'Country code (ISO 3166-1 alpha-2).'
+        required: false
+        example: US
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      is_active:
+        custom: []
+        name: is_active
+        description: 'Warehouse active status.'
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Main Warehouse Updated'
+      code: WH-001
+      address: '123 Storage St'
+      city: 'New York'
+      state: NY
+      postal_code: '10001'
+      country: US
+      is_active: false
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 1,
+              "name": "Main Warehouse Updated",
+              "code": "WH-001",
+              "is_active": false,
+              "updated_at": "2026-04-06T11:00:00Z"
+            }
+          }
+        headers: []
+        description: Updated
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Warehouse not found"
+          }
+        headers: []
+        description: 'Not found'
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/warehouses/{id}'
+    metadata:
+      custom: []
+      groupName: Warehouses
+      groupDescription: |-
+
+        Manage warehouses for the authenticated store. All operations are automatically scoped to the current tenant.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete warehouse'
+      description: 'Soft delete a warehouse. Inventory records will have warehouse_id set to null.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'Warehouse ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Warehouse deleted successfully"
+          }
+        headers: []
+        description: Deleted
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Warehouse not found"
           }
         headers: []
         description: 'Not found'

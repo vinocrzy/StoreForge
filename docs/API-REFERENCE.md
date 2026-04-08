@@ -17,7 +17,8 @@
 7. [Payments](#payments)
 8. [Inventory](#inventory)
 9. [Warehouses](#warehouses)
-10. [Common Patterns](#common-patterns)
+10. [Stores (Super Admin)](#-stores-super-admin)
+11. [Common Patterns](#-common-patterns)
 
 ---
 
@@ -751,6 +752,58 @@ Content-Type: application/json
 
 ---
 
+## 🏬 Stores (Super Admin)
+
+These endpoints are for global tenant provisioning and do not require `X-Store-ID`.
+
+### List Stores
+```http
+GET /stores?search=demo&status=active&page=1&per_page=20
+Authorization: Bearer {token}
+```
+
+### Create Store
+```http
+POST /stores
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Honey Bee",
+  "slug": "honey-bee",
+  "domain": "honey-bee.demo.localhost",
+  "status": "active",
+  "email": "contact@honeybee.com",
+  "phone": "+12025550111",
+  "currency": "USD",
+  "timezone": "America/New_York",
+  "language": "en",
+  "owner_name": "Honey Owner",
+  "owner_phone": "+12025550112",
+  "owner_email": "owner@honeybee.com",
+  "owner_password": "SecurePass123"
+}
+```
+
+### Get Store
+```http
+GET /stores/{id}
+Authorization: Bearer {token}
+```
+
+### Update Store Status
+```http
+PATCH /stores/{id}/status
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "status": "inactive"
+}
+```
+
+---
+
 ## 🔄 Common Patterns
 
 ### Pagination
@@ -814,10 +867,17 @@ Response includes meta and links:
 
 ### Headers Required
 
-All authenticated requests need:
+Tenant-scoped authenticated requests need:
 ```
 Authorization: Bearer {token}
 X-Store-ID: {store_id}
+Accept: application/json
+Content-Type: application/json
+```
+
+Global Super Admin endpoints (for example `/stores`) require only:
+```
+Authorization: Bearer {token}
 Accept: application/json
 Content-Type: application/json
 ```

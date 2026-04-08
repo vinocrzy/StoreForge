@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\WarehouseController;
 use App\Http\Controllers\Api\V1\InventoryController;
 use App\Http\Controllers\Api\V1\OrderController;
+use App\Http\Controllers\Api\V1\StoreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,14 @@ use App\Http\Controllers\Api\V1\OrderController;
 Route::post('/v1/auth/login', [AuthController::class, 'login']);
 Route::post('/v1/auth/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/v1/auth/reset-password', [AuthController::class, 'resetPassword']);
+
+// Super admin global routes (no tenant header required)
+Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+    Route::get('/stores', [StoreController::class, 'index']);
+    Route::post('/stores', [StoreController::class, 'store']);
+    Route::get('/stores/{id}', [StoreController::class, 'show']);
+    Route::patch('/stores/{id}/status', [StoreController::class, 'updateStatus']);
+});
 
 // Protected routes (require authentication + tenant scope)
 Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
