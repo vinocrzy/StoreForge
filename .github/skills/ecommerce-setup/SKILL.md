@@ -472,6 +472,142 @@ npm install
 npm run dev
 ```
 
+## Design System & Brand Identity Structure
+
+Each client storefront includes a standardized design system and brand identity structure to ensure consistency and enable AI-assisted development.
+
+### Folder Structure
+
+```
+client-{name}/
+├── .brand/                          # 📝 Brand Identity Documentation
+│   ├── identity.md                 # Brand values, personality, target audience
+│   ├── color-palette.md            # Color choices, rationale, WCAG accessibility
+│   ├── typography.md               # Font selection, type scale, hierarchy
+│   ├── style-guide.md              # Visual guidelines, component styles
+│   └── competitive-analysis.md     # Competitor research, differentiation
+│
+├── src/
+│   ├── config/
+│   │   └── theme.config.ts         # ✅ Runtime theme configuration
+│   │
+│   └── design-system/              # 🎨 Design System Implementation
+│       ├── tokens/                 # Design tokens
+│       │   ├── colors.ts           # Color system with semantic meanings
+│       │   ├── typography.ts       # Type scale, font families
+│       │   └── index.ts            # Spacing, shadows, transitions
+│       │
+│       ├── components/             # Component variants
+│       │   ├── button.variants.ts  # Button styles (primary, secondary, etc.)
+│       │   └── card.variants.ts    # Card/product card styles
+│       │
+│       └── index.ts                # Central export point
+│
+└── DESIGN-SYSTEM-README.md        # Complete design system documentation
+```
+
+### Purpose of Each Section
+
+**`.brand/` - Brand Identity Documentation**
+- **Who uses it**: AI agents (Storefront Frontend Dev), designers, developers
+- **What it contains**: The "why" behind design decisions
+- **Key files**:
+  - `identity.md` - Brand essence, values, target audience, personality
+  - `color-palette.md` - Color rationale, psychology, WCAG contrast ratios
+  - `typography.md` - Font pairing strategy, type hierarchy
+  - `style-guide.md` - Visual guidelines, component patterns
+  - `competitive-analysis.md` - Market research, differentiation
+
+**`src/design-system/` - Design System Implementation**
+- **Who uses it**: React components, TypeScript code
+- **What it contains**: Production-ready design tokens and component variants
+- **Key features**:
+  - Type-safe (full TypeScript support)
+  - Semantic naming (`primary`, not "blue")
+  - Single source of truth
+  - Reusable across all components
+
+### Customizing for New Clients
+
+**1. Fill Brand Identity Documentation**
+```bash
+# Start with brand discovery
+.brand/identity.md            # Brand values, personality, audience
+.brand/competitive-analysis.md # Research competitors
+.brand/color-palette.md       # Design color palette with WCAG testing
+.brand/typography.md          # Select fonts that match brand voice
+.brand/style-guide.md         # Document visual patterns
+```
+
+**2. Update Design Tokens**
+```typescript
+// src/design-system/tokens/colors.ts
+export const colors = {
+  primary: {
+    500: '#F59E0B',  // Your brand color
+    // ... full scale
+  },
+};
+
+// src/design-system/tokens/typography.ts
+export const typography = {
+  fontFamily: {
+    heading: '"Playfair Display", serif',
+    body: '"Inter", sans-serif',
+  },
+};
+```
+
+**3. Customize Component Variants**
+```typescript
+// src/design-system/components/button.variants.ts
+
+// Soft, organic brand (e.g., Honey Bee):
+borderRadius: borderRadius.full,  // Pill-shaped
+boxShadow: shadows.md,           // Soft elevation
+
+// Sharp, modern brand (e.g., Tech Store):
+borderRadius: borderRadius.sm,   // Minimal rounding
+boxShadow: shadows.lg,          // Bold shadow
+```
+
+### AI Agent Integration
+
+The **Storefront Frontend Dev** agent uses `.brand/` files to:
+1. Understand brand personality and values
+2. Apply color theory with proper WCAG contrast
+3. Implement typography hierarchy
+4. Follow style guide patterns
+5. Generate consistent, accessible components
+
+**Example**: When asked to design a brand identity for Honey Bee:
+- Reads `.brand/identity.md` to understand warm, natural, artisanal personality
+- Uses `.brand/color-palette.md` to apply honey gold (#F59E0B) and natural green (#10B981)
+- References `.brand/typography.md` for font pairing (Playfair Display + Inter)
+- Creates components using `src/design-system/` tokens
+
+### Best Practices
+
+**DO ✅**:
+- Document brand decisions in `.brand/` markdown files
+- Test color contrast (WCAG AA 4.5:1 minimum)
+- Use semantic color names (`primary`, not "orange")
+- Keep design system as single source of truth
+- Update both documentation and code when making changes
+
+**DON'T ❌**:
+- Hardcode colors/spacing directly in components
+- Skip accessibility testing
+- Mix multiple design systems
+- Forget to document the "why" behind choices
+- Ignore mobile-first responsive design
+
+### Related Documentation
+
+- Full details: [DESIGN-SYSTEM-README.md](../../storefront-template/DESIGN-SYSTEM-README.md) (in each storefront)
+- AI Agent: [.github/agents/storefront-frontend-dev.agent.md](../..\agents\storefront-frontend-dev.agent.md)
+- Client Creation: [docs/CLIENT-STOREFRONT-CREATION.md](../../docs/CLIENT-STOREFRONT-CREATION.md)
+
 ## Verification Checklist
 
 After setup, verify everything works:
