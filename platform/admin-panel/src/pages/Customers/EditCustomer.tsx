@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
-import { useCreateCustomerMutation } from '../../services/customers';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router';
+import { useGetCustomerQuery, useUpdateCustomerMutation } from '../../services/customers';
 import Button from '../../components/ui/button/Button';
 import Alert from '../../components/ui/alert/Alert';
-import type { CreateCustomerData } from '../../types/customer';
+import type { UpdateCustomerData } from '../../types/customer';
 
 interface FormErrors {
   first_name?: string;
@@ -13,11 +13,15 @@ interface FormErrors {
   password?: string;
 }
 
-const NewCustomerPage = () => {
+const EditCustomerPage = () => {
   const navigate = useNavigate();
-  const [createCustomer, { isLoading }] = useCreateCustomerMutation();
+  const { id } = useParams<{ id: string }>();
+  const customerId = Number(id);
 
-  const [formData, setFormData] = useState<CreateCustomerData>({
+  const { data: customer, isLoading: isLoadingCustomer, error: fetchError } = useGetCustomerQuery(customerId);
+  const [updateCustomer, { isLoading: isUpdating }] = useUpdateCustomerMutation();
+
+  const [formData, setFormData] = useState<UpdateCustomerData & { password?: string }>({
     first_name: '',
     last_name: '',
     phone: '',
@@ -32,6 +36,23 @@ const NewCustomerPage = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [alert, setAlert] = useState<{variant: 'success' | 'error', title: string, message: string} | null>(null);
 
+  // Populate form when customer data loads
+  useEffect(() => {
+    if (customer) {
+      setFormData({
+        first_name: customer.first_name,
+        last_name: customer.last_name,
+        phone: customer.phone,
+        email: customer.email || '',
+        password: '', // Don't pre-fill password
+        status: customer.status,
+        date_of_birth: customer.date_of_birth || undefined,
+        gender: customer.gender || undefined,
+        notes: customer.notes || '',
+      });
+    }
+  }, [customer]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value || undefined }));
@@ -44,13 +65,13 @@ const NewCustomerPage = () => {
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
 
-    if (!formData.first_name.trim()) {
+    if (!formData.first_name?.trim()) {
       newErrors.first_name = 'First name is required';
     }
-    if (!formData.last_name.trim()) {
+    if (!formData.last_name?.trim()) {
       newErrors.last_name = 'Last name is required';
     }
-    if (!formData.phone.trim()) {
+    if (!formData.phone?.trim()) {
       newErrors.phone = 'Phone number is required';
     } else if (!/^\+?[\d\s\-()]+$/.test(formData.phone)) {
       newErrors.phone = 'Invalid phone number format';
@@ -58,7 +79,8 @@ const NewCustomerPage = () => {
     if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Invalid email format';
     }
-    if (!formData.password || formData.password.length < 8) {
+    // Only validate password if user is changing it
+    if (formData.password && formData.password.length < 8) {
       newErrors.password = 'Password must be at least 8 characters';
     }
 
@@ -74,34 +96,63 @@ const NewCustomerPage = () => {
     }
 
     try {
-      const customerData: CreateCustomerData = {
-        ...formData,
+      const updateData: UpdateCustomerData = {
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        phone: formData.phone,
         email: formData.email || undefined,
+        status: formData.status,
         date_of_birth: formData.date_of_birth || undefined,
         gender: formData.gender || undefined,
         notes: formData.notes || undefined,
       };
 
-      await createCustomer(customerData).unwrap();
+      // Only include password if user entered one
+      if (formData.password) {
+        (updateData as any).password = formData.password;
+      }
+
+      await updateCustomer({ id: customerId, data: updateData }).unwrap();
       
       setAlert({
         variant: 'success',
-        title: 'Customer Created',
-        message: 'Customer has been successfully created.'
+        title: 'Customer Updated',
+        message: 'Customer information has been successfully updated.'
       });
 
       // Redirect after 1.5 seconds
       setTimeout(() => {
-        navigate('/customers');
+        navigate(`/customers/${customerId}`);
       }, 1500);
     } catch (error: any) {
       setAlert({
         variant: 'error',
-        title: 'Creation Failed',
-        message: error?.data?.message || 'Failed to create customer. Please try again.'
+        title: 'Update Failed',
+        message: error?.data?.message || 'Failed to update customer. Please try again.'
       });
     }
   };
+
+  if (isLoadingCustomer) {
+    return (
+      <div className="p-6">
+        <div className="text-center py-12">
+          <p className="text-gray-600 dark:text-gray-400">Loading customer...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (fetchError || !customer) {
+    return (
+      <div className="p-6">
+        <Alert variant="error" title="Error" message="Failed to load customer information" />
+        <Button variant="ghost" onClick={() => navigate('/customers')} className="mt-4">
+          ← Back to Customers
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
@@ -112,12 +163,12 @@ const NewCustomerPage = () => {
       )}
 
       <div className="mb-6">
-        <Button variant="ghost" onClick={() => navigate('/customers')} className="mb-3">
-          ← Back to Customers
+        <Button variant="ghost" onClick={() => navigate(`/customers/${customerId}`)} className="mb-3">
+          ← Back to Customer Details
         </Button>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Add New Customer</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Edit Customer</h1>
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-          Create a new customer account
+          Update customer information for {customer.first_name} {customer.last_name}
         </p>
       </div>
 
@@ -255,13 +306,14 @@ const NewCustomerPage = () => {
               {/* Password */}
               <div>
                 <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                  Password <span className="text-danger">*</span>
+                  Password (Optional)
                 </label>
                 <input
                   type="password"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
+                  placeholder="Leave blank to keep current password"
                   className={`w-full rounded-lg border ${
                     errors.password ? 'border-danger' : 'border-stroke dark:border-strokedark'
                   } bg-white dark:bg-boxdark py-3 px-4 text-dark dark:text-white focus:border-primary focus:outline-none`}
@@ -270,7 +322,7 @@ const NewCustomerPage = () => {
                   <p className="mt-1 text-sm text-danger">{errors.password}</p>
                 )}
                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                  Minimum 8 characters
+                  Leave blank to keep current password. If changing, minimum 8 characters.
                 </p>
               </div>
 
@@ -311,17 +363,17 @@ const NewCustomerPage = () => {
             <Button
               type="button"
               variant="secondary"
-              onClick={() => navigate('/customers')}
-              disabled={isLoading}
+              onClick={() => navigate(`/customers/${customerId}`)}
+              disabled={isUpdating}
             >
               Cancel
             </Button>
             <Button
               type="submit"
               variant="primary"
-              disabled={isLoading}
+              disabled={isUpdating}
             >
-              {isLoading ? 'Creating...' : 'Create Customer'}
+              {isUpdating ? 'Updating...' : 'Update Customer'}
             </Button>
           </div>
         </div>
@@ -330,4 +382,4 @@ const NewCustomerPage = () => {
   );
 };
 
-export default NewCustomerPage;
+export default EditCustomerPage;

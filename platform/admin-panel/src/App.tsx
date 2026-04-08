@@ -18,6 +18,8 @@ import PendingOrdersPage from "./pages/Orders/PendingOrders";
 import CompletedOrdersPage from "./pages/Orders/CompletedOrders";
 import CustomersPage from "./pages/Customers";
 import NewCustomerPage from "./pages/Customers/NewCustomer";
+import EditCustomerPage from "./pages/Customers/EditCustomer";
+import CustomerDetailsPage from "./pages/Customers/CustomerDetails";
 import InventoryPage from "./pages/Inventory";
 import WarehousesPage from "./pages/Inventory/Warehouses";
 import StockMovementsPage from "./pages/Inventory/StockMovements";
@@ -64,6 +66,8 @@ function App() {
             {/* Customers */}
             <Route path="/customers" element={<CustomersPage />} />
             <Route path="/customers/new" element={<NewCustomerPage />} />
+            <Route path="/customers/:id/edit" element={<EditCustomerPage />} />
+            <Route path="/customers/:id" element={<CustomerDetailsPage />} />
 
             {/* Inventory */}
             <Route path="/inventory" element={<InventoryPage />} />
