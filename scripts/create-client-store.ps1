@@ -66,13 +66,16 @@ NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
 # NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
 "@
 
-$EnvContent | Out-File -FilePath ".env.local" -Encoding UTF8
+# Use WriteAllText to avoid BOM (Byte Order Mark)
+[System.IO.File]::WriteAllText("$PWD\.env.local", $EnvContent)
 
 Write-Host "Step 5/7: Updating package.json..." -ForegroundColor Green
 $PackageJson = Get-Content "package.json" -Raw | ConvertFrom-Json
 $PackageJson.name = $FolderName
 $PackageJson.description = "$ClientName storefront"
-$PackageJson | ConvertTo-Json -Depth 10 | Out-File "package.json" -Encoding UTF8
+$JsonString = $PackageJson | ConvertTo-Json -Depth 10
+# Use WriteAllText to avoid BOM (Byte Order Mark) that breaks Next.js
+[System.IO.File]::WriteAllText("$PWD\package.json", $JsonString)
 
 Write-Host "Step 6/7: Creating initial git commit..." -ForegroundColor Green
 git add . | Out-Null
