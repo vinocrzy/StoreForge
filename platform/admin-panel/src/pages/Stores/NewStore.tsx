@@ -14,6 +14,9 @@ interface FormErrors {
   name?: string;
   slug?: string;
   domain?: string;
+  owner_name?: string;
+  owner_phone?: string;
+  owner_password?: string;
 }
 
 const NewStorePage = () => {
@@ -24,11 +27,14 @@ const NewStorePage = () => {
     name: '',
     slug: '',
     domain: '',
-    settings: {
-      currency: 'USD',
-      timezone: 'UTC',
-      language: 'en',
-    },
+    status: 'active',
+    currency: 'USD',
+    timezone: 'UTC',
+    language: 'en',
+    owner_name: '',
+    owner_phone: '',
+    owner_email: '',
+    owner_password: '',
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -37,18 +43,7 @@ const NewStorePage = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
-    if (name.startsWith('settings.')) {
-      const settingKey = name.split('.')[1];
-      setFormData(prev => ({
-        ...prev,
-        settings: {
-          ...prev.settings!,
-          [settingKey]: value,
-        },
-      }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
+    setFormData(prev => ({ ...prev, [name]: value }));
 
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
@@ -75,6 +70,19 @@ const NewStorePage = () => {
       newErrors.slug = 'Slug is required';
     } else if (!/^[a-z0-9-]+$/.test(formData.slug)) {
       newErrors.slug = 'Slug can only contain lowercase letters, numbers, and hyphens';
+    }
+    if (!formData.owner_name.trim()) {
+      newErrors.owner_name = 'Owner name is required';
+    }
+    if (!formData.owner_phone.trim()) {
+      newErrors.owner_phone = 'Owner phone is required';
+    } else if (!/^\+[1-9]\d{1,14}$/.test(formData.owner_phone)) {
+      newErrors.owner_phone = 'Owner phone must be in E.164 format (e.g., +12025551234)';
+    }
+    if (!formData.owner_password.trim()) {
+      newErrors.owner_password = 'Owner password is required';
+    } else if (formData.owner_password.length < 8) {
+      newErrors.owner_password = 'Owner password must be at least 8 characters';
     }
 
     setErrors(newErrors);
@@ -201,8 +209,8 @@ const NewStorePage = () => {
                   Currency
                 </label>
                 <select
-                  name="settings.currency"
-                  value={formData.settings?.currency}
+                  name="currency"
+                  value={formData.currency}
                   onChange={handleChange}
                   className="w-full rounded-lg border border-stroke dark:border-strokedark bg-white dark:bg-boxdark py-3 px-4 text-dark dark:text-white focus:border-primary focus:outline-none"
                 >
@@ -217,8 +225,8 @@ const NewStorePage = () => {
                   Timezone
                 </label>
                 <select
-                  name="settings.timezone"
-                  value={formData.settings?.timezone}
+                  name="timezone"
+                  value={formData.timezone}
                   onChange={handleChange}
                   className="w-full rounded-lg border border-stroke dark:border-strokedark bg-white dark:bg-boxdark py-3 px-4 text-dark dark:text-white focus:border-primary focus:outline-none"
                 >
@@ -233,8 +241,8 @@ const NewStorePage = () => {
                   Language
                 </label>
                 <select
-                  name="settings.language"
-                  value={formData.settings?.language}
+                  name="language"
+                  value={formData.language}
                   onChange={handleChange}
                   className="w-full rounded-lg border border-stroke dark:border-strokedark bg-white dark:bg-boxdark py-3 px-4 text-dark dark:text-white focus:border-primary focus:outline-none"
                 >
@@ -243,6 +251,75 @@ const NewStorePage = () => {
                   <option value="fr">French</option>
                   <option value="de">German</option>
                 </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Owner Account */}
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Owner Account</h2>
+            <div className="space-y-4">
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  Owner Name <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="owner_name"
+                  value={formData.owner_name}
+                  onChange={handleChange}
+                  className={`w-full rounded-lg border ${
+                    errors.owner_name ? 'border-danger' : 'border-stroke dark:border-strokedark'
+                  } bg-white dark:bg-boxdark py-3 px-4 text-dark dark:text-white focus:border-primary focus:outline-none`}
+                />
+                {errors.owner_name && <p className="mt-1 text-sm text-danger">{errors.owner_name}</p>}
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  Owner Phone <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="owner_phone"
+                  value={formData.owner_phone}
+                  onChange={handleChange}
+                  placeholder="+12025551234"
+                  className={`w-full rounded-lg border ${
+                    errors.owner_phone ? 'border-danger' : 'border-stroke dark:border-strokedark'
+                  } bg-white dark:bg-boxdark py-3 px-4 text-dark dark:text-white focus:border-primary focus:outline-none`}
+                />
+                {errors.owner_phone && <p className="mt-1 text-sm text-danger">{errors.owner_phone}</p>}
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  Owner Email (Optional)
+                </label>
+                <input
+                  type="email"
+                  name="owner_email"
+                  value={formData.owner_email || ''}
+                  onChange={handleChange}
+                  placeholder="owner@store.com"
+                  className="w-full rounded-lg border border-stroke dark:border-strokedark bg-white dark:bg-boxdark py-3 px-4 text-dark dark:text-white focus:border-primary focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  Owner Password <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="password"
+                  name="owner_password"
+                  value={formData.owner_password}
+                  onChange={handleChange}
+                  className={`w-full rounded-lg border ${
+                    errors.owner_password ? 'border-danger' : 'border-stroke dark:border-strokedark'
+                  } bg-white dark:bg-boxdark py-3 px-4 text-dark dark:text-white focus:border-primary focus:outline-none`}
+                />
+                {errors.owner_password && <p className="mt-1 text-sm text-danger">{errors.owner_password}</p>}
               </div>
             </div>
           </div>

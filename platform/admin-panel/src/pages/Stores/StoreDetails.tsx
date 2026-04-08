@@ -4,7 +4,7 @@
  */
 
 import { useNavigate, useParams } from 'react-router';
-import { useGetStoreQuery, useGetStoreStatisticsQuery } from '../../services/stores';
+import { useGetStoreQuery, useUpdateStoreStatusMutation } from '../../services/stores';
 import Button from '../../components/ui/button/Button';
 import Alert from '../../components/ui/alert/Alert';
 import Badge from '../../components/ui/badge/Badge';
@@ -14,8 +14,11 @@ const StoreDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const storeId = Number(id);
 
-  const { data: store, isLoading, error } = useGetStoreQuery(storeId);
-  const { data: stats } = useGetStoreStatisticsQuery(storeId);
+  const { data, isLoading, error } = useGetStoreQuery(storeId);
+  const [updateStoreStatus, { isLoading: isUpdatingStatus }] = useUpdateStoreStatusMutation();
+
+  const store = data?.data;
+  const stats = data?.meta;
 
   if (isLoading) {
     return (
@@ -37,6 +40,10 @@ const StoreDetailsPage = () => {
       </div>
     );
   }
+
+  const handleStatusChange = async (status: 'active' | 'inactive' | 'suspended') => {
+    await updateStoreStatus({ id: storeId, data: { status } }).unwrap();
+  };
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
@@ -60,11 +67,14 @@ const StoreDetailsPage = () => {
             <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">/{store.slug}</p>
           </div>
           <div className="flex gap-3">
-            <Button variant="primary" onClick={() => navigate(`/stores/${storeId}/edit`)}>
-              Edit Store
+            <Button variant="success" onClick={() => void handleStatusChange('active')} disabled={isUpdatingStatus || store.status === 'active'}>
+              Activate
             </Button>
-            <Button variant="secondary" onClick={() => navigate(`/stores/${storeId}/settings`)}>
-              Settings
+            <Button variant="warning" onClick={() => void handleStatusChange('inactive')} disabled={isUpdatingStatus || store.status === 'inactive'}>
+              Deactivate
+            </Button>
+            <Button variant="danger" onClick={() => void handleStatusChange('suspended')} disabled={isUpdatingStatus || store.status === 'suspended'}>
+              Suspend
             </Button>
           </div>
         </div>
@@ -109,19 +119,19 @@ const StoreDetailsPage = () => {
               <div className="p-6 grid grid-cols-2 gap-6">
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Total Products</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.total_products}</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.products_count}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Total Orders</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.total_orders}</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.orders_count}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Total Customers</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.total_customers}</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.customers_count}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Total Revenue</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">${stats.revenue.toFixed(2)}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Total Products</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.products_count}</p>
                 </div>
               </div>
             </div>
@@ -137,19 +147,19 @@ const StoreDetailsPage = () => {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Currency
                 </label>
-                <p className="text-gray-900 dark:text-white">{store.settings.currency}</p>
+                <p className="text-gray-900 dark:text-white">{store.currency ?? '-'}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Timezone
                 </label>
-                <p className="text-gray-900 dark:text-white">{store.settings.timezone}</p>
+                <p className="text-gray-900 dark:text-white">{store.timezone ?? '-'}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Language
                 </label>
-                <p className="text-gray-900 dark:text-white">{store.settings.language}</p>
+                <p className="text-gray-900 dark:text-white">{store.language ?? '-'}</p>
               </div>
             </div>
           </div>

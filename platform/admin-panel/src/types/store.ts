@@ -8,11 +8,24 @@ export interface Store {
   name: string;
   slug: string;
   domain: string | null;
+  email?: string | null;
+  phone?: string | null;
+  currency?: string;
+  timezone?: string;
+  language?: string;
   logo_url: string | null;
   status: 'active' | 'inactive' | 'suspended';
-  settings: StoreSettings;
+  settings?: StoreSettings;
+  users?: StoreUser[];
   created_at: string;
   updated_at: string;
+}
+
+export interface StoreUser {
+  id: number;
+  name: string;
+  email: string;
+  phone?: string;
 }
 
 export interface StoreSettings {
@@ -48,25 +61,27 @@ export interface CreateStoreData {
   name: string;
   slug: string;
   domain?: string;
-  settings?: Partial<StoreSettings>;
-}
-
-export interface UpdateStoreData {
-  name?: string;
-  slug?: string;
-  domain?: string;
   status?: 'active' | 'inactive' | 'suspended';
+  email?: string;
+  phone?: string;
+  currency?: string;
+  timezone?: string;
+  language?: string;
+  owner_name: string;
+  owner_phone: string;
+  owner_email?: string;
+  owner_password: string;
   settings?: Partial<StoreSettings>;
-  logo_url?: string;
 }
 
-export interface StoreStatistics {
-  total_products: number;
-  total_orders: number;
-  total_customers: number;
-  revenue: number;
-  orders_this_month: number;
-  revenue_this_month: number;
+export interface UpdateStoreStatusData {
+  status?: 'active' | 'inactive' | 'suspended';
+}
+
+export interface StoreMetrics {
+  products_count: number;
+  orders_count: number;
+  customers_count: number;
 }
 
 export interface StoresResponse {
@@ -81,6 +96,18 @@ export interface StoresResponse {
 
 export interface StoreResponse {
   data: Store;
+}
+
+export interface StoreDetailsResponse {
+  data: Store;
+  meta: StoreMetrics;
+}
+
+export interface StoreCreateResponse {
+  data: {
+    store: Store;
+    owner: StoreUser;
+  };
 }
 
 export interface StoreFilters {

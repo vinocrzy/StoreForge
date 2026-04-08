@@ -5,11 +5,11 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useGetStoresQuery } from '../../services/stores';
+import { useGetStoresQuery, useUpdateStoreStatusMutation } from '../../services/stores';
 import Button from '../../components/ui/button/Button';
 import Alert from '../../components/ui/alert/Alert';
 import Badge from '../../components/ui/badge/Badge';
-import type { StoreFilters } from '../../types/store';
+import type { Store, StoreFilters } from '../../types/store';
 
 const StoresPage = () => {
   const navigate = useNavigate();
@@ -20,6 +20,7 @@ const StoresPage = () => {
   });
 
   const { data: storesData, isLoading, error } = useGetStoresQuery(filters);
+  const [updateStoreStatus, { isLoading: isUpdatingStatus }] = useUpdateStoreStatusMutation();
   const stores = storesData?.data || [];
   const meta = storesData?.meta;
 
@@ -47,6 +48,19 @@ const StoresPage = () => {
       case 'inactive': return 'warning';
       case 'suspended': return 'error';
       default: return 'light';
+    }
+  };
+
+  const handleStatusToggle = async (store: Store) => {
+    const nextStatus = store.status === 'active' ? 'inactive' : 'active';
+
+    try {
+      await updateStoreStatus({
+        id: store.id,
+        data: { status: nextStatus },
+      }).unwrap();
+    } catch {
+      // Keep UI simple here; error banner will show on refetch failure.
     }
   };
 
@@ -143,7 +157,7 @@ const StoresPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {stores.map((store: any) => (
+                {stores.map((store: Store) => (
                   <tr
                     key={store.id}
                     className="border-b border-stroke dark:border-strokedark hover:bg-gray-50 dark:hover:bg-meta-4"
@@ -195,11 +209,12 @@ const StoresPage = () => {
                           View
                         </Button>
                         <Button
-                          variant="secondary"
+                          variant={store.status === 'active' ? 'warning' : 'success'}
                           size="sm"
-                          onClick={() => navigate(`/stores/${store.id}/edit`)}
+                          onClick={() => void handleStatusToggle(store)}
+                          disabled={isUpdatingStatus}
                         >
-                          Edit
+                          {store.status === 'active' ? 'Deactivate' : 'Activate'}
                         </Button>
                       </div>
                     </td>

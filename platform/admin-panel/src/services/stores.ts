@@ -6,13 +6,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { RootState } from '../store';
 import type {
-  Store,
   StoresResponse,
-  StoreResponse,
+  StoreCreateResponse,
+  StoreDetailsResponse,
   CreateStoreData,
-  UpdateStoreData,
+  UpdateStoreStatusData,
   StoreFilters,
-  StoreStatistics,
 } from '../types/store';
 
 export const storesApi = createApi({
@@ -22,13 +21,9 @@ export const storesApi = createApi({
     prepareHeaders: (headers, { getState }) => {
       const state = getState() as RootState;
       const token = state.auth.token || localStorage.getItem('auth_token');
-      const storeId = state.auth.currentStore?.id || localStorage.getItem('store_id');
 
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
-      }
-      if (storeId) {
-        headers.set('X-Store-ID', storeId.toString());
       }
       headers.set('Content-Type', 'application/json');
       headers.set('Accept', 'application/json');
@@ -59,61 +54,33 @@ export const storesApi = createApi({
     }),
 
     // Get single store
-    getStore: builder.query<Store, number>({
+    getStore: builder.query<StoreDetailsResponse, number>({
       query: (id) => `/stores/${id}`,
-      transformResponse: (response: StoreResponse) => response.data,
       providesTags: (_result, _error, id) => [{ type: 'Store', id }],
     }),
 
     // Create store
-    createStore: builder.mutation<Store, CreateStoreData>({
+    createStore: builder.mutation<StoreCreateResponse, CreateStoreData>({
       query: (data) => ({
         url: '/stores',
         method: 'POST',
         body: data,
       }),
-      transformResponse: (response: StoreResponse) => response.data,
       invalidatesTags: [{ type: 'Store', id: 'LIST' }],
     }),
 
-    // Update store
-    updateStore: builder.mutation<Store, { id: number; data: UpdateStoreData }>({
+    // Update store status
+    updateStoreStatus: builder.mutation<StoreDetailsResponse['data'], { id: number; data: UpdateStoreStatusData }>({
       query: ({ id, data }) => ({
-        url: `/stores/${id}`,
-        method: 'PUT',
+        url: `/stores/${id}/status`,
+        method: 'PATCH',
         body: data,
       }),
-      transformResponse: (response: StoreResponse) => response.data,
+      transformResponse: (response: { data: StoreDetailsResponse['data'] }) => response.data,
       invalidatesTags: (_result, _error, { id }) => [
         { type: 'Store', id },
         { type: 'Store', id: 'LIST' },
       ],
-    }),
-
-    // Update store settings
-    updateStoreSettings: builder.mutation<Store, { id: number; settings: any }>({
-      query: ({ id, settings }) => ({
-        url: `/stores/${id}/settings`,
-        method: 'PUT',
-        body: { settings },
-      }),
-      transformResponse: (response: StoreResponse) => response.data,
-      invalidatesTags: (_result, _error, { id }) => [{ type: 'Store', id }],
-    }),
-
-    // Get store statistics
-    getStoreStatistics: builder.query<StoreStatistics, number>({
-      query: (id) => `/stores/${id}/statistics`,
-      transformResponse: (response: { data: StoreStatistics }) => response.data,
-    }),
-
-    // Delete store (soft delete)
-    deleteStore: builder.mutation<void, number>({
-      query: (id) => ({
-        url: `/stores/${id}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: [{ type: 'Store', id: 'LIST' }],
     }),
   }),
 });
@@ -122,8 +89,5 @@ export const {
   useGetStoresQuery,
   useGetStoreQuery,
   useCreateStoreMutation,
-  useUpdateStoreMutation,
-  useUpdateStoreSettingsMutation,
-  useGetStoreStatisticsQuery,
-  useDeleteStoreMutation,
+  useUpdateStoreStatusMutation,
 } = storesApi;
