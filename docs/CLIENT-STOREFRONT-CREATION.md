@@ -17,6 +17,62 @@ Before creating a new client storefront, ensure:
 
 ---
 
+## ⚠️ Important: Repository Independence
+
+### Client Storefronts are Separate Git Repositories
+
+Each client storefront (`client-*/`) is a **completely independent git repository**:
+
+- ✅ **NOT tracked** by the main platform repository
+- ✅ **NOT a git submodule** (no nested repo issues)
+- ✅ **Independent git history** - commits don't affect platform repo
+- ✅ **Can be deployed separately** - no dependency on platform code
+- ✅ **Can be shared with clients** - give them access to their repo only
+
+### How It Works
+
+The main platform repo has `.gitignore` rules that **ignore all client storefronts**:
+
+```gitignore
+# In c:\poc\e-com\.gitignore
+client-*/                    ← Ignores all client folders
+storefront-template/         ← Ignores template folder
+```
+
+**What this means**:
+- When you create `client-honey-bee/`, it has its **own `.git/` folder**
+- Main platform repo **doesn't see** this folder (it's ignored)
+- No "nested repository" warnings or conflicts
+- Each repo can be cloned/pushed independently
+
+### Cloning Behavior
+
+**If someone clones the main platform repo:**
+```powershell
+git clone https://github.com/your-org/ecommerce-platform.git
+```
+
+**They get:**
+- ✅ Platform (backend + admin)
+- ✅ Documentation
+- ✅ Scripts
+- ❌ **NOT** `storefront-template/` (they need to clone it separately)
+- ❌ **NOT** any `client-*/` folders (each client clones their own)
+
+**If someone clones a client storefront:**
+```powershell
+git clone https://github.com/client-org/honey-bee-storefront.git
+```
+
+**They get:**
+- ✅ Only that client's customized storefront
+- ❌ **NOT** the platform code
+- ❌ **NOT** other client storefronts
+
+**No dependencies between repositories!**
+
+---
+
 ## Quick Start (Automated Method)
 
 ### 1. Create Store in Database First

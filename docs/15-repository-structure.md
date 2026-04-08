@@ -49,6 +49,126 @@ c:\poc\e-com\
 - **Client ownership** - Can transfer repo to client if they want
 - **Version independence** - Client A on v1.0, Client B on v2.0
 
+## ✨ Repository Independence (IMPORTANT)
+
+### No Nested Git Dependencies
+
+The repositories are **completely independent** - no git submodules or nested repo issues:
+
+```
+c:\poc\e-com\
+├── .git/                        ← Main platform repo
+├── .gitignore                   ← Ignores client-*/ and storefront-template/
+├── platform/                    ← Tracked by main repo
+│   ├── backend/
+│   └── admin-panel/
+│
+├── storefront-template/         ← IGNORED by main repo
+│   └── .git/                    ← Its own independent git
+│
+└── client-honey-bee/            ← IGNORED by main repo
+    └── .git/                    ← Its own independent git
+```
+
+### .gitignore Configuration
+
+The main platform repo has these rules in `.gitignore`:
+
+```gitignore
+# Client Storefronts (Separate Git Repositories)
+# These are independent repos and should NOT be tracked by main platform repo
+client-*/
+
+# Storefront Template (Separate Git Repository)
+# Base template is its own repo, not tracked by platform
+storefront-template/
+```
+
+**This ensures**:
+- ✅ No "nested git repository" warnings
+- ✅ No accidental commits of client code to platform repo
+- ✅ Clean separation between platform and client code
+- ✅ Each repo can be cloned/deployed independently
+
+### What Happens When Cloning
+
+**Scenario 1: Clone Main Platform Repo**
+```powershell
+git clone https://github.com/your-org/ecommerce-platform.git
+cd ecommerce-platform
+```
+
+**You get**:
+- ✅ Platform code (backend + admin panel)
+- ✅ Documentation (docs/)
+- ✅ Scripts for creating clients
+- ❌ **NOT** storefront-template/ (ignored)
+- ❌ **NOT** any client-*/ folders (ignored)
+
+**Scenario 2: Clone Storefront Template**
+```powershell
+git clone https://github.com/your-org/storefront-template.git
+cd storefront-template
+```
+
+**You get**:
+- ✅ Next.js template code
+- ✅ Base theme configuration
+- ✅ Reusable components
+- ❌ **NOT** platform code
+- ❌ **NOT** other client storefronts
+
+**Scenario 3: Clone Client Storefront**
+```powershell
+git clone https://github.com/client-org/honey-bee-storefront.git
+cd honey-bee-storefront
+```
+
+**You get**:
+- ✅ Customized storefront for that client
+- ✅ Client-specific theme
+- ✅ Client branding and assets
+- ❌ **NOT** platform code
+- ❌ **NOT** template or other clients
+
+### Directory Sharing (Local Development Only)
+
+The repos share a **parent directory** (`c:\poc\e-com\`) for convenience during local development:
+
+**Benefits**:
+- Easy to switch between projects: `cd ../platform`, `cd ../client-honey-bee`
+- Scripts can reference relative paths
+- Shared tools and utilities access
+
+**NOT a Git Dependency**:
+- They just happen to be in the same folder
+- Each has its own `.git/` directory
+- No git relationship between them
+- Can be deployed to completely different servers
+
+### Deployment Example
+
+**Production Setup**:
+```
+Server 1 (Platform): api.yourplatform.com
+  /var/www/platform/        ← Clone from platform repo
+    backend/
+    admin-panel/
+
+Server 2 (Template): N/A
+  (Template not deployed - used for creating clients)
+
+Server 3 (Honey Bee): honeybee.com
+  /var/www/honeybee/        ← Clone from honey-bee repo
+    (Next.js storefront)
+
+Server 4 (Client 2): fashionstore.com
+  /var/www/fashion/         ← Clone from fashion-store repo
+    (Next.js storefront)
+```
+
+Each server only has the code it needs - no dependencies on other repos!
+
 ## Implementation Steps
 
 ### Step 1: Initialize Platform Repository
