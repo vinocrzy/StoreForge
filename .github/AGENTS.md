@@ -19,7 +19,51 @@ The Tech Lead agent can automatically delegate to specialist agents based on the
 
 ## Available Agents
 
-### 1. 🏗️ Tech Lead
+### 1. � Brand Identity Designer
+
+**File**: `.github/agents/brand-identity-designer.agent.md`
+
+**Role**: Senior UI/UX Designer & Brand Strategist
+
+**Use for:**
+- **Creating brand identities** for new client storefronts
+- **Designing color palettes** with WCAG accessibility
+- **Selecting typography** and font pairings
+- **Building design systems** (tokens, component variants)
+- **Reviewing visual designs** for brand consistency
+- **Conducting competitive analysis** and market research
+- **Creating .brand/ documentation** (identity, colors, typography, style guide)
+- **Ensuring accessibility compliance** (WCAG 2.1 AA)
+
+**Expertise:**
+- **Brand Strategy**: Brand essence, positioning, personality
+- **Color Theory**: Palette creation, psychology, WCAG contrast
+- **Typography**: Font pairing, hierarchy, readability
+- **Design Systems**: Tokens, components, style guides
+- **UX Research**: Personas, competitive analysis
+- **Accessibility**: WCAG 2.1 AA/AAA, inclusive design
+- **E-Commerce Design**: Conversion optimization, product pages
+
+**Key Deliverables:**
+- `.brand/identity.md` - Brand essence, values, personality, target audience
+- `.brand/color-palette.md` - Color system with WCAG testing
+- `.brand/typography.md` - Font selection and hierarchy
+- `.brand/style-guide.md` - Visual guidelines and patterns
+- `.brand/competitive-analysis.md` - Market research
+
+**Example Tasks:**
+- **"Create brand identity for new jewelry store"**
+- **"Design color palette for organic skincare brand with WCAG testing"**
+- **"Select typography that reinforces luxury fashion brand voice"**
+- **"Review Honey Bee storefront design for brand consistency"**
+- **"Conduct competitive analysis for tech gadgets market"**
+- **"Build design system documentation for handmade crafts brand"**
+
+**Tools**: Read-only (reviews designs, creates documentation, no code editing)
+
+---
+
+### 2. 🏗️ Tech Lead
 
 **File**: `.github/agents/tech-lead.agent.md`
 
@@ -55,7 +99,7 @@ The Tech Lead agent can automatically delegate to specialist agents based on the
 
 ---
 
-### 2. 🔧 Backend Developer
+### 3. 🔧 Backend Developer
 
 **File**: `.github/agents/backend-developer.agent.md`
 
@@ -92,7 +136,7 @@ The Tech Lead agent can automatically delegate to specialist agents based on the
 
 ---
 
-### 3. 🎨 Admin Frontend Developer
+### 4. 🎨 Admin Frontend Developer
 
 **File**: `.github/agents/admin-frontend-dev.agent.md`
 
@@ -195,17 +239,158 @@ The Tech Lead agent can automatically delegate to specialist agents based on the
 
 ---
 
+### 6. 🧪 QA & Testing Expert
+
+**File**: `.github/agents/qa-testing-expert.agent.md`
+
+**Role**: Senior QA Engineer & Test Automation Specialist
+
+**Use for:**
+- **Pre-commit validation** (running all tests before git push)
+- **Testing multi-tenant isolation** (CRITICAL - prevents data leakage)
+- **Running test suites** (PHPUnit, Jest, React Testing Library)
+- **Accessibility audits** (WCAG 2.1 AA compliance)
+- **Security testing** (SQL injection, XSS, CSRF, auth)
+- **API contract validation** (response structure, status codes)
+- **Performance testing** (API response times, N+1 queries)
+- **E2E testing** (checkout flows, admin workflows)
+- **Mobile testing** (responsive design, touch targets)
+- **Ensuring quality before deployment**
+
+**Expertise:**
+- **Test Automation**: PHPUnit, Jest, React Testing Library, Playwright
+- **Multi-Tenant Testing**: Tenant isolation, data leakage prevention (CRITICAL)
+- **Accessibility Testing**: WCAG 2.1 AA/AAA, screen readers, keyboard navigation
+- **Security Testing**: OWASP Top 10, SQL injection, XSS, CSRF
+- **API Testing**: Contract testing, REST validation
+- **Performance Testing**: Load testing, API benchmarks, Core Web Vitals
+- **E2E Testing**: User flows, checkout processes
+- **Mobile Testing**: Responsive design, touch accessibility
+
+**Key Responsibilities:**
+1. **Pre-Commit Validation** (MANDATORY before every git commit):
+   - Run backend tests: `php artisan test`
+   - Run type check: `npm run build`
+   - Run linter: `npm run lint`
+   - Run frontend tests: `npm test`
+   - Validate tenant isolation: `php artisan test --filter=Tenant`
+   
+2. **Multi-Tenant Isolation Testing** (CRITICAL):
+   - Test that Store 1 cannot see Store 2's data
+   - Test X-Store-ID header validation
+   - Test models have global tenant scopes
+   - Prevent data leakage across tenants
+   
+3. **Accessibility Compliance** (WCAG 2.1 AA):
+   - Color contrast testing (4.5:1 minimum)
+   - Keyboard navigation testing
+   - Screen reader compatibility
+   - Touch target minimum 44x44px
+   
+4. **Security Testing**:
+   - Authentication & authorization tests
+   - SQL injection prevention
+   - XSS prevention (HTML escaping)
+   - CSRF token validation
+   - Rate limiting tests
+   
+5. **Performance Testing**:
+   - API response time < 200ms (p95)
+   - Database query optimization (no N+1)
+   - Lighthouse performance score 90+
+   - Core Web Vitals monitoring
+
+**Test Coverage Standards**:
+- Critical paths (auth, checkout): 95%+
+- Business logic (services): 90%+
+- Controllers: 85%+
+- Models: 80%+
+- **Tenant isolation**: 100% (NO FAILURES ALLOWED)
+
+**Critical Testing Rules**:
+- ✅ **ALWAYS run ALL tests before EVERY commit** (no exceptions)
+- ✅ **ALWAYS test tenant isolation for multi-tenant features** (security critical)
+- ✅ **ALWAYS test accessibility for UI changes** (WCAG AA required)
+- ❌ **NEVER commit code with failing tests**
+- ❌ **NEVER skip tenant isolation tests** (data leakage risk)
+- ❌ **NEVER ignore TypeScript errors**
+
+**Example Tasks**:
+- **"Run pre-commit validation for product reviews feature"**
+- **"Test tenant isolation for new order management feature"**
+- **"Validate WCAG AA accessibility for checkout page"**
+- **"Test API contract for products endpoint matches documentation"**
+- **"Check for N+1 query problems in product listing"**
+- **"Run security audit on authentication flow"**
+- **"Test mobile responsiveness at 320px viewport"**
+- **"Verify all tests pass before deploying to production"**
+
+**Tools**: Read, search, run tests, get errors - Can execute test commands but cannot edit code
+
+---
+
 ## Agent Coordination
 
-### Typical Workflow
+### New Client Storefront Workflow
+
+**Phase 1: Brand Identity & Design** (Led by Brand Identity Designer)
+1. **Brand Discovery** → **Brand Identity Designer**
+   - Conducts client interview (values, audience, personality)
+   - Researches competitors
+   - Creates `.brand/identity.md` and `.brand/competitive-analysis.md`
+
+2. **Color System Design** → **Brand Identity Designer**
+   - Designs color palette based on brand essence
+   - Tests WCAG AA contrast ratios
+   - Creates `.brand/color-palette.md`
+
+3. **Typography Selection** → **Brand Identity Designer**
+   - Selects fonts matching brand personality
+   - Creates type scale and hierarchy
+   - Creates `.brand/typography.md`
+
+4. **Style Guide** → **Brand Identity Designer**
+   - Documents visual guidelines
+   - Defines component patterns
+   - Creates `.brand/style-guide.md`
+
+5. **Design System Handoff** → **Brand Identity Designer** → **Storefront Frontend Developer**
+   - Reviews design system approach
+   - Approves component variant strategy
+   - Ensures accessibility compliance
+
+**Phase 2: Implementation** (Led by Storefront Frontend Developer)
+6. **Design System Implementation** → **Storefront Frontend Developer**
+   - Converts design tokens to code (`src/design-system/tokens/`)
+   - Creates component variants (`src/design-system/components/`)
+   - Builds React components using design system
+   - Implements pages with SSG, SEO, accessibility
+
+**Phase 3: Quality Assurance** (Led by QA & Testing Expert)
+7. **Pre-Commit Validation** → **QA & Testing Expert**
+   - Runs all backend tests (`php artisan test`)
+   - Runs type check (`npm run build`)
+   - Runs linter (`npm run lint`)
+   - Tests tenant isolation (CRITICAL)
+   - Validates accessibility (WCAG AA)
+   - Checks mobile responsiveness
+   
+8. **Quality Gate** → **QA & Testing Expert**
+   - ✅ ALL tests pass → Approve for commit
+   - ❌ ANY test fails → Block commit, report issues to developer
+   - Provides detailed test report with pass/fail results
+
+### Feature Development Workflow
 
 1. **User** has a feature request → **Tech Lead**
 2. **Tech Lead** plans architecture → delegates tasks:
    - Database changes → **Backend Developer**
    - Admin UI → **Admin Frontend Developer**
-   - Storefront UI → **Storefront Frontend Developer**
+   - Storefront UI (if design needed) → **Brand Identity Designer** then **Storefront Frontend Developer**
+   - Storefront UI (implementation only) → **Storefront Frontend Developer**
 3. Specialists implement their parts
-4. **Tech Lead** reviews integration
+4. **QA & Testing Expert** validates implementation (**MANDATORY before commit**)
+5. **Tech Lead** reviews integration (only if all tests pass)
 
 ### Example: Adding Product Reviews
 
@@ -213,7 +398,7 @@ The Tech Lead agent can automatically delegate to specialist agents based on the
 - Database: `product_reviews` table with ratings
 - Backend: API endpoints for CRUD operations
 - Admin: Review moderation interface
-- Storefront: Display reviews, submit form
+- Storefront: Display reviews with brand-appropriate styling
 
 **Backend Developer creates:**
 - Migration for `product_reviews` table
@@ -223,25 +408,63 @@ The Tech Lead agent can automatically delegate to specialist agents based on the
 - Feature tests
 
 **Admin Frontend Developer builds:**
-- Reviews management page
+- Reviews management page (TailAdmin components)
 - Approve/reject modal
 - Filtering by rating/status
 - RTK Query hooks
 
+**Brand Identity Designer reviews:**
+- Reviews component should match brand personality
+- Star rating colors match color palette
+- Typography hierarchy clear
+- Review form accessible (WCAG AA)
+
 **Storefront Frontend Developer implements:**
-- **Brand discovery: questionnaire about values, audience, competitors**
-- **Color palette design: honey gold (#F59E0B), natural green (#10B981), warm cream (#FFFBEB)**
-- **Typography selection: Playfair Display (serif headings) + Inter (sans-serif body)**
-- **Component library: custom product cards with soft rounded corners**
-- Review list on product page
+- Review list component using design system tokens
+- Star rating display with brand colors
+- Review submission form with validation
+- Schema.org Review markup for SEO
+- Accessibility: keyboard navigation, screen reader labels
 - Star rating display with accessible labels
 - Review submission form with validation
 - Schema.org Review markup
 - **Accessibility testing: keyboard navigation, screen reader compatibility**
 
+**QA & Testing Expert validates (MANDATORY before commit):**
+- **Backend tests**: All ProductReview tests pass
+- **Tenant isolation**: Store 1 cannot see Store 2's reviews (CRITICAL)
+- **API contract**: Response structure matches documentation
+- **Validation tests**: Required fields validated, invalid data rejected
+- **Security**: SQL injection prevention, XSS escaping
+- **Frontend tests**: Review component renders correctly
+- **Accessibility**: WCAG AA compliant (color contrast, keyboard navigation, screen reader)
+- **Mobile**: Touch targets minimum 44x44px, responsive at 320px
+- **Performance**: API response < 200ms, no N+1 queries
+- **Test Report**: ✅ ALL PASS → Approve for commit / ❌ ANY FAIL → Block commit
+
+**Git Commit (only if QA approves)**:
+```bash
+# QA & Testing Expert runs:
+php artisan test  # ✅ 56/56 passed
+npm run build     # ✅ No TypeScript errors
+npm run lint      # ✅ No ESLint errors
+php artisan test --filter=Tenant  # ✅ 100% pass (CRITICAL)
+
+# Developer can now commit:
+git add .
+git commit -m "feat: Add product reviews with ratings"
+git push
+```
+
 ---
 
 ## Tools & Restrictions
+
+### Brand Identity Designer
+- **Tools**: read, search, view_image, askQuestions (read-only)
+- **Focus**: Brand identity, design systems, color theory, typography, accessibility
+- **Creates**: `.brand/` documentation (identity, colors, typography, style guide)
+- **No**: Code editing, implementation (reviews and approves designs only)
 
 ### Tech Lead
 - **Tools**: read, search, web, agent (can delegate)
@@ -260,8 +483,16 @@ The Tech Lead agent can automatically delegate to specialist agents based on the
 
 ### Storefront Frontend Developer
 - **Tools**: read, edit, search, execute
-- **Focus**: Next.js storefronts, SEO, themes
-- **No**: Admin panel code, backend API
+- **Focus**: Next.js storefronts, design system implementation, SEO, themes
+- **No**: Admin panel code, backend API (works with brand identity docs from Designer)
+
+### QA & Testing Expert
+- **Tools**: read, search, list_dir, get_errors, run_in_terminal (test execution only)
+- **Focus**: Pre-commit validation, multi-tenant isolation testing, accessibility audits, security testing, performance testing
+- **Critical Tests**: Tenant isolation (100% pass required), TypeScript compilation, accessibility (WCAG AA)
+- **Can Execute**: Test commands (`php artisan test`, `npm run build`, `npm run lint`)
+- **No**: Code editing, implementation (validates only, reports issues to developers)
+- **Quality Gate**: ❌ If ANY test fails → Code CANNOT be committed (no exceptions)
 
 ---
 
