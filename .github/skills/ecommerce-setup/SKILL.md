@@ -18,6 +18,9 @@ Comprehensive setup guide for the multi-tenant e-commerce platform including bac
 - Onboarding new developers
 - Troubleshooting environment issues
 - Repository structure setup
+- **Docker Compose containerization setup**
+- **Creating client storefronts with automation**
+- **Configuring repository independence and git workflows**
 
 ## Architecture Overview
 
@@ -600,9 +603,269 @@ c:\poc\e-com\
 │   ├── setup-api-docs.bat
 │   ├── setup-api-docs.sh
 │   ├── create-client-store.bat
+│   ├── create-client-store.ps1    # PowerShell version (recommended for Windows)
 │   └── create-client-store.sh
-└── README.md                      # Project overview
+├── docker-compose.yml              # Docker orchestration
+├── docker-helper.ps1               # Docker convenience commands
+├── .env.docker                     # Docker environment template
+└── README.md                       # Project overview
 ```
+
+## Docker Compose Setup (Recommended)
+
+### Why Docker?
+
+Docker provides a **complete, consistent development environment** in minutes:
+
+- ✅ **No manual installation** of PHP, MySQL, Redis, Node.js
+- ✅ **One command setup** - `docker-compose up`
+- ✅ **Identical environments** for all developers
+- ✅ **Production-ready** - same containers for dev and prod
+- ✅ **Isolated services** - no port conflicts or dependency issues
+- ✅ **Easy cleanup** - remove everything with one command
+
+### Prerequisites
+
+Install Docker Desktop:
+- **Windows**: Download from docker.com (requires WSL2)
+- **Mac**: Download Docker Desktop for Mac  
+- **Linux**: Install docker and docker-compose via package manager
+
+Minimum requirements: 4GB RAM, 20GB disk space
+
+### Quick Docker Setup
+
+#### Option 1: Automated Setup (Recommended)
+
+```powershell
+cd c:\poc\e-com
+
+# Complete setup in one command
+.\docker-helper.ps1 setup
+
+# This will:
+# 1. Copy environment file
+# 2. Start all containers (MySQL, Redis, Backend, Admin, Queue Worker)
+# 3. Generate Laravel app key
+# 4. Run database migrations
+# 5. Seed test data
+```
+
+**That's it!** Services are now running:
+- Backend API: http://localhost:8000
+- Admin Panel: http://localhost:5173  
+- PhpMyAdmin: http://localhost:8080
+- MySQL: localhost:3306
+- Redis: localhost:6379
+
+#### Option 2: Manual Docker Setup
+
+```powershell
+# 1. Copy environment file
+Copy-Item .env.docker .env
+
+# 2. Start all services
+docker-compose up -d
+
+# 3. Generate app key
+docker-compose exec backend php artisan key:generate
+
+# 4. Run migrations
+docker-compose exec backend php artisan migrate
+
+# 5. Seed database
+docker-compose exec backend php artisan db:seed
+```
+
+### Docker Services Included
+
+| Service | Container | Port | Description |
+|---------|-----------|------|-------------|
+| MySQL 8.0 | ecom-mysql | 3306 | Database with health checks |
+| Redis 7 | ecom-redis | 6379 | Cache, sessions, queues |
+| Laravel Backend | ecom-backend | 8000 | PHP 8.2-FPM API |
+| Queue Worker | ecom-queue-worker | - | Background jobs |
+| React Admin | ecom-admin | 5173 | Vite dev server |
+| Nginx | ecom-nginx | 80 | Reverse proxy (production) |
+| PhpMyAdmin | ecom-phpmyadmin | 8080 | DB management (optional) |
+
+### Docker Helper Commands
+
+Convenient PowerShell script for common operations:
+
+```powershell
+# Container management
+.\docker-helper.ps1 start        # Start all containers
+.\docker-helper.ps1 stop         # Stop all containers
+.\docker-helper.ps1 restart      # Restart all containers
+.\docker-helper.ps1 status       # Show container status
+.\docker-helper.ps1 logs         # View all logs
+
+# Backend operations
+.\docker-helper.ps1 migrate      # Run migrations
+.\docker-helper.ps1 seed         # Seed database
+.\docker-helper.ps1 fresh        # Fresh migrate + seed
+.\docker-helper.ps1 test         # Run tests
+.\docker-helper.ps1 tinker       # Laravel Tinker
+.\docker-helper.ps1 artisan <cmd> # Run artisan command
+
+# Database operations
+.\docker-helper.ps1 mysql        # MySQL CLI
+.\docker-helper.ps1 redis        # Redis CLI
+.\docker-helper.ps1 backup       # Backup database
+
+# Cleanup
+.\docker-helper.ps1 clean        # Remove containers
+.\docker-helper.ps1 rebuild      # Rebuild from scratch
+```
+
+### Docker vs Manual Setup
+
+**Choose Docker if:**
+- ✅ You want quick, consistent setup
+- ✅ Working in a team (identical environments)
+- ✅ Planning to deploy with Docker
+- ✅ Want isolated, reproducible environments
+- ✅ Need to switch PHP/MySQL versions easily
+
+**Choose Manual Setup if:**
+- ⚠️ Already have local PHP/MySQL/Redis installed
+- ⚠️ Limited system resources (< 4GB RAM)
+- ⚠️ Need direct access to local services
+- ⚠️ Prefer traditional XAMPP/MAMP workflow
+
+**Recommendation**: Use Docker for development, especially in team environments.
+
+### Docker Documentation
+
+Complete Docker setup documentation available at:
+- **[docs/DOCKER-SETUP.md](../../docs/DOCKER-SETUP.md)** (700+ lines)
+  - Detailed setup instructions
+  - All commands explained
+  - Troubleshooting guide
+  - Production deployment
+  - Performance optimization
+  - Security best practices
+
+## Repository Independence & Git Configuration
+
+### Separate Git Repositories
+
+The platform uses **multiple independent git repositories**:
+
+```
+c:\poc\e-com\                      # Parent directory (local)
+├── .git/                          # Main platform repo
+├── .gitignore                     # Ignores client-*/ and storefront-template/
+├── platform/                      # Tracked by main repo
+│   ├── backend/
+│   └── admin-panel/
+├── storefront-template/           # SEPARATE repo (ignored by main)
+│   └── .git/                      # Its own git history
+└── client-honey-bee/              # SEPARATE repo (ignored by main)
+    └── .git/                      # Its own git history
+```
+
+### Important .gitignore Rules
+
+The main platform repo ignores client storefronts and template:
+
+```gitignore
+# In c:\poc\e-com\.gitignore
+client-*/                    # Ignore all client storefronts
+storefront-template/         # Ignore template
+```
+
+**Why?**
+- ✅ No "nested git repository" warnings
+- ✅ Each repo has independent history
+- ✅ Client repos can be deployed separately
+- ✅ Clean separation of concerns
+- ✅ Client repos can be shared with clients only
+
+### Cloning Behavior
+
+**When someone clones the main platform repo:**
+```powershell
+git clone https://github.com/your-org/ecommerce-platform.git
+```
+
+**They get:**
+- ✅ Platform code (backend + admin)
+- ✅ Documentation
+- ✅ Scripts
+- ❌ **NOT** storefront-template/ (must clone separately)
+- ❌ **NOT** any client-*/ folders (must clone separately)
+
+**Each repo must be cloned independently!**
+
+### Creating Client Storefronts
+
+#### Automated Client Creation (PowerShell)
+
+```powershell
+# Create new client storefront
+.\scripts\create-client-store.ps1 "Honey Bee" 2
+
+# Arguments:
+# 1. "Honey Bee" - Client store name
+# 2. 2 - Store ID from database (must exist)
+```
+
+**What it does:**
+- ✅ Copies storefront template to `client-honey-bee/`
+- ✅ Initializes new git repository (`.git/`)
+- ✅ Creates `.env.local` with store configuration
+- ✅ Updates `package.json` with client name
+- ✅ Creates initial git commit
+- ✅ Creates `development` and `staging` branches
+
+#### Customize Client Storefront
+
+```powershell
+cd client-honey-bee
+
+# 1. Customize theme (src/config/theme.config.ts)
+# Example: Honey Bee - natural/organic colors
+colors: {
+  primary: '#F59E0B',      # Honey gold
+  secondary: '#10B981',    # Natural green
+  background: '#FFFBEB',   # Warm cream
+}
+
+# 2. Add branding assets
+# Place logo at: public/images/honey-bee-logo.png
+
+# 3. Install and run
+npm install
+npm run dev
+# Visit: http://localhost:3000
+```
+
+#### Commit Client Storefront
+
+```powershell
+# Configure git for this repo
+git config user.name "Your Name"
+git config user.email "your.email@example.com"
+
+# Commit changes
+git add .
+git commit -m "feat: Customize theme for Honey Bee store"
+
+# Push to remote (after creating GitHub repo)
+git remote add origin https://github.com/client-org/honey-bee-storefront.git
+git push -u origin main
+git push origin development staging
+```
+
+**Each client storefront is independent** - no dependency on main platform repo!
+
+### Complete Documentation
+
+For detailed client creation guide:
+- **[docs/CLIENT-STOREFRONT-CREATION.md](../../docs/CLIENT-STOREFRONT-CREATION.md)**
+- **[docs/15-repository-structure.md](../../docs/15-repository-structure.md)**
 
 ## Next Steps After Setup
 
@@ -625,6 +888,34 @@ c:\poc\e-com\
 
 ### Daily Workflow
 
+**Option 1: With Docker (Recommended)**
+
+```powershell
+# Start all services
+.\docker-helper.ps1 start
+
+# View logs
+.\docker-helper.ps1 logs
+
+# Work on code (files are mounted, changes reflect immediately)
+
+# Run migrations if needed
+.\docker-helper.ps1 migrate
+
+# Run tests
+.\docker-helper.ps1 test
+
+# Stop services when done
+.\docker-helper.ps1 stop
+```
+
+**Services available**:
+- Backend API: http://localhost:8000
+- Admin Panel: http://localhost:5173
+- PhpMyAdmin: http://localhost:8080
+
+**Option 2: Manual (Without Docker)**
+
 ```bash
 # Start backend
 cd platform/backend
@@ -643,6 +934,21 @@ npm run dev                # Terminal 5
 
 ### Before Committing
 
+**With Docker:**
+```powershell
+# Backend tests
+.\docker-helper.ps1 test
+
+# Update API docs
+docker-compose exec backend php artisan scribe:generate
+
+# Frontend (admin panel)
+cd platform/admin-panel
+npm run build              # Type check + build
+npm run lint               # ESLint
+```
+
+**Without Docker:**
 ```bash
 # Backend
 cd platform/backend
