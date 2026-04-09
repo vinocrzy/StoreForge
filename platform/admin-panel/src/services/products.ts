@@ -175,6 +175,16 @@ export const productsApi = createApi({
       }),
       invalidatesTags: [{ type: 'Category', id: 'LIST' }, { type: 'Category', id: 'TREE' }],
     }),
+
+    // Bulk action on products
+    bulkUpdateProducts: builder.mutation<{ message: string; updated: number }, { ids: number[]; action: string; status?: string }>({
+      query: (data) => ({
+        url: '/products/bulk-action',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: [{ type: 'Product', id: 'LIST' }],
+    }),
   }),
 });
 
@@ -192,4 +202,5 @@ export const {
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
+  useBulkUpdateProductsMutation,
 } = productsApi;

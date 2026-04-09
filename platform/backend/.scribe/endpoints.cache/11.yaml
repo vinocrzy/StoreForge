@@ -364,7 +364,7 @@ endpoints:
         name: gateway
         description: ''
         required: false
-        example: square
+        example: razorpay
         type: string
         enumValues:
           - manual
@@ -424,7 +424,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: pending
+        example: failed
         type: string
         enumValues:
           - pending
@@ -460,12 +460,12 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       order_id: 17
-      gateway: square
+      gateway: razorpay
       payment_method: bank_transfer
       amount: 170.5
       currency: qeo
       transaction_id: TXN-123456
-      status: pending
+      status: failed
       payment_notes: 'Received via bank transfer'
       metadata:
         bank: Chase
@@ -737,7 +737,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: processing
+        example: refunded
         type: string
         enumValues:
           - pending
@@ -978,7 +978,7 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       customer_id: 5
-      status: processing
+      status: refunded
       payment_status: failed
       currency: mqe
       customer_note: 'Please gift wrap'
@@ -1131,7 +1131,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: refunded
+        example: confirmed
         type: string
         enumValues:
           - pending
@@ -1149,7 +1149,7 @@ endpoints:
         name: payment_status
         description: ''
         required: false
-        example: failed
+        example: pending
         type: string
         enumValues:
           - pending
@@ -1198,7 +1198,7 @@ endpoints:
         name: payment_method
         description: ''
         required: false
-        example: wallet
+        example: cash_on_delivery
         type: string
         enumValues:
           - manual
@@ -1333,12 +1333,12 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       customer_id: 17
-      status: refunded
-      payment_status: failed
+      status: confirmed
+      payment_status: pending
       currency: mqe
       customer_note: 'Updated note'
       admin_note: 'Admin updated'
-      payment_method: wallet
+      payment_method: cash_on_delivery
       billing_address_id: 17
       shipping_address_id: 17
       coupon_code: mqeopfuudtdsufvyvddqa

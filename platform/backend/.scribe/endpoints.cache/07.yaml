@@ -10,6 +10,94 @@ endpoints:
     custom: []
     httpMethods:
       - GET
+    uri: api/v1/inventory/export
+    metadata:
+      custom: []
+      groupName: Inventory
+      groupDescription: |-
+
+        Manage inventory and stock levels for the authenticated store. All operations are automatically scoped to the current tenant.
+        Supports multi-warehouse inventory tracking, stock reservations, and stock movements.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Export inventory to CSV'
+      description: 'Download a CSV file of all inventory records for the current store, with optional filters.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'Filter by product.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      warehouse_id:
+        custom: []
+        name: warehouse_id
+        description: 'Filter by warehouse.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      low_stock:
+        custom: []
+        name: low_stock
+        description: 'Filter low stock items.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      out_of_stock:
+        custom: []
+        name: out_of_stock
+        description: 'Filter out of stock items.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      product_id: 1
+      warehouse_id: 1
+      low_stock: true
+      out_of_stock: true
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: 'Binary CSV file'
+        headers: []
+        description: Success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
     uri: api/v1/inventory/movements
     metadata:
       custom: []

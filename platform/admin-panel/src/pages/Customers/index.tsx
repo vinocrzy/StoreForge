@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useGetCustomersQuery, useExportCustomersCsvMutation } from '../../services/customers';
+import { useGetCustomersQuery, useExportCustomersCsvMutation, useBulkUpdateCustomersMutation } from '../../services/customers';
 import Button from '../../components/ui/button/Button';
 import Badge from '../../components/ui/badge/Badge';
 import Alert from '../../components/ui/alert/Alert';
@@ -23,6 +23,35 @@ const CustomersPage = () => {
 
   const [exportCustomersCsv, { isLoading: isExporting }] = useExportCustomersCsvMutation();
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [bulkStatus, setBulkStatus] = useState<string>('');
+  const [bulkUpdateCustomers, { isLoading: isBulkUpdating }] = useBulkUpdateCustomersMutation();
+
+  const handleBulkUpdate = async () => {
+    if (selectedIds.length === 0 || !bulkStatus) return;
+    try {
+      const result = await bulkUpdateCustomers({ ids: selectedIds, action: 'update_status', status: bulkStatus }).unwrap();
+      setAlert({ type: 'success', message: result.message });
+      setSelectedIds([]);
+      setBulkStatus('');
+    } catch {
+      setAlert({ type: 'error', message: 'Failed to update customers. Please try again.' });
+    }
+  };
+
+  const handleSelectAll = () => {
+    if (selectedIds.length === customers.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(customers.map(c => c.id));
+    }
+  };
+
+  const handleToggleSelect = (id: number) => {
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
+  };
 
   const handleExportCsv = async () => {
     try {
@@ -171,6 +200,37 @@ const CustomersPage = () => {
         </div>
       )}
 
+      {selectedIds.length > 0 && (
+        <div className="mb-4 flex items-center gap-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 p-3 border border-blue-200 dark:border-blue-700">
+          <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+            {selectedIds.length} customer{selectedIds.length !== 1 ? 's' : ''} selected
+          </span>
+          <select
+            value={bulkStatus}
+            onChange={(e) => setBulkStatus(e.target.value)}
+            className="rounded border border-stroke dark:border-strokedark bg-white dark:bg-boxdark py-1.5 px-3 text-sm text-dark dark:text-white focus:border-primary focus:outline-none"
+          >
+            <option value="">Change status to...</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="banned">Banned</option>
+          </select>
+          <Button
+            variant="primary"
+            onClick={handleBulkUpdate}
+            disabled={!bulkStatus || isBulkUpdating}
+          >
+            {isBulkUpdating ? 'Updating...' : 'Apply'}
+          </Button>
+          <button
+            onClick={() => setSelectedIds([])}
+            className="ml-auto text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          >
+            Clear selection
+          </button>
+        </div>
+      )}
+
       {/* Customers Table */}
       <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-boxdark">
         {isLoading ? (
@@ -193,6 +253,14 @@ const CustomersPage = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-stroke dark:border-strokedark bg-gray-50 dark:bg-meta-4">
+                  <th className="px-4 py-3 text-left">
+                    <input
+                      type="checkbox"
+                      checked={customers.length > 0 && selectedIds.length === customers.length}
+                      onChange={handleSelectAll}
+                      className="rounded border-gray-300"
+                    />
+                  </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                     Customer
                   </th>
@@ -220,6 +288,16 @@ const CustomersPage = () => {
                     className="border-b border-stroke dark:border-strokedark hover:bg-gray-50 dark:hover:bg-meta-4 cursor-pointer"
                     onClick={() => handleViewCustomer(customer.id)}
                   >
+                    {/* Checkbox */}
+                    <td className="px-4 py-4" onClick={(e) => e.stopPropagation()}>
+                      <input
+                        type="checkbox"
+                        checked={selectedIds.includes(customer.id)}
+                        onChange={() => handleToggleSelect(customer.id)}
+                        className="rounded border-gray-300"
+                      />
+                    </td>
+
                     {/* Customer Name */}
                     <td className="px-6 py-4">
                       <div>

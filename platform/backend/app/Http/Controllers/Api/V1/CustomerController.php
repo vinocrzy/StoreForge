@@ -383,6 +383,41 @@ class CustomerController extends Controller
         }, 200, $headers);
     }
 
+    /**
+     * Bulk update customers
+     *
+     * Perform bulk actions on multiple customers (e.g., status update).
+     *
+     * @bodyParam ids array required Array of customer IDs. Example: [1, 2, 3]
+     * @bodyParam action string required Action to perform: update_status. Example: update_status
+     * @bodyParam status string required (for update_status) New status: active, inactive, banned. Example: active
+     *
+     * @response 200 {
+     *  "message": "3 customers updated successfully",
+     *  "updated": 3
+     * }
+     */
+    public function bulkAction(Request $request): JsonResponse
+    {
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer|exists:customers,id',
+            'action' => 'required|in:update_status',
+            'status' => 'required_if:action,update_status|in:active,inactive,banned',
+        ]);
+
+        $updated = 0;
+
+        if ($request->action === 'update_status') {
+            $updated = $this->customerService->bulkUpdateStatus($request->ids, $request->status);
+        }
+
+        return response()->json([
+            'message' => "{$updated} customers updated successfully",
+            'updated' => $updated,
+        ]);
+    }
+
     // ===== Address Management =====
 
     /**

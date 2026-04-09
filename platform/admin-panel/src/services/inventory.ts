@@ -196,6 +196,17 @@ export const inventoryApi = createApi({
       }),
       invalidatesTags: [{ type: 'StockAlert', id: 'LIST' }, { type: 'Inventory', id: 'LIST' }],
     }),
+
+    // Export inventory to CSV
+    exportInventoryCsv: builder.mutation<Blob, { product_id?: number; warehouse_id?: number; low_stock?: boolean; out_of_stock?: boolean }>({
+      query: (filters = {}) => ({
+        url: '/inventory/export',
+        method: 'GET',
+        params: filters,
+        responseHandler: async (response) => response.blob(),
+        cache: 'no-cache',
+      }),
+    }),
   }),
 });
 
@@ -211,4 +222,5 @@ export const {
   useGetStockMovementsQuery,
   useGetStockAlertsQuery,
   useResolveStockAlertMutation,
+  useExportInventoryCsvMutation,
 } = inventoryApi;

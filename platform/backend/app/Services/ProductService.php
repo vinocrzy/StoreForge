@@ -190,6 +190,18 @@ class ProductService
     }
 
     /**
+     * Bulk update product status
+     *
+     * @param array $ids Product IDs
+     * @param string $status New status
+     * @return int Number of updated products
+     */
+    public function bulkUpdateStatus(array $ids, string $status): int
+    {
+        return Product::whereIn('id', $ids)->update(['status' => $status]);
+    }
+
+    /**
      * Ensure slug is unique for this store
      */
     private function ensureUniqueSlug(string $slug, ?int $excludeId = null): string

@@ -50,6 +50,39 @@ class InventoryService
     }
 
     /**
+     * Get all inventory records for CSV export (unpaginated)
+     *
+     * @param array $filters
+     * @return Collection
+     */
+    public function getInventoryForExport(array $filters = []): Collection
+    {
+        $query = Inventory::query()->with(['product', 'warehouse']);
+
+        if (!empty($filters['product_id'])) {
+            $query->where('product_id', $filters['product_id']);
+        }
+
+        if (!empty($filters['warehouse_id'])) {
+            $query->where('warehouse_id', $filters['warehouse_id']);
+        }
+
+        if (isset($filters['low_stock']) && $filters['low_stock']) {
+            $query->whereColumn('quantity', '<=', 'low_stock_threshold');
+        }
+
+        if (isset($filters['out_of_stock']) && $filters['out_of_stock']) {
+            $query->where('quantity', 0);
+        }
+
+        $sortBy = $filters['sort_by'] ?? 'created_at';
+        $sortOrder = $filters['sort_order'] ?? 'desc';
+        $query->orderBy($sortBy, $sortOrder);
+
+        return $query->get();
+    }
+
+    /**
      * Get single inventory record
      */
     public function getInventoryRecord(int $id): Inventory

@@ -138,6 +138,16 @@ export const customersApi = createApi({
         cache: 'no-cache',
       }),
     }),
+
+    // Bulk action on customers
+    bulkUpdateCustomers: builder.mutation<{ message: string; updated: number }, { ids: number[]; action: string; status?: string }>({
+      query: (data) => ({
+        url: '/customers/bulk-action',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: [{ type: 'Customer', id: 'LIST' }],
+    }),
   }),
 });
 
@@ -152,4 +162,5 @@ export const {
   useVerifyEmailMutation,
   useVerifyPhoneMutation,
   useExportCustomersCsvMutation,
+  useBulkUpdateCustomersMutation,
 } = customersApi;

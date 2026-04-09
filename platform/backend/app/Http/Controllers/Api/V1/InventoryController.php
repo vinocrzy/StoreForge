@@ -10,6 +10,7 @@ use App\Models\Inventory;
 use App\Models\StockMovement;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @group Inventory
@@ -79,6 +80,81 @@ class InventoryController extends Controller
         $inventory = $this->inventoryService->getInventory($filters, $perPage);
 
         return response()->json($inventory);
+    }
+
+    /**
+     * Export inventory to CSV
+     *
+     * Download a CSV file of all inventory records for the current store, with optional filters.
+     *
+     * @queryParam product_id integer Filter by product. Example: 1
+     * @queryParam warehouse_id integer Filter by warehouse. Example: 1
+     * @queryParam low_stock boolean Filter low stock items. Example: 1
+     * @queryParam out_of_stock boolean Filter out of stock items. Example: 1
+     *
+     * @response 200 scenario="Success" Binary CSV file
+     */
+    public function export(Request $request): StreamedResponse
+    {
+        $filters = $request->only(['product_id', 'warehouse_id', 'low_stock', 'out_of_stock', 'sort_by', 'sort_order']);
+
+        // Convert string booleans from query params
+        if (isset($filters['low_stock'])) {
+            $filters['low_stock'] = filter_var($filters['low_stock'], FILTER_VALIDATE_BOOLEAN);
+        }
+        if (isset($filters['out_of_stock'])) {
+            $filters['out_of_stock'] = filter_var($filters['out_of_stock'], FILTER_VALIDATE_BOOLEAN);
+        }
+
+        $inventory = $this->inventoryService->getInventoryForExport($filters);
+
+        $filename = 'inventory_export_' . now()->format('Y_m_d_His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+        ];
+
+        return response()->stream(function () use ($inventory) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, [
+                'ID', 'Product Name', 'Product SKU', 'Warehouse', 'Warehouse Code',
+                'Quantity On Hand', 'Reserved Quantity', 'Available Quantity',
+                'Low Stock Threshold', 'Stock Status', 'Created At', 'Updated At',
+            ]);
+
+            foreach ($inventory as $record) {
+                $available = $record->available_quantity;
+                $threshold = $record->low_stock_threshold;
+
+                if ($available <= 0) {
+                    $stockStatus = 'Out of Stock';
+                } elseif ($available <= $threshold) {
+                    $stockStatus = 'Low Stock';
+                } else {
+                    $stockStatus = 'In Stock';
+                }
+
+                fputcsv($handle, [
+                    $record->id,
+                    $record->product?->name ?? '',
+                    $record->product?->sku ?? '',
+                    $record->warehouse?->name ?? '',
+                    $record->warehouse?->code ?? '',
+                    $record->quantity,
+                    $record->reserved_quantity,
+                    $record->available_quantity,
+                    $record->low_stock_threshold,
+                    $stockStatus,
+                    $record->created_at->toISOString(),
+                    $record->updated_at->toISOString(),
+                ]);
+            }
+
+            fclose($handle);
+        }, 200, $headers);
     }
 
     /**

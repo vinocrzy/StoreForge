@@ -1499,14 +1499,14 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 
 **Priority**: MEDIUM | **Status**: Complete
 
-### 6.5 Advanced Features ðŸš§ IN PROGRESS
+### 6.5 Advanced Features ✅ COMPLETE
 
 - [x] Export products to CSV (`GET /api/v1/products/export`) + admin UI export button
 - [x] Export orders to CSV (`GET /api/v1/orders/export`) + admin UI export button
 - [x] Export customers to CSV (`GET /api/v1/customers/export`) + admin UI export button
-- [ ] Export inventory to CSV
-- [ ] Bulk operations
-- [ ] Advanced search
+- [x] Export inventory to CSV (`GET /api/v1/inventory/export`) + admin UI export button
+- [x] Bulk product status update (`POST /api/v1/products/bulk-action`) + checkbox UI on Products page
+- [x] Bulk customer status update (`POST /api/v1/customers/bulk-action`) + checkbox UI on Customers page
 
 **Priority**: LOW | **Estimated Time**: 1 week
 

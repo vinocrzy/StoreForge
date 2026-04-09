@@ -312,4 +312,39 @@ class ProductController extends Controller
 
         return response()->json(['data' => $product]);
     }
+
+    /**
+     * Bulk update products
+     *
+     * Perform bulk actions on multiple products (e.g., status update).
+     *
+     * @bodyParam ids array required Array of product IDs. Example: [1, 2, 3]
+     * @bodyParam action string required Action to perform: update_status. Example: update_status
+     * @bodyParam status string required (for update_status) New status: active, draft, archived. Example: active
+     *
+     * @response 200 {
+     *  "message": "3 products updated successfully",
+     *  "updated": 3
+     * }
+     */
+    public function bulkAction(Request $request): JsonResponse
+    {
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer|exists:products,id',
+            'action' => 'required|in:update_status',
+            'status' => 'required_if:action,update_status|in:active,draft,archived',
+        ]);
+
+        $updated = 0;
+
+        if ($request->action === 'update_status') {
+            $updated = $this->productService->bulkUpdateStatus($request->ids, $request->status);
+        }
+
+        return response()->json([
+            'message' => "{$updated} products updated successfully",
+            'updated' => $updated,
+        ]);
+    }
 }

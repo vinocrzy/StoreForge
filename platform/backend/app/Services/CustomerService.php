@@ -323,4 +323,16 @@ class CustomerService
                 ->count(),
         ];
     }
+
+    /**
+     * Bulk update customer status
+     *
+     * @param array $ids Customer IDs
+     * @param string $status New status: active, inactive, banned
+     * @return int Number of updated customers
+     */
+    public function bulkUpdateStatus(array $ids, string $status): int
+    {
+        return Customer::whereIn('id', $ids)->update(['status' => $status]);
+    }
 }

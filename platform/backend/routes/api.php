@@ -49,6 +49,7 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     
     // Products
     Route::get('/products/export', [ProductController::class, 'export']);
+    Route::post('/products/bulk-action', [ProductController::class, 'bulkAction']);
     Route::apiResource('products', ProductController::class);
     Route::post('/products/{id}/stock', [ProductController::class, 'updateStock']);
     
@@ -60,6 +61,7 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     
     // Customers
     Route::get('/customers/export', [CustomerController::class, 'export']);
+    Route::post('/customers/bulk-action', [CustomerController::class, 'bulkAction']);
     Route::get('/customers/statistics', [CustomerController::class, 'statistics']);
     Route::post('/customers/{id}/status', [CustomerController::class, 'updateStatus']);
     Route::post('/customers/{id}/verify-email', [CustomerController::class, 'verifyEmail']);
@@ -77,6 +79,7 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::patch('/warehouses/{id}/set-default', [WarehouseController::class, 'setDefault']);
     
     // Inventory
+    Route::get('/inventory/export', [InventoryController::class, 'export']);
     Route::get('/inventory/movements', [InventoryController::class, 'movements']);
     Route::get('/inventory/product/{productId}', [InventoryController::class, 'byProduct']);
     Route::post('/inventory/adjust', [InventoryController::class, 'adjust']);

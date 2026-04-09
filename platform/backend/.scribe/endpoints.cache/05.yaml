@@ -97,6 +97,92 @@ endpoints:
   -
     custom: []
     httpMethods:
+      - POST
+    uri: api/v1/customers/bulk-action
+    metadata:
+      custom: []
+      groupName: Customers
+      groupDescription: |-
+
+        Manage customers for the authenticated store. All operations are automatically scoped to the current tenant.
+        Supports phone-first authentication strategy with optional email.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Bulk update customers'
+      description: 'Perform bulk actions on multiple customers (e.g., status update).'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      ids:
+        custom: []
+        name: ids
+        description: 'Array of customer IDs.'
+        required: true
+        example:
+          - 1
+          - 2
+          - 3
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      action:
+        custom: []
+        name: action
+        description: 'Action to perform: update_status.'
+        required: true
+        example: update_status
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      status:
+        custom: []
+        name: status
+        description: '(for update_status) New status: active, inactive, banned.'
+        required: true
+        example: active
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      ids:
+        - 1
+        - 2
+        - 3
+      action: update_status
+      status: active
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+           "message": "3 customers updated successfully",
+           "updated": 3
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
       - GET
     uri: api/v1/customers/statistics
     metadata:
@@ -1346,7 +1432,7 @@ endpoints:
         name: email_verified_at
         description: 'Must be a valid date.'
         required: false
-        example: '2026-04-09T10:15:07'
+        example: '2026-04-09T10:29:30'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1357,7 +1443,7 @@ endpoints:
         name: phone_verified_at
         description: 'Must be a valid date.'
         required: false
-        example: '2026-04-09T10:15:07'
+        example: '2026-04-09T10:29:30'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1515,8 +1601,8 @@ endpoints:
       status: active
       date_of_birth: '1990-01-15'
       gender: male
-      email_verified_at: '2026-04-09T10:15:07'
-      phone_verified_at: '2026-04-09T10:15:07'
+      email_verified_at: '2026-04-09T10:29:30'
+      phone_verified_at: '2026-04-09T10:29:30'
       address:
         type: both
         label: Home
@@ -1778,7 +1864,7 @@ endpoints:
         name: email_verified_at
         description: 'Must be a valid date.'
         required: false
-        example: '2026-04-09T10:15:07'
+        example: '2026-04-09T10:29:30'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1789,7 +1875,7 @@ endpoints:
         name: phone_verified_at
         description: 'Must be a valid date.'
         required: false
-        example: '2026-04-09T10:15:07'
+        example: '2026-04-09T10:29:30'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1950,8 +2036,8 @@ endpoints:
       status: active
       date_of_birth: '1990-01-15'
       gender: male
-      email_verified_at: '2026-04-09T10:15:07'
-      phone_verified_at: '2026-04-09T10:15:07'
+      email_verified_at: '2026-04-09T10:29:30'
+      phone_verified_at: '2026-04-09T10:29:30'
       address:
         type: shipping
         label: mqeopfuudtdsufvyvddqa

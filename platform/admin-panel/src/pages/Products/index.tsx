@@ -4,6 +4,7 @@ import {
   useGetProductsQuery,
   useDeleteProductMutation,
   useExportProductsCsvMutation,
+  useBulkUpdateProductsMutation,
 } from '../../services/products';
 import Button from '../../components/ui/button/Button';
 import Badge from '../../components/ui/badge/Badge';
@@ -23,10 +24,13 @@ const ProductsPage = () => {
   
   const [alert, setAlert] = useState<{type: 'success' | 'error', message: string} | null>(null);
   const [deleteProductId, setDeleteProductId] = useState<number | null>(null);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [bulkStatus, setBulkStatus] = useState<string>('');
 
   const { data: productsData, isLoading, error } = useGetProductsQuery(filters);
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
   const [exportProductsCsv, { isLoading: isExporting }] = useExportProductsCsvMutation();
+  const [bulkUpdateProducts, { isLoading: isBulkUpdating }] = useBulkUpdateProductsMutation();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters((prev) => ({ ...prev, search: e.target.value, page: 1 }));
@@ -66,6 +70,32 @@ const ProductsPage = () => {
     } catch {
       setAlert({ type: 'error', message: 'Failed to export products CSV' });
     }
+  };
+
+  const handleBulkUpdate = async () => {
+    if (selectedIds.length === 0 || !bulkStatus) return;
+    try {
+      const result = await bulkUpdateProducts({ ids: selectedIds, action: 'update_status', status: bulkStatus }).unwrap();
+      setAlert({ type: 'success', message: result.message });
+      setSelectedIds([]);
+      setBulkStatus('');
+    } catch {
+      setAlert({ type: 'error', message: 'Failed to update products. Please try again.' });
+    }
+  };
+
+  const handleSelectAll = () => {
+    if (selectedIds.length === products.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(products.map(p => p.id));
+    }
+  };
+
+  const handleToggleSelect = (id: number) => {
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
   };
 
   const getStatusBadge = (status: string) => {
@@ -224,12 +254,51 @@ const ProductsPage = () => {
         </div>
       </div>
 
+      {selectedIds.length > 0 && (
+        <div className="mb-4 flex items-center gap-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 p-3 border border-blue-200 dark:border-blue-700">
+          <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+            {selectedIds.length} product{selectedIds.length !== 1 ? 's' : ''} selected
+          </span>
+          <select
+            value={bulkStatus}
+            onChange={(e) => setBulkStatus(e.target.value)}
+            className="rounded border border-stroke dark:border-strokedark bg-white dark:bg-boxdark py-1.5 px-3 text-sm text-dark dark:text-white focus:border-primary focus:outline-none"
+          >
+            <option value="">Change status to...</option>
+            <option value="active">Active</option>
+            <option value="draft">Draft</option>
+            <option value="archived">Archived</option>
+          </select>
+          <Button
+            variant="primary"
+            onClick={handleBulkUpdate}
+            disabled={!bulkStatus || isBulkUpdating}
+          >
+            {isBulkUpdating ? 'Updating...' : 'Apply'}
+          </Button>
+          <button
+            onClick={() => setSelectedIds([])}
+            className="ml-auto text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          >
+            Clear selection
+          </button>
+        </div>
+      )}
+
       {/* Products Table */}
       <div className="bg-white dark:bg-boxdark rounded-lg shadow border border-stroke dark:border-strokedark overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="bg-gray-50 dark:bg-boxdark-2 border-b border-stroke dark:border-strokedark">
+                <th className="px-4 py-3 text-left">
+                  <input
+                    type="checkbox"
+                    checked={products.length > 0 && selectedIds.length === products.length}
+                    onChange={handleSelectAll}
+                    className="rounded border-gray-300"
+                  />
+                </th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">
                   Product
                 </th>
@@ -253,7 +322,7 @@ const ProductsPage = () => {
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+                  <td colSpan={7} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
                     No products found. Click "Add Product" to create your first product.
                   </td>
                 </tr>
@@ -263,6 +332,14 @@ const ProductsPage = () => {
                     key={product.id}
                     className="hover:bg-gray-50 dark:hover:bg-boxdark-2 transition-colors"
                   >
+                    <td className="px-4 py-4">
+                      <input
+                        type="checkbox"
+                        checked={selectedIds.includes(product.id)}
+                        onChange={() => handleToggleSelect(product.id)}
+                        className="rounded border-gray-300"
+                      />
+                    </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="h-12 w-12 flex-shrink-0">

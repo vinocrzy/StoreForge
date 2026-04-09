@@ -5,6 +5,7 @@ import Button from '../../components/ui/button/Button';
 import { useGetProductsQuery } from '../../services/products';
 import {
   useAdjustInventoryMutation,
+  useExportInventoryCsvMutation,
   useGetInventoryQuery,
   useGetWarehousesQuery,
 } from '../../services/inventory';
@@ -40,6 +41,31 @@ const InventoryPage = () => {
   const { data: warehousesData } = useGetWarehousesQuery({ per_page: 100, sort_by: 'name', sort_order: 'asc' });
   const { data: productsData } = useGetProductsQuery({ per_page: 100, page: 1 });
   const [adjustInventory, { isLoading: isAdjusting }] = useAdjustInventoryMutation();
+  const [exportInventoryCsv, { isLoading: isExporting }] = useExportInventoryCsvMutation();
+
+  const handleExportCsv = async () => {
+    try {
+      const { product_id, warehouse_id } = filters;
+      const exportFilters: { product_id?: number; warehouse_id?: number; low_stock?: boolean; out_of_stock?: boolean } = {
+        product_id,
+        warehouse_id,
+        low_stock: stockStatus === 'low' ? true : undefined,
+        out_of_stock: stockStatus === 'out' ? true : undefined,
+      };
+      const blob = await exportInventoryCsv(exportFilters).unwrap();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `inventory_export_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      setAlert({ type: 'success', message: 'Inventory exported successfully!' });
+    } catch {
+      setAlert({ type: 'error', message: 'Failed to export inventory. Please try again.' });
+    }
+  };
 
   const inventory = inventoryData?.data ?? [];
   const warehouses = warehousesData?.data ?? [];
@@ -99,9 +125,18 @@ const InventoryPage = () => {
             Monitor inventory across all warehouses ({meta?.total ?? 0} records)
           </p>
         </div>
-        <Button variant="primary" onClick={openAdjustModal}>
-          Adjust Stock
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={handleExportCsv}
+            disabled={isExporting}
+          >
+            {isExporting ? 'Exporting...' : 'Export CSV'}
+          </Button>
+          <Button variant="primary" onClick={openAdjustModal}>
+            + Adjust Stock
+          </Button>
+        </div>
       </div>
 
       {alert && (
