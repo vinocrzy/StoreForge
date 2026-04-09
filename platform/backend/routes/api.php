@@ -59,6 +59,7 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::apiResource('categories', CategoryController::class);
     
     // Customers
+    Route::get('/customers/export', [CustomerController::class, 'export']);
     Route::get('/customers/statistics', [CustomerController::class, 'statistics']);
     Route::post('/customers/{id}/status', [CustomerController::class, 'updateStatus']);
     Route::post('/customers/{id}/verify-email', [CustomerController::class, 'verifyEmail']);
@@ -100,6 +101,7 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::patch('/profile/password', [ProfileController::class, 'changePassword']);
 
     // Orders
+    Route::get('/orders/export', [OrderController::class, 'export']);
     Route::get('/orders/statistics', [OrderController::class, 'statistics']);
     Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus']);
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel']);

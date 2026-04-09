@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @group Order Management
@@ -283,6 +284,71 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         }
+    }
+
+    /**
+     * Export orders to CSV
+     *
+     * Download a CSV file of all orders for the current store, with optional filters.
+     *
+     * @queryParam status string Filter by order status. Example: confirmed
+     * @queryParam payment_status string Filter by payment status. Example: paid
+     * @queryParam search string Search by order number or customer name. Example: ORD-001
+     * @queryParam customer_id integer Filter by customer ID. Example: 5
+     *
+     * @response 200 scenario="Success" Binary CSV file
+     */
+    public function export(Request $request): StreamedResponse
+    {
+        $filters = $request->only(['status', 'payment_status', 'search', 'customer_id']);
+        $orders = $this->orderService->getOrdersForExport($filters);
+
+        $filename = 'orders_export_' . now()->format('Y_m_d_His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+        ];
+
+        return response()->stream(function () use ($orders) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, [
+                'ID', 'Order Number', 'Customer Name', 'Customer Email', 'Customer Phone',
+                'Status', 'Payment Status', 'Fulfillment Status',
+                'Subtotal', 'Discount', 'Shipping', 'Tax', 'Total',
+                'Currency', 'Items Count', 'Placed At', 'Created At',
+            ]);
+
+            foreach ($orders as $order) {
+                $customerName = $order->customer
+                    ? trim(($order->customer->first_name ?? '') . ' ' . ($order->customer->last_name ?? ''))
+                    : '';
+
+                fputcsv($handle, [
+                    $order->id,
+                    $order->order_number,
+                    $customerName,
+                    $order->customer?->email ?? '',
+                    $order->customer?->phone ?? '',
+                    $order->status,
+                    $order->payment_status,
+                    $order->fulfillment_status,
+                    number_format((float) $order->subtotal, 2, '.', ''),
+                    number_format((float) $order->discount_amount, 2, '.', ''),
+                    number_format((float) $order->shipping_amount, 2, '.', ''),
+                    number_format((float) $order->tax_amount, 2, '.', ''),
+                    number_format((float) $order->total, 2, '.', ''),
+                    $order->currency,
+                    $order->items->count(),
+                    $order->placed_at?->toISOString() ?? $order->created_at->toISOString(),
+                    $order->created_at->toISOString(),
+                ]);
+            }
+
+            fclose($handle);
+        }, 200, $headers);
     }
 
     /**

@@ -1502,7 +1502,9 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 ### 6.5 Advanced Features ðŸš§ IN PROGRESS
 
 - [x] Export products to CSV (`GET /api/v1/products/export`) + admin UI export button
-- [ ] Export orders/customers/inventory to CSV
+- [x] Export orders to CSV (`GET /api/v1/orders/export`) + admin UI export button
+- [x] Export customers to CSV (`GET /api/v1/customers/export`) + admin UI export button
+- [ ] Export inventory to CSV
 - [ ] Bulk operations
 - [ ] Advanced search
 

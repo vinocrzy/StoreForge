@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useGetCustomersQuery } from '../../services/customers';
+import { useGetCustomersQuery, useExportCustomersCsvMutation } from '../../services/customers';
 import Button from '../../components/ui/button/Button';
 import Badge from '../../components/ui/badge/Badge';
 import Alert from '../../components/ui/alert/Alert';
@@ -20,6 +20,27 @@ const CustomersPage = () => {
   const { data: customersData, isLoading, error } = useGetCustomersQuery(filters);
   const customers = customersData?.data || [];
   const meta = customersData?.meta;
+
+  const [exportCustomersCsv, { isLoading: isExporting }] = useExportCustomersCsvMutation();
+  const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  const handleExportCsv = async () => {
+    try {
+      const { search, status, sort_by, sort_order } = filters;
+      const blob = await exportCustomersCsv({ search, status, sort_by, sort_order }).unwrap();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `customers_export_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      setAlert({ type: 'success', message: 'Customers exported successfully!' });
+    } catch {
+      setAlert({ type: 'error', message: 'Failed to export customers. Please try again.' });
+    }
+  };
 
   // Handle filter changes
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +95,16 @@ const CustomersPage = () => {
 
   return (
     <div className="p-6">
+      {alert && (
+        <div className="mb-4">
+          <Alert
+            variant={alert.type}
+            title={alert.type === 'success' ? 'Success' : 'Error'}
+            message={alert.message}
+          />
+        </div>
+      )}
+
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
@@ -82,12 +113,21 @@ const CustomersPage = () => {
             View and manage your customer base
           </p>
         </div>
-        <Button
-          variant="primary"
-          onClick={() => navigate('/customers/new')}
-        >
-          + Add Customer
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={handleExportCsv}
+            disabled={isExporting}
+          >
+            {isExporting ? 'Exporting...' : 'Export CSV'}
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => navigate('/customers/new')}
+          >
+            + Add Customer
+          </Button>
+        </div>
       </div>
 
       {/* Filters */}

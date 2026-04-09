@@ -127,6 +127,17 @@ export const customersApi = createApi({
       transformResponse: (response: CustomerResponse) => response.data,
       invalidatesTags: (_result, _error, id) => [{ type: 'Customer', id }],
     }),
+
+    // Export customers to CSV
+    exportCustomersCsv: builder.mutation<Blob, Partial<CustomerFilters>>({
+      query: (filters = {}) => ({
+        url: '/customers/export',
+        method: 'GET',
+        params: filters,
+        responseHandler: async (response) => response.blob(),
+        cache: 'no-cache',
+      }),
+    }),
   }),
 });
 
@@ -140,4 +151,5 @@ export const {
   useUpdateCustomerStatusMutation,
   useVerifyEmailMutation,
   useVerifyPhoneMutation,
+  useExportCustomersCsvMutation,
 } = customersApi;

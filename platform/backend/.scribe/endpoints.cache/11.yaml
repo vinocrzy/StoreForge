@@ -9,6 +9,93 @@ endpoints:
     custom: []
     httpMethods:
       - GET
+    uri: api/v1/orders/export
+    metadata:
+      custom: []
+      groupName: 'Order Management'
+      groupDescription: |-
+
+        APIs for managing orders, order status, and payments
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Export orders to CSV'
+      description: 'Download a CSV file of all orders for the current store, with optional filters.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      status:
+        custom: []
+        name: status
+        description: 'Filter by order status.'
+        required: false
+        example: confirmed
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      payment_status:
+        custom: []
+        name: payment_status
+        description: 'Filter by payment status.'
+        required: false
+        example: paid
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      search:
+        custom: []
+        name: search
+        description: 'Search by order number or customer name.'
+        required: false
+        example: ORD-001
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      customer_id:
+        custom: []
+        name: customer_id
+        description: 'Filter by customer ID.'
+        required: false
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      status: confirmed
+      payment_status: paid
+      search: ORD-001
+      customer_id: 5
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: 'Binary CSV file'
+        headers: []
+        description: Success
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
     uri: api/v1/orders/statistics
     metadata:
       custom: []
@@ -277,7 +364,7 @@ endpoints:
         name: gateway
         description: ''
         required: false
-        example: razorpay
+        example: square
         type: string
         enumValues:
           - manual
@@ -337,7 +424,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: failed
+        example: pending
         type: string
         enumValues:
           - pending
@@ -373,12 +460,12 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       order_id: 17
-      gateway: razorpay
+      gateway: square
       payment_method: bank_transfer
       amount: 170.5
       currency: qeo
       transaction_id: TXN-123456
-      status: failed
+      status: pending
       payment_notes: 'Received via bank transfer'
       metadata:
         bank: Chase
@@ -650,7 +737,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: confirmed
+        example: processing
         type: string
         enumValues:
           - pending
@@ -891,7 +978,7 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       customer_id: 5
-      status: confirmed
+      status: processing
       payment_status: failed
       currency: mqe
       customer_note: 'Please gift wrap'
@@ -1044,7 +1131,7 @@ endpoints:
         name: status
         description: ''
         required: false
-        example: cancelled
+        example: refunded
         type: string
         enumValues:
           - pending
@@ -1062,7 +1149,7 @@ endpoints:
         name: payment_status
         description: ''
         required: false
-        example: partially_refunded
+        example: failed
         type: string
         enumValues:
           - pending
@@ -1111,7 +1198,7 @@ endpoints:
         name: payment_method
         description: ''
         required: false
-        example: card
+        example: wallet
         type: string
         enumValues:
           - manual
@@ -1246,12 +1333,12 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       customer_id: 17
-      status: cancelled
-      payment_status: partially_refunded
+      status: refunded
+      payment_status: failed
       currency: mqe
       customer_note: 'Updated note'
       admin_note: 'Admin updated'
-      payment_method: card
+      payment_method: wallet
       billing_address_id: 17
       shipping_address_id: 17
       coupon_code: mqeopfuudtdsufvyvddqa

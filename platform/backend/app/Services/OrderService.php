@@ -353,6 +353,23 @@ class OrderService
     }
     
     /**
+     * Get orders for CSV export with optional filtering (unpaginated)
+     *
+     * @param array $filters
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getOrdersForExport(array $filters = []): \Illuminate\Database\Eloquent\Collection
+    {
+        return Order::with(['customer'])
+            ->when($filters['status'] ?? null, fn($q) => $q->status($filters['status']))
+            ->when($filters['payment_status'] ?? null, fn($q) => $q->paymentStatus($filters['payment_status']))
+            ->when($filters['customer_id'] ?? null, fn($q) => $q->where('customer_id', $filters['customer_id']))
+            ->when($filters['search'] ?? null, fn($q) => $q->search($filters['search']))
+            ->latest('created_at')
+            ->get();
+    }
+
+    /**
      * Get order statistics
      *
      * @return array

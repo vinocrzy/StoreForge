@@ -63,6 +63,31 @@ class CustomerService
     }
 
     /**
+     * Get all customers for CSV export with optional filtering (unpaginated)
+     *
+     * @param array $filters
+     * @return Collection
+     */
+    public function getCustomersForExport(array $filters = []): Collection
+    {
+        $query = Customer::query();
+
+        if (!empty($filters['search'])) {
+            $query->search($filters['search']);
+        }
+
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        $sortBy = $filters['sort_by'] ?? 'created_at';
+        $sortOrder = $filters['sort_order'] ?? 'desc';
+        $query->orderBy($sortBy, $sortOrder);
+
+        return $query->get();
+    }
+
+    /**
      * Get single customer by ID with relationships
      */
     public function getCustomer(int $id): Customer

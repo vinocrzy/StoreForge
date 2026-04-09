@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useGetOrdersQuery } from '../../services/orders';
+import { useGetOrdersQuery, useExportOrdersCsvMutation } from '../../services/orders';
 import Button from '../../components/ui/button/Button';
 import Badge from '../../components/ui/badge/Badge';
 import Alert from '../../components/ui/alert/Alert';
@@ -22,8 +22,26 @@ const OrdersPage = () => {
   const orders = ordersData?.data || [];
   const meta = ordersData?.meta;
 
-  // TODO: Implement alert state when needed
-  // const [alert, setAlert] = useState<{type: 'success' | 'error', message: string} | null>(null);
+  const [exportOrdersCsv, { isLoading: isExporting }] = useExportOrdersCsvMutation();
+  const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  const handleExportCsv = async () => {
+    try {
+      const { status, payment_status, search, customer_id } = filters;
+      const blob = await exportOrdersCsv({ status, payment_status, search, customer_id }).unwrap();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `orders_export_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      setAlert({ type: 'success', message: 'Orders exported successfully!' });
+    } catch {
+      setAlert({ type: 'error', message: 'Failed to export orders. Please try again.' });
+    }
+  };
 
   // Handle filter changes
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,7 +142,15 @@ const OrdersPage = () => {
 
   return (
     <div className="p-6">
-      {/* TODO: Implement alert display when needed */}
+      {alert && (
+        <div className="mb-4">
+          <Alert
+            variant={alert.type}
+            title={alert.type === 'success' ? 'Success' : 'Error'}
+            message={alert.message}
+          />
+        </div>
+      )}
 
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
@@ -134,12 +160,21 @@ const OrdersPage = () => {
             Manage customer orders and fulfillment
           </p>
         </div>
-        <Button
-          variant="primary"
-          onClick={() => navigate('/orders/new')}
-        >
-          + Create Order
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={handleExportCsv}
+            disabled={isExporting}
+          >
+            {isExporting ? 'Exporting...' : 'Export CSV'}
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => navigate('/orders/new')}
+          >
+            + Create Order
+          </Button>
+        </div>
       </div>
 
       {/* Filters */}

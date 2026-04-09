@@ -8,6 +8,7 @@ use App\Http\Requests\CustomerAddressRequest;
 use App\Services\CustomerService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @group Customers
@@ -325,6 +326,61 @@ class CustomerController extends Controller
         $stats = $this->customerService->getStatistics();
 
         return response()->json(['data' => $stats]);
+    }
+
+    /**
+     * Export customers to CSV
+     *
+     * Download a CSV file of all customers for the current store, with optional filters.
+     *
+     * @queryParam search string Search customers by name, email, or phone. Example: john
+     * @queryParam status string Filter by status. Example: active
+     * @queryParam sort_by string Sort field. Example: created_at
+     * @queryParam sort_order string Sort direction: asc, desc. Example: desc
+     *
+     * @response 200 scenario="Success" Binary CSV file
+     */
+    public function export(Request $request): StreamedResponse
+    {
+        $filters = $request->only(['search', 'status', 'sort_by', 'sort_order']);
+        $customers = $this->customerService->getCustomersForExport($filters);
+
+        $filename = 'customers_export_' . now()->format('Y_m_d_His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+        ];
+
+        return response()->stream(function () use ($customers) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, [
+                'ID', 'First Name', 'Last Name', 'Email', 'Phone',
+                'Status', 'Gender',
+                'Email Verified', 'Phone Verified',
+                'Last Login', 'Created At',
+            ]);
+
+            foreach ($customers as $customer) {
+                fputcsv($handle, [
+                    $customer->id,
+                    $customer->first_name,
+                    $customer->last_name,
+                    $customer->email ?? '',
+                    $customer->phone,
+                    $customer->status,
+                    $customer->gender ?? '',
+                    $customer->email_verified_at ? 'Yes' : 'No',
+                    $customer->phone_verified_at ? 'Yes' : 'No',
+                    $customer->last_login_at?->toISOString() ?? '',
+                    $customer->created_at->toISOString(),
+                ]);
+            }
+
+            fclose($handle);
+        }, 200, $headers);
     }
 
     // ===== Address Management =====

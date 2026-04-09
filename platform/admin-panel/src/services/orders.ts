@@ -165,6 +165,17 @@ export const ordersApi = createApi({
       transformResponse: (response: OrderStatisticsResponse) => response.data,
       providesTags: [{ type: 'OrderStatistics', id: 'CURRENT' }],
     }),
+
+    // Export orders to CSV
+    exportOrdersCsv: builder.mutation<Blob, Partial<OrderFilters>>({
+      query: (filters = {}) => ({
+        url: '/orders/export',
+        method: 'GET',
+        params: filters,
+        responseHandler: async (response) => response.blob(),
+        cache: 'no-cache',
+      }),
+    }),
   }),
 });
 
@@ -180,4 +191,5 @@ export const {
   useRecordPaymentMutation,
   useFulfillOrderMutation,
   useGetOrderStatisticsQuery,
+  useExportOrdersCsvMutation,
 } = ordersApi;
