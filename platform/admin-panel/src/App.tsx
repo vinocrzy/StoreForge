@@ -26,6 +26,7 @@ import StoreDetailsPage from "./pages/Stores/StoreDetails";
 import InventoryPage from "./pages/Inventory";
 import WarehousesPage from "./pages/Inventory/Warehouses";
 import StockMovementsPage from "./pages/Inventory/StockMovements";
+import StockAlertsPage from "./pages/Inventory/StockAlerts";
 import StoreSettingsPage from "./pages/Settings/StoreSettings";
 
 // Protected Route Component
@@ -111,6 +112,7 @@ function App() {
             <Route path="/inventory" element={<StoreAdminOnlyRoute><InventoryPage /></StoreAdminOnlyRoute>} />
             <Route path="/warehouses" element={<StoreAdminOnlyRoute><WarehousesPage /></StoreAdminOnlyRoute>} />
             <Route path="/inventory/movements" element={<StoreAdminOnlyRoute><StockMovementsPage /></StoreAdminOnlyRoute>} />
+            <Route path="/inventory/alerts" element={<StoreAdminOnlyRoute><StockAlertsPage /></StoreAdminOnlyRoute>} />
 
             {/* Settings */}
             <Route path="/settings/store" element={<StoreAdminOnlyRoute><StoreSettingsPage /></StoreAdminOnlyRoute>} />

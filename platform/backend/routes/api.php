@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\StockAlertController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\StoreController;
 use App\Http\Controllers\Api\V1\DashboardController;
+use App\Http\Controllers\Api\V1\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +86,11 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     // Stock alerts
     Route::get('/stock-alerts', [StockAlertController::class, 'index']);
     Route::patch('/stock-alerts/{id}/resolve', [StockAlertController::class, 'resolve']);
+
+    // Store Settings
+    Route::get('/settings', [SettingsController::class, 'index']);
+    Route::get('/settings/{group}', [SettingsController::class, 'show']);
+    Route::patch('/settings', [SettingsController::class, 'update']);
     
     // Orders
     Route::get('/orders/statistics', [OrderController::class, 'statistics']);

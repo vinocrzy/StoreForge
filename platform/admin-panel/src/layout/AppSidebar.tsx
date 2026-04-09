@@ -68,6 +68,7 @@ const navItems: NavItem[] = [
       { name: "Stock Levels", path: "/inventory" },
       { name: "Warehouses", path: "/warehouses" },
       { name: "Stock Movements", path: "/inventory/movements" },
+      { name: "Stock Alerts", path: "/inventory/alerts" },
     ],
   },
   {

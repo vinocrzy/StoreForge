@@ -308,6 +308,22 @@
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-store-settings" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="store-settings">
+                    <a href="#store-settings">Store Settings</a>
+                </li>
+                                    <ul id="tocify-subheader-store-settings" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="store-settings-GETapi-v1-settings">
+                                <a href="#store-settings-GETapi-v1-settings">Get all settings</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="store-settings-GETapi-v1-settings--group-">
+                                <a href="#store-settings-GETapi-v1-settings--group-">Get settings by group</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="store-settings-PATCHapi-v1-settings">
+                                <a href="#store-settings-PATCHapi-v1-settings">Update settings</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
                     <ul id="tocify-header-stores" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="stores">
                     <a href="#stores">Stores</a>
@@ -5021,8 +5037,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"status\": \"active\",
     \"date_of_birth\": \"1990-01-15\",
     \"gender\": \"male\",
-    \"email_verified_at\": \"2026-04-09T08:58:12\",
-    \"phone_verified_at\": \"2026-04-09T08:58:12\",
+    \"email_verified_at\": \"2026-04-09T09:28:48\",
+    \"phone_verified_at\": \"2026-04-09T09:28:48\",
     \"address\": {
         \"type\": \"both\",
         \"label\": \"Home\",
@@ -5060,8 +5076,8 @@ let body = {
     "status": "active",
     "date_of_birth": "1990-01-15",
     "gender": "male",
-    "email_verified_at": "2026-04-09T08:58:12",
-    "phone_verified_at": "2026-04-09T08:58:12",
+    "email_verified_at": "2026-04-09T09:28:48",
+    "phone_verified_at": "2026-04-09T09:28:48",
     "address": {
         "type": "both",
         "label": "Home",
@@ -5297,10 +5313,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email_verified_at"                data-endpoint="POSTapi-v1-customers"
-               value="2026-04-09T08:58:12"
+               value="2026-04-09T09:28:48"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-04-09T08:58:12</code></p>
+<p>Must be a valid date. Example: <code>2026-04-09T09:28:48</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>phone_verified_at</code></b>&nbsp;&nbsp;
@@ -5309,10 +5325,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="phone_verified_at"                data-endpoint="POSTapi-v1-customers"
-               value="2026-04-09T08:58:12"
+               value="2026-04-09T09:28:48"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-04-09T08:58:12</code></p>
+<p>Must be a valid date. Example: <code>2026-04-09T09:28:48</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
         <details>
@@ -5656,10 +5672,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"status\": \"active\",
     \"date_of_birth\": \"1990-01-15\",
     \"gender\": \"male\",
-    \"email_verified_at\": \"2026-04-09T08:58:12\",
-    \"phone_verified_at\": \"2026-04-09T08:58:12\",
+    \"email_verified_at\": \"2026-04-09T09:28:48\",
+    \"phone_verified_at\": \"2026-04-09T09:28:48\",
     \"address\": {
-        \"type\": \"billing\",
+        \"type\": \"shipping\",
         \"label\": \"mqeopfuudtdsufvyvddqa\",
         \"first_name\": \"mniihfqcoynlazghdtqtq\",
         \"last_name\": \"xbajwbpilpmufinllwloa\",
@@ -5695,10 +5711,10 @@ let body = {
     "status": "active",
     "date_of_birth": "1990-01-15",
     "gender": "male",
-    "email_verified_at": "2026-04-09T08:58:12",
-    "phone_verified_at": "2026-04-09T08:58:12",
+    "email_verified_at": "2026-04-09T09:28:48",
+    "phone_verified_at": "2026-04-09T09:28:48",
     "address": {
-        "type": "billing",
+        "type": "shipping",
         "label": "mqeopfuudtdsufvyvddqa",
         "first_name": "mniihfqcoynlazghdtqtq",
         "last_name": "xbajwbpilpmufinllwloa",
@@ -5941,10 +5957,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email_verified_at"                data-endpoint="PUTapi-v1-customers--id-"
-               value="2026-04-09T08:58:12"
+               value="2026-04-09T09:28:48"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-04-09T08:58:12</code></p>
+<p>Must be a valid date. Example: <code>2026-04-09T09:28:48</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>phone_verified_at</code></b>&nbsp;&nbsp;
@@ -5953,10 +5969,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="phone_verified_at"                data-endpoint="PUTapi-v1-customers--id-"
-               value="2026-04-09T08:58:12"
+               value="2026-04-09T09:28:48"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-04-09T08:58:12</code></p>
+<p>Must be a valid date. Example: <code>2026-04-09T09:28:48</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
         <details>
@@ -5975,10 +5991,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="address.type"                data-endpoint="PUTapi-v1-customers--id-"
-               value="billing"
+               value="shipping"
                data-component="body">
     <br>
-<p>This field is required when <code>address</code> is present. Example: <code>billing</code></p>
+<p>This field is required when <code>address</code> is present. Example: <code>shipping</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>billing</code></li> <li><code>shipping</code></li> <li><code>both</code></li></ul>
                     </div>
@@ -9677,12 +9693,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"order_id\": 17,
-    \"gateway\": \"manual\",
+    \"gateway\": \"paypal\",
     \"payment_method\": \"bank_transfer\",
     \"amount\": 170.5,
     \"currency\": \"qeo\",
     \"transaction_id\": \"TXN-123456\",
-    \"status\": \"completed\",
+    \"status\": \"refunded\",
     \"payment_notes\": \"Received via bank transfer\",
     \"metadata\": {
         \"bank\": \"Chase\",
@@ -9704,12 +9720,12 @@ const headers = {
 
 let body = {
     "order_id": 17,
-    "gateway": "manual",
+    "gateway": "paypal",
     "payment_method": "bank_transfer",
     "amount": 170.5,
     "currency": "qeo",
     "transaction_id": "TXN-123456",
-    "status": "completed",
+    "status": "refunded",
     "payment_notes": "Received via bank transfer",
     "metadata": {
         "bank": "Chase",
@@ -9858,10 +9874,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="gateway"                data-endpoint="POSTapi-v1-orders--order_id--payment"
-               value="manual"
+               value="paypal"
                data-component="body">
     <br>
-<p>Example: <code>manual</code></p>
+<p>Example: <code>paypal</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>manual</code></li> <li><code>stripe</code></li> <li><code>paypal</code></li> <li><code>razorpay</code></li> <li><code>square</code></li></ul>
         </div>
@@ -9920,10 +9936,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="POSTapi-v1-orders--order_id--payment"
-               value="completed"
+               value="refunded"
                data-component="body">
     <br>
-<p>Example: <code>completed</code></p>
+<p>Example: <code>refunded</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>completed</code></li> <li><code>failed</code></li> <li><code>refunded</code></li></ul>
         </div>
@@ -10351,8 +10367,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"customer_id\": 5,
-    \"status\": \"cancelled\",
-    \"payment_status\": \"paid\",
+    \"status\": \"shipped\",
+    \"payment_status\": \"pending\",
     \"currency\": \"mqe\",
     \"customer_note\": \"Please gift wrap\",
     \"admin_note\": \"Priority order\",
@@ -10380,8 +10396,8 @@ const headers = {
 
 let body = {
     "customer_id": 5,
-    "status": "cancelled",
-    "payment_status": "paid",
+    "status": "shipped",
+    "payment_status": "pending",
     "currency": "mqe",
     "customer_note": "Please gift wrap",
     "admin_note": "Priority order",
@@ -10513,10 +10529,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="POSTapi-v1-orders"
-               value="cancelled"
+               value="shipped"
                data-component="body">
     <br>
-<p>Example: <code>cancelled</code></p>
+<p>Example: <code>shipped</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>confirmed</code></li> <li><code>processing</code></li> <li><code>shipped</code></li> <li><code>delivered</code></li> <li><code>cancelled</code></li> <li><code>refunded</code></li></ul>
         </div>
@@ -10527,10 +10543,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="payment_status"                data-endpoint="POSTapi-v1-orders"
-               value="paid"
+               value="pending"
                data-component="body">
     <br>
-<p>Example: <code>paid</code></p>
+<p>Example: <code>pending</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>paid</code></li> <li><code>failed</code></li> <li><code>refunded</code></li> <li><code>partially_refunded</code></li></ul>
         </div>
@@ -10936,12 +10952,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"customer_id\": 17,
-    \"status\": \"pending\",
-    \"payment_status\": \"failed\",
+    \"status\": \"cancelled\",
+    \"payment_status\": \"partially_refunded\",
     \"currency\": \"mqe\",
     \"customer_note\": \"Updated note\",
     \"admin_note\": \"Admin updated\",
-    \"payment_method\": \"manual\",
+    \"payment_method\": \"wallet\",
     \"billing_address_id\": 17,
     \"shipping_address_id\": 17,
     \"coupon_code\": \"mqeopfuudtdsufvyvddqa\",
@@ -10972,12 +10988,12 @@ const headers = {
 
 let body = {
     "customer_id": 17,
-    "status": "pending",
-    "payment_status": "failed",
+    "status": "cancelled",
+    "payment_status": "partially_refunded",
     "currency": "mqe",
     "customer_note": "Updated note",
     "admin_note": "Admin updated",
-    "payment_method": "manual",
+    "payment_method": "wallet",
     "billing_address_id": 17,
     "shipping_address_id": 17,
     "coupon_code": "mqeopfuudtdsufvyvddqa",
@@ -11125,10 +11141,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="PUTapi-v1-orders--id-"
-               value="pending"
+               value="cancelled"
                data-component="body">
     <br>
-<p>Example: <code>pending</code></p>
+<p>Example: <code>cancelled</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>confirmed</code></li> <li><code>processing</code></li> <li><code>shipped</code></li> <li><code>delivered</code></li> <li><code>cancelled</code></li> <li><code>refunded</code></li></ul>
         </div>
@@ -11139,10 +11155,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="payment_status"                data-endpoint="PUTapi-v1-orders--id-"
-               value="failed"
+               value="partially_refunded"
                data-component="body">
     <br>
-<p>Example: <code>failed</code></p>
+<p>Example: <code>partially_refunded</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>paid</code></li> <li><code>failed</code></li> <li><code>refunded</code></li> <li><code>partially_refunded</code></li></ul>
         </div>
@@ -11189,10 +11205,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="payment_method"                data-endpoint="PUTapi-v1-orders--id-"
-               value="manual"
+               value="wallet"
                data-component="body">
     <br>
-<p>Example: <code>manual</code></p>
+<p>Example: <code>wallet</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>manual</code></li> <li><code>bank_transfer</code></li> <li><code>cash_on_delivery</code></li> <li><code>card</code></li> <li><code>upi</code></li> <li><code>wallet</code></li></ul>
         </div>
@@ -12409,19 +12425,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"price\": 899.99,
     \"compare_price\": 24,
     \"cost_price\": 13,
-    \"track_inventory\": true,
+    \"track_inventory\": false,
     \"stock_quantity\": 40,
     \"low_stock_threshold\": 1,
     \"weight\": 89,
-    \"weight_unit\": \"oz\",
+    \"weight_unit\": \"g\",
     \"dimensions\": {
         \"length\": 21,
         \"width\": 26,
         \"height\": 11,
-        \"unit\": \"cm\"
+        \"unit\": \"ft\"
     },
     \"status\": \"active\",
-    \"is_featured\": true,
+    \"is_featured\": false,
     \"meta_title\": \"tqtqxbajwbpilpmufinll\",
     \"meta_description\": \"wloauydlsmsjuryvojcyb\",
     \"category_ids\": [
@@ -12451,19 +12467,19 @@ let body = {
     "price": 899.99,
     "compare_price": 24,
     "cost_price": 13,
-    "track_inventory": true,
+    "track_inventory": false,
     "stock_quantity": 40,
     "low_stock_threshold": 1,
     "weight": 89,
-    "weight_unit": "oz",
+    "weight_unit": "g",
     "dimensions": {
         "length": 21,
         "width": 26,
         "height": 11,
-        "unit": "cm"
+        "unit": "ft"
     },
     "status": "active",
-    "is_featured": true,
+    "is_featured": false,
     "meta_title": "tqtqxbajwbpilpmufinll",
     "meta_description": "wloauydlsmsjuryvojcyb",
     "category_ids": [
@@ -12709,7 +12725,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>stock_quantity</code></b>&nbsp;&nbsp;
@@ -12754,10 +12770,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="weight_unit"                data-endpoint="PUTapi-v1-products--id-"
-               value="oz"
+               value="g"
                data-component="body">
     <br>
-<p>Example: <code>oz</code></p>
+<p>Example: <code>g</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>kg</code></li> <li><code>g</code></li> <li><code>lb</code></li> <li><code>oz</code></li></ul>
         </div>
@@ -12814,10 +12830,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="dimensions.unit"                data-endpoint="PUTapi-v1-products--id-"
-               value="cm"
+               value="ft"
                data-component="body">
     <br>
-<p>This field is required when <code>dimensions</code> is present. Example: <code>cm</code></p>
+<p>This field is required when <code>dimensions</code> is present. Example: <code>ft</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>cm</code></li> <li><code>m</code></li> <li><code>in</code></li> <li><code>ft</code></li></ul>
                     </div>
@@ -12855,7 +12871,7 @@ Must be one of:
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>meta_title</code></b>&nbsp;&nbsp;
@@ -13524,6 +13540,581 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Alert ID. Example: <code>1</code></p>
             </div>
                     </form>
+
+                <h1 id="store-settings">Store Settings</h1>
+
+    <p>Manage store configuration and preferences.</p>
+
+                                <h2 id="store-settings-GETapi-v1-settings">Get all settings</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Retrieve all store settings grouped by category (general, branding, policies, checkout, payments, shipping, seo, notifications, security).</p>
+
+<span id="example-requests-GETapi-v1-settings">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/api/v1/settings" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/v1/settings"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-settings">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;general&quot;: {
+            &quot;store_name&quot;: {
+                &quot;value&quot;: &quot;My Store&quot;,
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Display name of the store&quot;,
+                &quot;is_public&quot;: true
+            },
+            &quot;currency&quot;: {
+                &quot;value&quot;: &quot;USD&quot;,
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Default currency code&quot;,
+                &quot;is_public&quot;: true
+            }
+        },
+        &quot;seo&quot;: {
+            &quot;meta_title&quot;: {
+                &quot;value&quot;: &quot;&quot;,
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Default meta title&quot;,
+                &quot;is_public&quot;: true
+            }
+        }
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-settings" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-settings"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-settings"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-settings" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-settings">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-settings" data-method="GET"
+      data-path="api/v1/settings"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-settings', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-settings"
+                    onclick="tryItOut('GETapi-v1-settings');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-settings"
+                    onclick="cancelTryOut('GETapi-v1-settings');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-settings"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/settings</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-settings"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-settings"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="store-settings-GETapi-v1-settings--group-">Get settings by group</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Retrieve settings for a specific group.</p>
+
+<span id="example-requests-GETapi-v1-settings--group-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/api/v1/settings/general" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/v1/settings/general"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-settings--group-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;data&quot;: {
+        &quot;store_name&quot;: {
+            &quot;value&quot;: &quot;My Store&quot;,
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;Display name of the store&quot;,
+            &quot;is_public&quot;: true
+        }
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Settings group not found.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-settings--group-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-settings--group-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-settings--group-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-settings--group-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-settings--group-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-settings--group-" data-method="GET"
+      data-path="api/v1/settings/{group}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-settings--group-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-settings--group-"
+                    onclick="tryItOut('GETapi-v1-settings--group-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-settings--group-"
+                    onclick="cancelTryOut('GETapi-v1-settings--group-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-settings--group-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/settings/{group}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-settings--group-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-settings--group-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>group</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="group"                data-endpoint="GETapi-v1-settings--group-"
+               value="general"
+               data-component="url">
+    <br>
+<p>Settings group name. Allowed: general, branding, policies, checkout, payments, shipping, seo, notifications, security. Example: <code>general</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="store-settings-PATCHapi-v1-settings">Update settings</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Update one or more settings. Send a nested object keyed by group and setting key.</p>
+
+<span id="example-requests-PATCHapi-v1-settings">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PATCH \
+    "http://localhost:8000/api/v1/settings" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"general\": {
+        \"store_name\": \"My Awesome Store\",
+        \"currency\": \"USD\"
+    },
+    \"branding\": [],
+    \"checkout\": [],
+    \"seo\": [],
+    \"notifications\": []
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/v1/settings"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "general": {
+        "store_name": "My Awesome Store",
+        "currency": "USD"
+    },
+    "branding": [],
+    "checkout": [],
+    "seo": [],
+    "notifications": []
+};
+
+fetch(url, {
+    method: "PATCH",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-PATCHapi-v1-settings">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Settings updated successfully&quot;,
+    &quot;data&quot;: {}
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PATCHapi-v1-settings" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PATCHapi-v1-settings"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PATCHapi-v1-settings"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PATCHapi-v1-settings" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PATCHapi-v1-settings">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PATCHapi-v1-settings" data-method="PATCH"
+      data-path="api/v1/settings"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PATCHapi-v1-settings', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PATCHapi-v1-settings"
+                    onclick="tryItOut('PATCHapi-v1-settings');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PATCHapi-v1-settings"
+                    onclick="cancelTryOut('PATCHapi-v1-settings');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PATCHapi-v1-settings"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-purple">PATCH</small>
+            <b><code>api/v1/settings</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="PATCHapi-v1-settings"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="PATCHapi-v1-settings"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+        <details>
+            <summary style="padding-bottom: 10px;">
+                <b style="line-height: 2;"><code>general</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+<br>
+<p>optional General settings to update.</p>
+            </summary>
+                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>store_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="general.store_name"                data-endpoint="PATCHapi-v1-settings"
+               value="My Awesome Store"
+               data-component="body">
+    <br>
+<p>optional Store display name. Example: <code>My Awesome Store</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>currency</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="general.currency"                data-endpoint="PATCHapi-v1-settings"
+               value="USD"
+               data-component="body">
+    <br>
+<p>optional ISO currency code. Example: <code>USD</code></p>
+                    </div>
+                                    </details>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>branding</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="branding"                data-endpoint="PATCHapi-v1-settings"
+               value=""
+               data-component="body">
+    <br>
+<p>optional Branding settings: primary_color, secondary_color, accent_color, font_family.</p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>policies</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="policies"                data-endpoint="PATCHapi-v1-settings"
+               value=""
+               data-component="body">
+    <br>
+
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>checkout</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="checkout"                data-endpoint="PATCHapi-v1-settings"
+               value=""
+               data-component="body">
+    <br>
+<p>optional Checkout settings: allow_guest_checkout, require_phone.</p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>payments</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="payments"                data-endpoint="PATCHapi-v1-settings"
+               value=""
+               data-component="body">
+    <br>
+
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>shipping</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="shipping"                data-endpoint="PATCHapi-v1-settings"
+               value=""
+               data-component="body">
+    <br>
+
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>seo</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="seo"                data-endpoint="PATCHapi-v1-settings"
+               value=""
+               data-component="body">
+    <br>
+<p>optional SEO settings: meta_title, meta_description, meta_keywords, google_analytics.</p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>notifications</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="notifications"                data-endpoint="PATCHapi-v1-settings"
+               value=""
+               data-component="body">
+    <br>
+<p>optional Notification settings: low_stock_threshold, admin_email.</p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>security</code></b>&nbsp;&nbsp;
+<small>object</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="security"                data-endpoint="PATCHapi-v1-settings"
+               value=""
+               data-component="body">
+    <br>
+
+        </div>
+        </form>
 
                 <h1 id="stores">Stores</h1>
 
@@ -14597,7 +15188,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"postal_code\": \"10001\",
     \"country\": \"US\",
     \"is_active\": false,
-    \"is_default\": true,
+    \"is_default\": false,
     \"is__active\": true
 }"
 </code></pre></div>
@@ -14622,7 +15213,7 @@ let body = {
     "postal_code": "10001",
     "country": "US",
     "is_active": false,
-    "is_default": true,
+    "is_default": false,
     "is__active": true
 };
 
@@ -14865,7 +15456,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>is__active</code></b>&nbsp;&nbsp;
@@ -15072,7 +15663,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"postal_code\": \"10001\",
     \"country\": \"US\",
     \"is_active\": false,
-    \"is_default\": false
+    \"is_default\": true
 }"
 </code></pre></div>
 
@@ -15096,7 +15687,7 @@ let body = {
     "postal_code": "10001",
     "country": "US",
     "is_active": false,
-    "is_default": false
+    "is_default": true
 };
 
 fetch(url, {
@@ -15348,7 +15939,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
         </form>
 
