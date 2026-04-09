@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useGetProductsQuery, useDeleteProductMutation } from '../../services/products';
+import {
+  useGetProductsQuery,
+  useDeleteProductMutation,
+  useExportProductsCsvMutation,
+} from '../../services/products';
 import Button from '../../components/ui/button/Button';
 import Badge from '../../components/ui/badge/Badge';
 import Alert from '../../components/ui/alert/Alert';
@@ -22,6 +26,7 @@ const ProductsPage = () => {
 
   const { data: productsData, isLoading, error } = useGetProductsQuery(filters);
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
+  const [exportProductsCsv, { isLoading: isExporting }] = useExportProductsCsvMutation();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters((prev) => ({ ...prev, search: e.target.value, page: 1 }));
@@ -42,6 +47,24 @@ const ProductsPage = () => {
       setDeleteProductId(null);
     } catch (error) {
       setAlert({ type: 'error', message: 'Failed to delete product' });
+    }
+  };
+
+  const handleExportCsv = async () => {
+    try {
+      const blob = await exportProductsCsv(filters).unwrap();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+      link.href = url;
+      link.download = `products-export-${timestamp}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      setAlert({ type: 'success', message: 'Products CSV exported successfully' });
+    } catch {
+      setAlert({ type: 'error', message: 'Failed to export products CSV' });
     }
   };
 
@@ -151,12 +174,21 @@ const ProductsPage = () => {
           </div>
 
           {/* Add Product Button */}
-          <Button
-            variant="primary"
-            onClick={() => navigate('/products/new')}
-          >
-            + Add Product
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => void handleExportCsv()}
+              disabled={isExporting}
+            >
+              {isExporting ? 'Exporting...' : 'Export CSV'}
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => navigate('/products/new')}
+            >
+              + Add Product
+            </Button>
+          </div>
         </div>
 
         {/* Stock Filter */}

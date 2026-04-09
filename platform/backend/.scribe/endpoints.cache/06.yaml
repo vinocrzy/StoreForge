@@ -222,7 +222,7 @@ endpoints:
         name: is_active
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -233,7 +233,7 @@ endpoints:
         name: is_default
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -258,8 +258,8 @@ endpoints:
       state: NY
       postal_code: '10001'
       country: US
-      is_active: true
-      is_default: false
+      is_active: false
+      is_default: true
       is__active: true
     fileParameters: []
     responses:
@@ -503,7 +503,7 @@ endpoints:
         name: is_default
         description: ''
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -518,7 +518,7 @@ endpoints:
       postal_code: '10001'
       country: US
       is_active: false
-      is_default: true
+      is_default: false
     fileParameters: []
     responses:
       -

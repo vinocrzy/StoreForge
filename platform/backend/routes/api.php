@@ -48,6 +48,7 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::get('/dashboard/activity-log', [DashboardController::class, 'activityLog']);
     
     // Products
+    Route::get('/products/export', [ProductController::class, 'export']);
     Route::apiResource('products', ProductController::class);
     Route::post('/products/{id}/stock', [ProductController::class, 'updateStock']);
     

@@ -1485,22 +1485,24 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 
 **Priority**: HIGH | **Estimated Time**: 1 week
 
-### 6.4 Profile Page Implementation â³ NOT STARTED
+### 6.4 Profile Page Implementation âœ… COMPLETE
 
-**Backend APIs** (7 endpoints):
-- [ ] GET /api/v1/profile
-- [ ] PATCH /api/v1/profile
-- [ ] POST /api/v1/profile/avatar
-- [ ] PATCH /api/v1/profile/password
-- [ ] etc.
+**Backend APIs**:
+- [x] GET /api/v1/profile
+- [x] PATCH /api/v1/profile
+- [x] PATCH /api/v1/profile/password
 
-**Frontend**: Connect existing UI to real data
+**Frontend**:
+- [x] Connected profile cards to real API data
+- [x] Added profile edit modal wired to API
+- [x] Added change password card wired to API
 
-**Priority**: MEDIUM | **Estimated Time**: 3 days
+**Priority**: MEDIUM | **Status**: Complete
 
-### 6.5 Advanced Features â³ DEFERRED
+### 6.5 Advanced Features ðŸš§ IN PROGRESS
 
-- [ ] Export functionality (CSV, PDF)
+- [x] Export products to CSV (`GET /api/v1/products/export`) + admin UI export button
+- [ ] Export orders/customers/inventory to CSV
 - [ ] Bulk operations
 - [ ] Advanced search
 

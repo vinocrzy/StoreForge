@@ -275,7 +275,10 @@
                     <a href="#products">Products</a>
                 </li>
                                     <ul id="tocify-subheader-products" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="products-GETapi-v1-products">
+                                                    <li class="tocify-item level-2" data-unique="products-GETapi-v1-products-export">
+                                <a href="#products-GETapi-v1-products-export">Export products CSV</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="products-GETapi-v1-products">
                                 <a href="#products-GETapi-v1-products">List products</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="products-POSTapi-v1-products">
@@ -5053,8 +5056,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"status\": \"active\",
     \"date_of_birth\": \"1990-01-15\",
     \"gender\": \"male\",
-    \"email_verified_at\": \"2026-04-09T09:58:09\",
-    \"phone_verified_at\": \"2026-04-09T09:58:09\",
+    \"email_verified_at\": \"2026-04-09T10:03:42\",
+    \"phone_verified_at\": \"2026-04-09T10:03:42\",
     \"address\": {
         \"type\": \"both\",
         \"label\": \"Home\",
@@ -5092,8 +5095,8 @@ let body = {
     "status": "active",
     "date_of_birth": "1990-01-15",
     "gender": "male",
-    "email_verified_at": "2026-04-09T09:58:09",
-    "phone_verified_at": "2026-04-09T09:58:09",
+    "email_verified_at": "2026-04-09T10:03:42",
+    "phone_verified_at": "2026-04-09T10:03:42",
     "address": {
         "type": "both",
         "label": "Home",
@@ -5329,10 +5332,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email_verified_at"                data-endpoint="POSTapi-v1-customers"
-               value="2026-04-09T09:58:09"
+               value="2026-04-09T10:03:42"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-04-09T09:58:09</code></p>
+<p>Must be a valid date. Example: <code>2026-04-09T10:03:42</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>phone_verified_at</code></b>&nbsp;&nbsp;
@@ -5341,10 +5344,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="phone_verified_at"                data-endpoint="POSTapi-v1-customers"
-               value="2026-04-09T09:58:09"
+               value="2026-04-09T10:03:42"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-04-09T09:58:09</code></p>
+<p>Must be a valid date. Example: <code>2026-04-09T10:03:42</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
         <details>
@@ -5688,8 +5691,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"status\": \"active\",
     \"date_of_birth\": \"1990-01-15\",
     \"gender\": \"male\",
-    \"email_verified_at\": \"2026-04-09T09:58:10\",
-    \"phone_verified_at\": \"2026-04-09T09:58:10\",
+    \"email_verified_at\": \"2026-04-09T10:03:42\",
+    \"phone_verified_at\": \"2026-04-09T10:03:42\",
     \"address\": {
         \"type\": \"billing\",
         \"label\": \"mqeopfuudtdsufvyvddqa\",
@@ -5727,8 +5730,8 @@ let body = {
     "status": "active",
     "date_of_birth": "1990-01-15",
     "gender": "male",
-    "email_verified_at": "2026-04-09T09:58:10",
-    "phone_verified_at": "2026-04-09T09:58:10",
+    "email_verified_at": "2026-04-09T10:03:42",
+    "phone_verified_at": "2026-04-09T10:03:42",
     "address": {
         "type": "billing",
         "label": "mqeopfuudtdsufvyvddqa",
@@ -5973,10 +5976,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email_verified_at"                data-endpoint="PUTapi-v1-customers--id-"
-               value="2026-04-09T09:58:10"
+               value="2026-04-09T10:03:42"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-04-09T09:58:10</code></p>
+<p>Must be a valid date. Example: <code>2026-04-09T10:03:42</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>phone_verified_at</code></b>&nbsp;&nbsp;
@@ -5985,10 +5988,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="phone_verified_at"                data-endpoint="PUTapi-v1-customers--id-"
-               value="2026-04-09T09:58:10"
+               value="2026-04-09T10:03:42"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-04-09T09:58:10</code></p>
+<p>Must be a valid date. Example: <code>2026-04-09T10:03:42</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
         <details>
@@ -9714,7 +9717,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"amount\": 170.5,
     \"currency\": \"qeo\",
     \"transaction_id\": \"TXN-123456\",
-    \"status\": \"refunded\",
+    \"status\": \"failed\",
     \"payment_notes\": \"Received via bank transfer\",
     \"metadata\": {
         \"bank\": \"Chase\",
@@ -9741,7 +9744,7 @@ let body = {
     "amount": 170.5,
     "currency": "qeo",
     "transaction_id": "TXN-123456",
-    "status": "refunded",
+    "status": "failed",
     "payment_notes": "Received via bank transfer",
     "metadata": {
         "bank": "Chase",
@@ -9952,10 +9955,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="POSTapi-v1-orders--order_id--payment"
-               value="refunded"
+               value="failed"
                data-component="body">
     <br>
-<p>Example: <code>refunded</code></p>
+<p>Example: <code>failed</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>completed</code></li> <li><code>failed</code></li> <li><code>refunded</code></li></ul>
         </div>
@@ -10383,7 +10386,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"customer_id\": 5,
-    \"status\": \"cancelled\",
+    \"status\": \"confirmed\",
     \"payment_status\": \"failed\",
     \"currency\": \"mqe\",
     \"customer_note\": \"Please gift wrap\",
@@ -10412,7 +10415,7 @@ const headers = {
 
 let body = {
     "customer_id": 5,
-    "status": "cancelled",
+    "status": "confirmed",
     "payment_status": "failed",
     "currency": "mqe",
     "customer_note": "Please gift wrap",
@@ -10545,10 +10548,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="POSTapi-v1-orders"
-               value="cancelled"
+               value="confirmed"
                data-component="body">
     <br>
-<p>Example: <code>cancelled</code></p>
+<p>Example: <code>confirmed</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>confirmed</code></li> <li><code>processing</code></li> <li><code>shipped</code></li> <li><code>delivered</code></li> <li><code>cancelled</code></li> <li><code>refunded</code></li></ul>
         </div>
@@ -10968,12 +10971,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"customer_id\": 17,
-    \"status\": \"delivered\",
-    \"payment_status\": \"pending\",
+    \"status\": \"cancelled\",
+    \"payment_status\": \"partially_refunded\",
     \"currency\": \"mqe\",
     \"customer_note\": \"Updated note\",
     \"admin_note\": \"Admin updated\",
-    \"payment_method\": \"upi\",
+    \"payment_method\": \"card\",
     \"billing_address_id\": 17,
     \"shipping_address_id\": 17,
     \"coupon_code\": \"mqeopfuudtdsufvyvddqa\",
@@ -11004,12 +11007,12 @@ const headers = {
 
 let body = {
     "customer_id": 17,
-    "status": "delivered",
-    "payment_status": "pending",
+    "status": "cancelled",
+    "payment_status": "partially_refunded",
     "currency": "mqe",
     "customer_note": "Updated note",
     "admin_note": "Admin updated",
-    "payment_method": "upi",
+    "payment_method": "card",
     "billing_address_id": 17,
     "shipping_address_id": 17,
     "coupon_code": "mqeopfuudtdsufvyvddqa",
@@ -11157,10 +11160,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="PUTapi-v1-orders--id-"
-               value="delivered"
+               value="cancelled"
                data-component="body">
     <br>
-<p>Example: <code>delivered</code></p>
+<p>Example: <code>cancelled</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>confirmed</code></li> <li><code>processing</code></li> <li><code>shipped</code></li> <li><code>delivered</code></li> <li><code>cancelled</code></li> <li><code>refunded</code></li></ul>
         </div>
@@ -11171,10 +11174,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="payment_status"                data-endpoint="PUTapi-v1-orders--id-"
-               value="pending"
+               value="partially_refunded"
                data-component="body">
     <br>
-<p>Example: <code>pending</code></p>
+<p>Example: <code>partially_refunded</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>paid</code></li> <li><code>failed</code></li> <li><code>refunded</code></li> <li><code>partially_refunded</code></li></ul>
         </div>
@@ -11221,10 +11224,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="payment_method"                data-endpoint="PUTapi-v1-orders--id-"
-               value="upi"
+               value="card"
                data-component="body">
     <br>
-<p>Example: <code>upi</code></p>
+<p>Example: <code>card</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>manual</code></li> <li><code>bank_transfer</code></li> <li><code>cash_on_delivery</code></li> <li><code>card</code></li> <li><code>upi</code></li> <li><code>wallet</code></li></ul>
         </div>
@@ -11496,7 +11499,233 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
     <p>Manage products for the authenticated store. All operations are automatically scoped to the current tenant.</p>
 
-                                <h2 id="products-GETapi-v1-products">List products</h2>
+                                <h2 id="products-GETapi-v1-products-export">Export products CSV</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Export filtered products as a CSV file for reporting or migration.</p>
+
+<span id="example-requests-GETapi-v1-products-export">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/api/v1/products/export?search=laptop&amp;status=active&amp;is_featured=1&amp;category_id=5&amp;stock_status=in_stock&amp;sort_by=created_at&amp;sort_order=desc" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/v1/products/export"
+);
+
+const params = {
+    "search": "laptop",
+    "status": "active",
+    "is_featured": "1",
+    "category_id": "5",
+    "stock_status": "in_stock",
+    "sort_by": "created_at",
+    "sort_order": "desc",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-products-export">
+            <blockquote>
+            <p>Example response (200, CSV file download):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;"></code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-products-export" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-products-export"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-products-export"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-products-export" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-products-export">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-products-export" data-method="GET"
+      data-path="api/v1/products/export"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-products-export', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-products-export"
+                    onclick="tryItOut('GETapi-v1-products-export');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-products-export"
+                    onclick="cancelTryOut('GETapi-v1-products-export');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-products-export"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/products/export</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-products-export"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-products-export"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>search</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="search"                data-endpoint="GETapi-v1-products-export"
+               value="laptop"
+               data-component="query">
+    <br>
+<p>Search products by name, SKU, or description. Example: <code>laptop</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="GETapi-v1-products-export"
+               value="active"
+               data-component="query">
+    <br>
+<p>Filter by status: active, draft, archived. Example: <code>active</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>is_featured</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <label data-endpoint="GETapi-v1-products-export" style="display: none">
+            <input type="radio" name="is_featured"
+                   value="1"
+                   data-endpoint="GETapi-v1-products-export"
+                   data-component="query"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="GETapi-v1-products-export" style="display: none">
+            <input type="radio" name="is_featured"
+                   value="0"
+                   data-endpoint="GETapi-v1-products-export"
+                   data-component="query"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Filter featured products. Example: <code>true</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>category_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="category_id"                data-endpoint="GETapi-v1-products-export"
+               value="5"
+               data-component="query">
+    <br>
+<p>Filter by category ID. Example: <code>5</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>stock_status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="stock_status"                data-endpoint="GETapi-v1-products-export"
+               value="in_stock"
+               data-component="query">
+    <br>
+<p>Filter by stock: in_stock, out_of_stock, low_stock. Example: <code>in_stock</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>sort_by</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="sort_by"                data-endpoint="GETapi-v1-products-export"
+               value="created_at"
+               data-component="query">
+    <br>
+<p>Sort field. Example: <code>created_at</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>sort_order</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="sort_order"                data-endpoint="GETapi-v1-products-export"
+               value="desc"
+               data-component="query">
+    <br>
+<p>Sort direction: asc, desc. Example: <code>desc</code></p>
+            </div>
+                </form>
+
+                    <h2 id="products-GETapi-v1-products">List products</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
@@ -12441,16 +12670,16 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"price\": 899.99,
     \"compare_price\": 24,
     \"cost_price\": 13,
-    \"track_inventory\": false,
+    \"track_inventory\": true,
     \"stock_quantity\": 40,
     \"low_stock_threshold\": 1,
     \"weight\": 89,
-    \"weight_unit\": \"oz\",
+    \"weight_unit\": \"lb\",
     \"dimensions\": {
         \"length\": 21,
         \"width\": 26,
         \"height\": 11,
-        \"unit\": \"in\"
+        \"unit\": \"cm\"
     },
     \"status\": \"active\",
     \"is_featured\": true,
@@ -12483,16 +12712,16 @@ let body = {
     "price": 899.99,
     "compare_price": 24,
     "cost_price": 13,
-    "track_inventory": false,
+    "track_inventory": true,
     "stock_quantity": 40,
     "low_stock_threshold": 1,
     "weight": 89,
-    "weight_unit": "oz",
+    "weight_unit": "lb",
     "dimensions": {
         "length": 21,
         "width": 26,
         "height": 11,
-        "unit": "in"
+        "unit": "cm"
     },
     "status": "active",
     "is_featured": true,
@@ -12741,7 +12970,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>stock_quantity</code></b>&nbsp;&nbsp;
@@ -12786,10 +13015,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="weight_unit"                data-endpoint="PUTapi-v1-products--id-"
-               value="oz"
+               value="lb"
                data-component="body">
     <br>
-<p>Example: <code>oz</code></p>
+<p>Example: <code>lb</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>kg</code></li> <li><code>g</code></li> <li><code>lb</code></li> <li><code>oz</code></li></ul>
         </div>
@@ -12846,10 +13075,10 @@ Must be one of:
  &nbsp;
                 <input type="text" style="display: none"
                               name="dimensions.unit"                data-endpoint="PUTapi-v1-products--id-"
-               value="in"
+               value="cm"
                data-component="body">
     <br>
-<p>This field is required when <code>dimensions</code> is present. Example: <code>in</code></p>
+<p>This field is required when <code>dimensions</code> is present. Example: <code>cm</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>cm</code></li> <li><code>m</code></li> <li><code>in</code></li> <li><code>ft</code></li></ul>
                     </div>
@@ -15704,8 +15933,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"state\": \"NY\",
     \"postal_code\": \"10001\",
     \"country\": \"US\",
-    \"is_active\": true,
-    \"is_default\": false,
+    \"is_active\": false,
+    \"is_default\": true,
     \"is__active\": true
 }"
 </code></pre></div>
@@ -15729,8 +15958,8 @@ let body = {
     "state": "NY",
     "postal_code": "10001",
     "country": "US",
-    "is_active": true,
-    "is_default": false,
+    "is_active": false,
+    "is_default": true,
     "is__active": true
 };
 
@@ -15951,7 +16180,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>is_default</code></b>&nbsp;&nbsp;
@@ -15973,7 +16202,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>is__active</code></b>&nbsp;&nbsp;
@@ -16180,7 +16409,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"postal_code\": \"10001\",
     \"country\": \"US\",
     \"is_active\": false,
-    \"is_default\": true
+    \"is_default\": false
 }"
 </code></pre></div>
 
@@ -16204,7 +16433,7 @@ let body = {
     "postal_code": "10001",
     "country": "US",
     "is_active": false,
-    "is_default": true
+    "is_default": false
 };
 
 fetch(url, {
@@ -16456,7 +16685,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>true</code></p>
+<p>Example: <code>false</code></p>
         </div>
         </form>
 

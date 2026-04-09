@@ -10,9 +10,9 @@ use Illuminate\Support\Str;
 class ProductService
 {
     /**
-     * Get paginated products with optional filtering and search
+     * Build product query with common filters.
      */
-    public function getProducts(array $filters = [], int $perPage = 20): LengthAwarePaginator
+    private function buildProductsQuery(array $filters = [])
     {
         $query = Product::query()->with(['categories', 'primaryImage', 'variants']);
 
@@ -51,12 +51,36 @@ class ProductService
             }
         }
 
+        return $query;
+    }
+
+    /**
+     * Get paginated products with optional filtering and search
+     */
+    public function getProducts(array $filters = [], int $perPage = 20): LengthAwarePaginator
+    {
+        $query = $this->buildProductsQuery($filters);
+
         // Sort
         $sortBy = $filters['sort_by'] ?? 'created_at';
         $sortOrder = $filters['sort_order'] ?? 'desc';
         $query->orderBy($sortBy, $sortOrder);
 
         return $query->paginate($perPage);
+    }
+
+    /**
+     * Get all products for CSV export.
+     */
+    public function getProductsForExport(array $filters = []): Collection
+    {
+        $query = $this->buildProductsQuery($filters);
+
+        $sortBy = $filters['sort_by'] ?? 'created_at';
+        $sortOrder = $filters['sort_order'] ?? 'desc';
+        $query->orderBy($sortBy, $sortOrder);
+
+        return $query->get();
     }
 
     /**

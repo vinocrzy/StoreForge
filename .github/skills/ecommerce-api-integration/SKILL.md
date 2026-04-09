@@ -152,13 +152,14 @@ deleteProduct: builder.mutation<void, number>({
 - `PATCH /profile` - Update authenticated user's profile
 - `PATCH /profile/password` - Change authenticated user's password
 
-### Products (14 endpoints)
+### Products (15 endpoints)
 - `GET /products` - List products (paginated, filterable)
 - `POST /products` - Create product
 - `GET /products/{id}` - Get product details
 - `PUT /products/{id}` - Update product
 - `DELETE /products/{id}` - Delete product
 - `POST /products/{id}/stock` - Update stock
+- `GET /products/export` - Export products to CSV
 
 ### Categories (8 endpoints)
 - `GET /categories` - List categories

@@ -1256,7 +1256,7 @@ endpoints:
         name: email_verified_at
         description: 'Must be a valid date.'
         required: false
-        example: '2026-04-09T09:58:09'
+        example: '2026-04-09T10:03:42'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1267,7 +1267,7 @@ endpoints:
         name: phone_verified_at
         description: 'Must be a valid date.'
         required: false
-        example: '2026-04-09T09:58:09'
+        example: '2026-04-09T10:03:42'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1425,8 +1425,8 @@ endpoints:
       status: active
       date_of_birth: '1990-01-15'
       gender: male
-      email_verified_at: '2026-04-09T09:58:09'
-      phone_verified_at: '2026-04-09T09:58:09'
+      email_verified_at: '2026-04-09T10:03:42'
+      phone_verified_at: '2026-04-09T10:03:42'
       address:
         type: both
         label: Home
@@ -1688,7 +1688,7 @@ endpoints:
         name: email_verified_at
         description: 'Must be a valid date.'
         required: false
-        example: '2026-04-09T09:58:10'
+        example: '2026-04-09T10:03:42'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1699,7 +1699,7 @@ endpoints:
         name: phone_verified_at
         description: 'Must be a valid date.'
         required: false
-        example: '2026-04-09T09:58:10'
+        example: '2026-04-09T10:03:42'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1860,8 +1860,8 @@ endpoints:
       status: active
       date_of_birth: '1990-01-15'
       gender: male
-      email_verified_at: '2026-04-09T09:58:10'
-      phone_verified_at: '2026-04-09T09:58:10'
+      email_verified_at: '2026-04-09T10:03:42'
+      phone_verified_at: '2026-04-09T10:03:42'
       address:
         type: billing
         label: mqeopfuudtdsufvyvddqa

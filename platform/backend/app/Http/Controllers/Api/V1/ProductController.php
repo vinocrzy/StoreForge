@@ -7,6 +7,7 @@ use App\Http\Requests\ProductRequest;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @group Products
@@ -68,6 +69,77 @@ class ProductController extends Controller
         $products = $this->productService->getProducts($filters, $perPage);
 
         return response()->json($products);
+    }
+
+    /**
+     * Export products CSV
+     *
+     * Export filtered products as a CSV file for reporting or migration.
+     *
+     * @queryParam search string Search products by name, SKU, or description. Example: laptop
+     * @queryParam status string Filter by status: active, draft, archived. Example: active
+     * @queryParam is_featured boolean Filter featured products. Example: 1
+     * @queryParam category_id integer Filter by category ID. Example: 5
+     * @queryParam stock_status string Filter by stock: in_stock, out_of_stock, low_stock. Example: in_stock
+     * @queryParam sort_by string Sort field. Example: created_at
+     * @queryParam sort_order string Sort direction: asc, desc. Example: desc
+     *
+     * @response 200 scenario="CSV file download"
+     */
+    public function export(Request $request): StreamedResponse
+    {
+        $filters = $request->only([
+            'search', 'status', 'is_featured', 'category_id',
+            'stock_status', 'sort_by', 'sort_order'
+        ]);
+
+        $products = $this->productService->getProductsForExport($filters);
+
+        $filename = 'products_export_' . now()->format('Y_m_d_His') . '.csv';
+
+        return response()->streamDownload(function () use ($products) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, [
+                'id',
+                'name',
+                'slug',
+                'sku',
+                'price',
+                'compare_price',
+                'status',
+                'is_featured',
+                'track_inventory',
+                'stock_quantity',
+                'low_stock_threshold',
+                'categories',
+                'created_at',
+                'updated_at',
+            ]);
+
+            foreach ($products as $product) {
+                fputcsv($handle, [
+                    $product->id,
+                    $product->name,
+                    $product->slug,
+                    $product->sku,
+                    $product->price,
+                    $product->compare_price,
+                    $product->status,
+                    $product->is_featured ? '1' : '0',
+                    $product->track_inventory ? '1' : '0',
+                    $product->stock_quantity,
+                    $product->low_stock_threshold,
+                    $product->categories->pluck('name')->implode(', '),
+                    $product->created_at,
+                    $product->updated_at,
+                ]);
+            }
+
+            fclose($handle);
+        }, $filename, [
+            'Content-Type' => 'text/csv',
+        ]);
     }
 
     /**

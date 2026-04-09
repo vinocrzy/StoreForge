@@ -103,6 +103,23 @@ export const productsApi = createApi({
       ],
     }),
 
+    exportProductsCsv: builder.mutation<Blob, ProductFilters | void>({
+      query: (filters = {}) => {
+        const params = new URLSearchParams();
+        if (filters?.search) params.append('search', filters.search);
+        if (filters?.status) params.append('status', filters.status);
+        if (filters?.category_id) params.append('category_id', filters.category_id.toString());
+        if (filters?.is_featured !== undefined) params.append('is_featured', filters.is_featured ? '1' : '0');
+        if (filters?.stock_status) params.append('stock_status', filters.stock_status);
+
+        return {
+          url: `/products/export?${params.toString()}`,
+          method: 'GET',
+          responseHandler: async (response) => response.blob(),
+        };
+      },
+    }),
+
     // Categories
     getCategories: builder.query<CategoriesResponse, { tree?: boolean } | void>({
       query: (params = {}) => {
@@ -168,6 +185,7 @@ export const {
   useUpdateProductMutation,
   useDeleteProductMutation,
   useUpdateStockMutation,
+  useExportProductsCsvMutation,
   useGetCategoriesQuery,
   useGetCategoryQuery,
   useGetCategoryTreeQuery,

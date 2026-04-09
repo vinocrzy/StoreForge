@@ -243,6 +243,15 @@ Content-Type: application/json
 }
 ```
 
+### Export Products CSV
+```http
+GET /products/export?search=laptop&status=active&stock_status=in_stock
+Authorization: Bearer {token}
+X-Store-ID: {store_id}
+```
+
+Exports filtered products as a CSV file.
+
 ---
 
 ## 📂 Categories
