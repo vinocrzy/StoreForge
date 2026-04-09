@@ -220,7 +220,7 @@ endpoints:
         name: is_active
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
@@ -256,7 +256,7 @@ endpoints:
       state: NY
       postal_code: '10001'
       country: US
-      is_active: false
+      is_active: true
       is_default: false
       is__active: true
     fileParameters: []

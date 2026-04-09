@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\StoreController;
 use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\SettingsController;
+use App\Http\Controllers\Api\V1\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,7 +92,12 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::get('/settings', [SettingsController::class, 'index']);
     Route::get('/settings/{group}', [SettingsController::class, 'show']);
     Route::patch('/settings', [SettingsController::class, 'update']);
-    
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::patch('/profile', [ProfileController::class, 'update']);
+    Route::patch('/profile/password', [ProfileController::class, 'changePassword']);
+
     // Orders
     Route::get('/orders/statistics', [OrderController::class, 'statistics']);
     Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus']);

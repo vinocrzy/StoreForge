@@ -1258,7 +1258,7 @@ endpoints:
         name: email_verified_at
         description: 'Must be a valid date.'
         required: false
-        example: '2026-04-09T09:28:48'
+        example: '2026-04-09T09:58:09'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1269,7 +1269,7 @@ endpoints:
         name: phone_verified_at
         description: 'Must be a valid date.'
         required: false
-        example: '2026-04-09T09:28:48'
+        example: '2026-04-09T09:58:09'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1427,8 +1427,8 @@ endpoints:
       status: active
       date_of_birth: '1990-01-15'
       gender: male
-      email_verified_at: '2026-04-09T09:28:48'
-      phone_verified_at: '2026-04-09T09:28:48'
+      email_verified_at: '2026-04-09T09:58:09'
+      phone_verified_at: '2026-04-09T09:58:09'
       address:
         type: both
         label: Home
@@ -1690,7 +1690,7 @@ endpoints:
         name: email_verified_at
         description: 'Must be a valid date.'
         required: false
-        example: '2026-04-09T09:28:48'
+        example: '2026-04-09T09:58:10'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1701,7 +1701,7 @@ endpoints:
         name: phone_verified_at
         description: 'Must be a valid date.'
         required: false
-        example: '2026-04-09T09:28:48'
+        example: '2026-04-09T09:58:10'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1723,7 +1723,7 @@ endpoints:
         name: address.type
         description: 'This field is required when <code>address</code> is present.'
         required: false
-        example: shipping
+        example: billing
         type: string
         enumValues:
           - billing
@@ -1862,10 +1862,10 @@ endpoints:
       status: active
       date_of_birth: '1990-01-15'
       gender: male
-      email_verified_at: '2026-04-09T09:28:48'
-      phone_verified_at: '2026-04-09T09:28:48'
+      email_verified_at: '2026-04-09T09:58:10'
+      phone_verified_at: '2026-04-09T09:58:10'
       address:
-        type: shipping
+        type: billing
         label: mqeopfuudtdsufvyvddqa
         first_name: mniihfqcoynlazghdtqtq
         last_name: xbajwbpilpmufinllwloa

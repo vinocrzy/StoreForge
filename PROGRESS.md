@@ -29,6 +29,16 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 
 ### Latest Progress (April 9, 2026)
 
+**Phase 6.4 Profile Page (Complete)**:
+- [x] Backend: Verified profile endpoints are active (`GET /api/v1/profile`, `PATCH /api/v1/profile`, `PATCH /api/v1/profile/password`)
+- [x] Frontend: Added `profileApi` RTK Query service (`getProfile`, `updateProfile`, `changePassword`)
+- [x] Frontend: Registered `profileApi` in Redux store
+- [x] Frontend: Replaced `UserMetaCard` mock data with authenticated profile data (avatar/initials, roles, status, email, phone)
+- [x] Frontend: Replaced `UserInfoCard` mock data with real profile fields and edit modal wired to `PATCH /profile`
+- [x] Frontend: Replaced address section in profile page with `ChangePasswordCard` wired to `PATCH /profile/password`
+- [x] Frontend: Added success/error alerts for profile update and password change flows
+- [x] Validation: Admin panel build successful (`npm run build`), profile routes validated via `php artisan route:list --path=profile`
+
 **Phase 6.3 Store Settings (Complete)**:
 - [x] Backend: Added `store_settings` table migration with tenant isolation
 - [x] Backend: Added `StoreSetting` model with tenant global scope and typed value accessor

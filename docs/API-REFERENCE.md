@@ -17,8 +17,9 @@
 7. [Payments](#payments)
 8. [Inventory](#inventory)
 9. [Warehouses](#warehouses)
-10. [Stores (Super Admin)](#-stores-super-admin)
-11. [Common Patterns](#-common-patterns)
+10. [Profile](#profile)
+11. [Stores (Super Admin)](#-stores-super-admin)
+12. [Common Patterns](#-common-patterns)
 
 ---
 
@@ -77,6 +78,45 @@ X-Store-ID: {store_id}
 ```http
 POST /auth/revoke-all
 Authorization: Bearer {token}
+```
+
+---
+
+## 👤 Profile
+
+### Get Profile
+```http
+GET /profile
+Authorization: Bearer {token}
+X-Store-ID: {store_id}
+```
+
+### Update Profile
+```http
+PATCH /profile
+Authorization: Bearer {token}
+X-Store-ID: {store_id}
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "phone": "+12025551234"
+}
+```
+
+### Change Password
+```http
+PATCH /profile/password
+Authorization: Bearer {token}
+X-Store-ID: {store_id}
+Content-Type: application/json
+
+{
+  "current_password": "oldpassword123",
+  "password": "newpassword456",
+  "password_confirmation": "newpassword456"
+}
 ```
 
 ---

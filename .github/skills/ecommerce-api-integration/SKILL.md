@@ -147,6 +147,11 @@ deleteProduct: builder.mutation<void, number>({
 - `GET /auth/me` - Get authenticated user
 - `POST /auth/revoke-all` - Revoke all tokens
 
+### Profile (3 endpoints)
+- `GET /profile` - Get authenticated user's profile
+- `PATCH /profile` - Update authenticated user's profile
+- `PATCH /profile/password` - Change authenticated user's password
+
 ### Products (14 endpoints)
 - `GET /products` - List products (paginated, filterable)
 - `POST /products` - Create product

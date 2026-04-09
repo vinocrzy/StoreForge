@@ -1,10 +1,14 @@
 import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import UserMetaCard from "../components/UserProfile/UserMetaCard";
 import UserInfoCard from "../components/UserProfile/UserInfoCard";
-import UserAddressCard from "../components/UserProfile/UserAddressCard";
+import ChangePasswordCard from "../components/UserProfile/ChangePasswordCard";
 import PageMeta from "../components/common/PageMeta";
+import Alert from "../components/ui/alert/Alert";
+import { useGetProfileQuery } from "../services/profile";
 
 export default function UserProfiles() {
+  const { data, isLoading, isError } = useGetProfileQuery();
+
   return (
     <>
       <PageMeta
@@ -16,11 +20,23 @@ export default function UserProfiles() {
         <h3 className="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
           Profile
         </h3>
-        <div className="space-y-6">
-          <UserMetaCard />
-          <UserInfoCard />
-          <UserAddressCard />
-        </div>
+        {isLoading && <p className="text-sm text-gray-500 dark:text-gray-400">Loading profile...</p>}
+
+        {isError && (
+          <Alert
+            variant="error"
+            title="Unable to Load Profile"
+            message="Please refresh the page or try again in a moment."
+          />
+        )}
+
+        {data?.data && (
+          <div className="space-y-6">
+            <UserMetaCard profile={data.data} />
+            <UserInfoCard profile={data.data} />
+            <ChangePasswordCard />
+          </div>
+        )}
       </div>
     </>
   );
