@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\WarehouseController;
 use App\Http\Controllers\Api\V1\InventoryController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\StoreController;
+use App\Http\Controllers\Api\V1\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,13 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/auth/me', [AuthController::class, 'me']);
     Route::post('/auth/revoke-all', [AuthController::class, 'revokeAllTokens']);
+    
+    // Dashboard
+    Route::get('/dashboard/statistics', [DashboardController::class, 'statistics']);
+    Route::get('/dashboard/recent-orders', [DashboardController::class, 'recentOrders']);
+    Route::get('/dashboard/sales-chart', [DashboardController::class, 'salesChart']);
+    Route::get('/dashboard/top-products', [DashboardController::class, 'topProducts']);
+    Route::get('/dashboard/activity-log', [DashboardController::class, 'activityLog']);
     
     // Products
     Route::apiResource('products', ProductController::class);
