@@ -183,7 +183,7 @@ deleteProduct: builder.mutation<void, number>({
 - `POST /orders/{id}/fulfill` - Fulfill order
 - `GET /orders/statistics` - Order statistics
 
-### Inventory (10 endpoints)
+### Inventory (12 endpoints)
 - `GET /inventory` - List inventory
 - `GET /inventory/product/{id}` - Get by product
 - `POST /inventory/adjust` - Adjust stock
@@ -192,13 +192,16 @@ deleteProduct: builder.mutation<void, number>({
 - `POST /inventory/fulfill` - Fulfill stock
 - `POST /inventory/transfer` - Transfer stock
 - `GET /inventory/movements` - Stock movements
+- `GET /stock-alerts` - List stock alerts
+- `PATCH /stock-alerts/{id}/resolve` - Resolve stock alert
 
-### Warehouses (5 endpoints)
+### Warehouses (6 endpoints)
 - `GET /warehouses` - List warehouses
 - `POST /warehouses` - Create warehouse
 - `GET /warehouses/{id}` - Get warehouse
 - `PUT /warehouses/{id}` - Update warehouse
 - `DELETE /warehouses/{id}` - Delete warehouse
+- `PATCH /warehouses/{id}/set-default` - Set default warehouse
 
 ### Stores (4 endpoints, Super Admin)
 - `GET /stores` - List all stores

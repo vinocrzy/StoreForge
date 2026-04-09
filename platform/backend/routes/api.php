@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\WarehouseController;
 use App\Http\Controllers\Api\V1\InventoryController;
+use App\Http\Controllers\Api\V1\StockAlertController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\StoreController;
 use App\Http\Controllers\Api\V1\DashboardController;
@@ -69,6 +70,7 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     
     // Warehouses
     Route::apiResource('warehouses', WarehouseController::class);
+    Route::patch('/warehouses/{id}/set-default', [WarehouseController::class, 'setDefault']);
     
     // Inventory
     Route::get('/inventory/movements', [InventoryController::class, 'movements']);
@@ -79,6 +81,10 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::post('/inventory/fulfill', [InventoryController::class, 'fulfill']);
     Route::post('/inventory/transfer', [InventoryController::class, 'transfer']);
     Route::apiResource('inventory', InventoryController::class)->only(['index', 'show', 'store']);
+
+    // Stock alerts
+    Route::get('/stock-alerts', [StockAlertController::class, 'index']);
+    Route::patch('/stock-alerts/{id}/resolve', [StockAlertController::class, 'resolve']);
     
     // Orders
     Route::get('/orders/statistics', [OrderController::class, 'statistics']);

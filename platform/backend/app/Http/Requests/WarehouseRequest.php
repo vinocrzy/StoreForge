@@ -33,6 +33,7 @@ class WarehouseRequest extends FormRequest
             'postal_code' => 'nullable|string|max:20',
             'country' => 'nullable|string|size:2', // ISO 3166-1 alpha-2
             'is_active' => 'sometimes|boolean',
+            'is_default' => 'sometimes|boolean',
         ];
     }
 
@@ -44,6 +45,7 @@ class WarehouseRequest extends FormRequest
         return [
             'code' => 'warehouse code',
             'is_active' => 'active status',
+            'is_default' => 'default warehouse flag',
             'postal_code' => 'postal code',
         ];
     }

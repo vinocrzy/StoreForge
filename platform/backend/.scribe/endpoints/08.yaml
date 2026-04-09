@@ -1,0 +1,149 @@
+name: 'Stock Alerts'
+description: |-
+
+  Manage low stock and out-of-stock alerts for the authenticated store.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/stock-alerts
+    metadata:
+      custom: []
+      groupName: 'Stock Alerts'
+      groupDescription: |-
+
+        Manage low stock and out-of-stock alerts for the authenticated store.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List stock alerts'
+      description: 'Get active/resolved stock alerts with optional filtering.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      status:
+        custom: []
+        name: status
+        description: 'Filter by alert status: active, resolved.'
+        required: false
+        example: active
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      alert_type:
+        custom: []
+        name: alert_type
+        description: 'Filter by alert type: low_stock, out_of_stock.'
+        required: false
+        example: low_stock
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      per_page:
+        custom: []
+        name: per_page
+        description: 'Items per page (max 100).'
+        required: false
+        example: 20
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      status: active
+      alert_type: low_stock
+      per_page: 20
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": [
+              {
+                "id": 1,
+                "alert_type": "low_stock",
+                "threshold": 10,
+                "current_quantity": 4,
+                "status": "active"
+              }
+            ]
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/stock-alerts/{id}/resolve'
+    metadata:
+      custom: []
+      groupName: 'Stock Alerts'
+      groupDescription: |-
+
+        Manage low stock and out-of-stock alerts for the authenticated store.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Resolve stock alert'
+      description: 'Mark a stock alert as resolved.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'Alert ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Stock alert resolved successfully",
+            "data": {
+              "id": 1,
+              "status": "resolved"
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

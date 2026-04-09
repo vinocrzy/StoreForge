@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Inventory;
 use App\Models\Warehouse;
 use App\Models\StockMovement;
+use App\Models\StockAlert;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -99,6 +100,8 @@ class InventoryService
             ]
         );
 
+        $this->syncStockAlertForInventory($inventory);
+
         return $inventory->fresh();
     }
 
@@ -143,6 +146,8 @@ class InventoryService
 
             $inventory->save();
 
+            $this->syncStockAlertForInventory($inventory);
+
             // Record stock movement
             StockMovement::create([
                 'store_id' => tenant()->id,
@@ -178,6 +183,8 @@ class InventoryService
             $inventory->reserved_quantity += $quantity;
             $inventory->save();
 
+            $this->syncStockAlertForInventory($inventory);
+
             return $inventory;
         });
     }
@@ -201,6 +208,8 @@ class InventoryService
             }
 
             $inventory->save();
+
+            $this->syncStockAlertForInventory($inventory);
 
             return $inventory;
         });
@@ -233,6 +242,8 @@ class InventoryService
             }
 
             $inventory->save();
+
+            $this->syncStockAlertForInventory($inventory);
 
             // Record stock movement
             StockMovement::create([
@@ -274,6 +285,7 @@ class InventoryService
 
             $fromInventory->quantity -= $quantity;
             $fromInventory->save();
+            $this->syncStockAlertForInventory($fromInventory);
 
             // Add to destination warehouse
             $toInventory = Inventory::firstOrCreate(
@@ -292,6 +304,7 @@ class InventoryService
 
             $toInventory->quantity += $quantity;
             $toInventory->save();
+            $this->syncStockAlertForInventory($toInventory);
 
             // Record movements
             StockMovement::create([
@@ -460,5 +473,71 @@ class InventoryService
         }
 
         return $warehouse->delete();
+    }
+
+    /**
+     * Create/update/resolve stock alerts based on available quantity.
+     */
+    private function syncStockAlertForInventory(Inventory $inventory): void
+    {
+        $available = $inventory->available_quantity;
+
+        if ($available <= 0) {
+            StockAlert::updateOrCreate(
+                [
+                    'store_id' => tenant()->id,
+                    'product_id' => $inventory->product_id,
+                    'warehouse_id' => $inventory->warehouse_id,
+                    'alert_type' => 'out_of_stock',
+                    'status' => 'active',
+                ],
+                [
+                    'threshold' => 0,
+                    'current_quantity' => $available,
+                    'resolved_at' => null,
+                ]
+            );
+
+            StockAlert::where('store_id', tenant()->id)
+                ->where('product_id', $inventory->product_id)
+                ->where('warehouse_id', $inventory->warehouse_id)
+                ->where('alert_type', 'low_stock')
+                ->where('status', 'active')
+                ->update(['status' => 'resolved', 'resolved_at' => now()]);
+
+            return;
+        }
+
+        if ($available <= $inventory->low_stock_threshold) {
+            StockAlert::updateOrCreate(
+                [
+                    'store_id' => tenant()->id,
+                    'product_id' => $inventory->product_id,
+                    'warehouse_id' => $inventory->warehouse_id,
+                    'alert_type' => 'low_stock',
+                    'status' => 'active',
+                ],
+                [
+                    'threshold' => $inventory->low_stock_threshold,
+                    'current_quantity' => $available,
+                    'resolved_at' => null,
+                ]
+            );
+
+            StockAlert::where('store_id', tenant()->id)
+                ->where('product_id', $inventory->product_id)
+                ->where('warehouse_id', $inventory->warehouse_id)
+                ->where('alert_type', 'out_of_stock')
+                ->where('status', 'active')
+                ->update(['status' => 'resolved', 'resolved_at' => now()]);
+
+            return;
+        }
+
+        StockAlert::where('store_id', tenant()->id)
+            ->where('product_id', $inventory->product_id)
+            ->where('warehouse_id', $inventory->warehouse_id)
+            ->where('status', 'active')
+            ->update(['status' => 'resolved', 'resolved_at' => now()]);
     }
 }

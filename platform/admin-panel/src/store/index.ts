@@ -6,6 +6,7 @@ import { ordersApi } from '../services/orders';
 import { customersApi } from '../services/customers';
 import { storesApi } from '../services/stores';
 import { dashboardApi } from '../services/dashboard';
+import { inventoryApi } from '../services/inventory';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     [customersApi.reducerPath]: customersApi.reducer,
     [storesApi.reducerPath]: storesApi.reducer,
     [dashboardApi.reducerPath]: dashboardApi.reducer,
+    [inventoryApi.reducerPath]: inventoryApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -24,7 +26,8 @@ export const store = configureStore({
       .concat(ordersApi.middleware)
       .concat(customersApi.middleware)
       .concat(storesApi.middleware)
-      .concat(dashboardApi.middleware),
+      .concat(dashboardApi.middleware)
+      .concat(inventoryApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

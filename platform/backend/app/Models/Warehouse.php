@@ -23,10 +23,12 @@ class Warehouse extends Model
         'postal_code',
         'country',
         'is_active',
+        'is_default',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_default' => 'boolean',
     ];
 
     /**

@@ -3,7 +3,7 @@
 **Project**: Multi-Tenant E-Commerce Platform  
 **Started**: March 30, 2026  
 **Status**: 🚧 In Progress  
-**Current Phase**: Phase 6 - Admin Panel Completion (40% 🚧) | Phase 7 - Storefront (20% 🚧)
+**Current Phase**: Phase 6 - Admin Panel Completion (50% 🚧) | Phase 7 - Storefront (20% 🚧)
 
 ---
 
@@ -17,7 +17,7 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 4. ✅ **Phase 3**: Admin Panel (COMPLETE - Core Features)
 5. ✅ **Phase 4**: Storefront Template (COMPLETE - Structure)
 6. ✅ **Phase 5**: Infrastructure & Monitoring (COMPLETE)
-7. 🚧 **Phase 6**: Admin Panel Completion (20% - In Progress)
+7. 🚧 **Phase 6**: Admin Panel Completion (50% - In Progress)
 8. 🚧 **Phase 7**: Storefront Implementation (20% - In Progress — design system applied)
 9. ⏳ **Phase 8**: Production Deployment (Not Started)
 10. ⏳ **Phase 9**: Testing & QA (Not Started)
@@ -28,6 +28,21 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 **See [docs/20-production-readiness-plan.md](docs/20-production-readiness-plan.md) for complete implementation plan.**
 
 ### Latest Progress (April 9, 2026)
+
+**Phase 6.2 Inventory Management System (In Progress)**:
+- [x] Frontend: Added RTK Query `inventoryApi` service for warehouses, inventory, adjustments, transfers, stock movements, and stock alerts
+- [x] Frontend: Added TypeScript inventory domain types (`Warehouse`, `InventoryRecord`, `StockMovement`, `StockAlert`, paginated responses)
+- [x] Frontend: Replaced Inventory/Stock Levels placeholder with real API integration (filters, pagination, quick stock adjustment modal)
+- [x] Frontend: Replaced Warehouses placeholder with real API integration (list, create/edit modal, enable/disable, delete)
+- [x] Frontend: Added “Set Default” warehouse action and default badge support
+- [x] Frontend: Replaced Stock Movements placeholder with real API integration (history table, type filter, pagination)
+- [x] Frontend: Registered `inventoryApi` in Redux store
+- [x] Backend: Added `stock_alerts` table migration and `StockAlert` tenant-scoped model
+- [x] Backend: Added Stock Alert APIs (`GET /api/v1/stock-alerts`, `PATCH /api/v1/stock-alerts/{id}/resolve`)
+- [x] Backend: Added warehouse default workflow (`PATCH /api/v1/warehouses/{id}/set-default`) + `is_default` support
+- [x] Backend: Integrated stock alert lifecycle updates into `InventoryService`
+- [x] Validation: Admin panel build successful (`npm run build`), new routes verified (`php artisan route:list`)
+- [ ] Pending: Regenerate Scribe docs and complete remaining inventory API parity items (if required by final Phase 6.2 acceptance)
 
 **Phase 6.1 Dashboard Implementation (Complete)**:
 - [x] Backend: 5 dashboard API endpoints created
@@ -1401,24 +1416,32 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 
 ---
 
-### 6.2 Inventory Management System ⏳ NOT STARTED
+### 6.2 Inventory Management System 🚧 IN PROGRESS
 
 **Database Tables** (4 tables):
-- [ ] warehouses
+- [x] warehouses (includes `is_default` support)
 - [ ] product_warehouse
-- [ ] stock_movements
-- [ ] stock_alerts
+- [x] stock_movements
+- [x] stock_alerts
 
 **Backend APIs** (15 endpoints):
-- [ ] Warehouses CRUD (6 endpoints)
-- [ ] Inventory management (5 endpoints)
+- [x] Warehouses CRUD (6 endpoints)
+- [x] Inventory management (5 endpoints)
 - [ ] Stock movements (3 endpoints)
-- [ ] Stock alerts (2 endpoints)
+- [x] Stock alerts (2 endpoints)
 
 **Frontend Pages**:
-- [ ] Inventory/Stock Levels page
-- [ ] Warehouses page
-- [ ] Stock Movements page
+- [x] Inventory/Stock Levels page
+- [x] Warehouses page
+- [x] Stock Movements page
+
+**Kickoff Deliverables (April 9, 2026)**:
+- [x] `platform/admin-panel/src/services/inventory.ts`
+- [x] `platform/admin-panel/src/types/inventory.ts`
+- [x] `platform/admin-panel/src/pages/Inventory/index.tsx`
+- [x] `platform/admin-panel/src/pages/Inventory/Warehouses.tsx`
+- [x] `platform/admin-panel/src/pages/Inventory/StockMovements.tsx`
+- [x] `platform/admin-panel/src/store/index.ts` (inventory API reducer + middleware)
 
 **Priority**: HIGH | **Estimated Time**: 1.5 weeks
 

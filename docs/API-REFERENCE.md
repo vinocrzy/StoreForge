@@ -720,13 +720,34 @@ Authorization: Bearer {token}
 X-Store-ID: {store_id}
 ```
 
+### Stock Alerts
+```http
+GET /stock-alerts?status=active&alert_type=low_stock
+Authorization: Bearer {token}
+X-Store-ID: {store_id}
+```
+
+### Resolve Stock Alert
+```http
+PATCH /stock-alerts/{id}/resolve
+Authorization: Bearer {token}
+X-Store-ID: {store_id}
+```
+
 ---
 
 ## 🏪 Warehouses
 
 ### List Warehouses
 ```http
-GET /warehouses?status=active
+GET /warehouses?is_active=1
+Authorization: Bearer {token}
+X-Store-ID: {store_id}
+```
+
+### Set Default Warehouse
+```http
+PATCH /warehouses/{id}/set-default
 Authorization: Bearer {token}
 X-Store-ID: {store_id}
 ```

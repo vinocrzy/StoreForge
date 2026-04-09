@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WarehouseRequest;
 use App\Models\Warehouse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -139,7 +140,18 @@ class WarehouseController extends Controller
      */
     public function store(WarehouseRequest $request): JsonResponse
     {
-        $warehouse = Warehouse::create($request->validated());
+        $payload = $request->validated();
+
+        if (!Warehouse::query()->exists()) {
+            $payload['is_default'] = true;
+        }
+
+        $warehouse = Warehouse::create($payload);
+
+        if (!empty($payload['is_default'])) {
+            Warehouse::where('id', '!=', $warehouse->id)->update(['is_default' => false]);
+            $warehouse->refresh();
+        }
 
         return response()->json(['data' => $warehouse], 201);
     }
@@ -177,9 +189,51 @@ class WarehouseController extends Controller
     public function update(WarehouseRequest $request, int $id): JsonResponse
     {
         $warehouse = Warehouse::findOrFail($id);
-        $warehouse->update($request->validated());
+
+        DB::transaction(function () use ($warehouse, $request) {
+            $payload = $request->validated();
+            $warehouse->update($payload);
+
+            if (!empty($payload['is_default'])) {
+                Warehouse::where('id', '!=', $warehouse->id)->update(['is_default' => false]);
+                $warehouse->refresh();
+            }
+        });
 
         return response()->json(['data' => $warehouse]);
+    }
+
+    /**
+     * Set default warehouse
+     *
+     * Mark a warehouse as the default warehouse for the current store.
+     * Any previously default warehouse will be unset.
+     *
+     * @urlParam id integer required Warehouse ID. Example: 1
+     *
+     * @response 200 scenario="Success" {
+     *   "message": "Default warehouse updated successfully",
+     *   "data": {
+     *     "id": 1,
+     *     "name": "Main Warehouse",
+     *     "is_default": true
+     *   }
+     * }
+     */
+    public function setDefault(int $id): JsonResponse
+    {
+        $warehouse = Warehouse::findOrFail($id);
+
+        DB::transaction(function () use ($warehouse) {
+            Warehouse::query()->update(['is_default' => false]);
+            $warehouse->update(['is_default' => true]);
+            $warehouse->refresh();
+        });
+
+        return response()->json([
+            'message' => 'Default warehouse updated successfully',
+            'data' => $warehouse,
+        ]);
     }
 
     /**
