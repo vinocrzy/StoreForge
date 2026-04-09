@@ -11,6 +11,14 @@
         "/^cd platform/admin-panel; git add \\.$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^Set-Location -Path \"c:\\\\poc\\\\e-com\\\\platform\\\\admin-panel\"; npm run build$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^Set-Location platform/admin-panel; npm run build$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     }
 }

@@ -116,13 +116,32 @@ const axiosBaseQuery = (
 > =>
   async ({ url, method = 'GET', data, params }) => {
     try {
-      const result = await apiClient({
-        url: baseUrl + url,
-        method,
-        data,
-        params,
-      });
-      return { data: result.data };
+      const requestUrl = baseUrl + url;
+      const normalizedMethod = method.toUpperCase();
+      let result: unknown;
+
+      switch (normalizedMethod) {
+        case 'GET':
+          result = await apiClient.get(requestUrl, { params });
+          break;
+        case 'POST':
+          result = await apiClient.post(requestUrl, data, { params });
+          break;
+        case 'PUT':
+          result = await apiClient.put(requestUrl, data, { params });
+          break;
+        case 'PATCH':
+          result = await apiClient.patch(requestUrl, data, { params });
+          break;
+        case 'DELETE':
+          result = await apiClient.delete(requestUrl, { params, data });
+          break;
+        default:
+          result = await apiClient.get(requestUrl, { params });
+          break;
+      }
+
+      return { data: result };
     } catch (axiosError) {
       const err = axiosError as AxiosError;
       return {
