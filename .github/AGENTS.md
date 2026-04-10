@@ -19,7 +19,38 @@ The Tech Lead agent can automatically delegate to specialist agents based on the
 
 ## Available Agents
 
-### 1. � Brand Identity Designer
+> **Full Workflow**: See `.github/agents/WORKFLOW.md` for the complete team workflow, RACI matrix, handoff checklists, and execution order.
+
+### 0. 📋 Product Manager
+
+**File**: `.github/agents/product-manager.agent.md`
+
+**Role**: Product Strategist & Requirements Engineer
+
+**Use for:**
+- Defining new features from client briefs or stakeholder requests
+- Writing user stories and acceptance criteria
+- Prioritizing the backlog (MoSCoW / RICE)
+- Planning sprint scope and sequencing
+- Writing feature specs developers can act on without back-and-forth
+- Reviewing QA results against acceptance criteria for final sign-off
+
+**Expertise:**
+- Requirements engineering (user stories, edge case mapping)
+- Backlog management and sprint planning
+- E-commerce domain (checkout flows, multi-tenant SaaS, product catalog)
+- MVP scoping and phased rollout planning
+- Feature documentation in `docs/features/`
+
+**Example Tasks:**
+- *"Write a feature spec for discount codes with acceptance criteria"*
+- *"Break down 'product reviews' into prioritized user stories"*
+- *"Define MVP scope for a new Honey Bee client onboarding"*
+- *"Review the implementation — does it meet our acceptance criteria?"*
+
+---
+
+### 1. 🎨 Brand Identity Designer
 
 **File**: `.github/agents/brand-identity-designer.agent.md`
 
@@ -388,9 +419,58 @@ The Tech Lead agent can automatically delegate to specialist agents based on the
 
 ---
 
+### 8. 🚀 DevOps Engineer
+
+**File**: `.github/agents/devops-engineer.agent.md`
+
+**Role**: Infrastructure, Deployment & Operations Specialist
+
+**Use for:**
+- Setting up or debugging the Docker Compose dev environment
+- Configuring CI/CD pipelines (GitHub Actions)
+- Deploying to staging or production
+- Managing environment variables and secrets securely
+- Configuring SSL certificates and DNS
+- Monitoring application health (Telescope, Horizon, logs)
+- Performance tuning (Nginx, PHP-FPM, OPcache, Redis)
+- Security hardening (headers, rate limiting, firewall)
+- Provisioning new client store infrastructure
+
+**Expertise:**
+- **Containerization**: Docker, Docker Compose, multi-stage builds
+- **CI/CD**: GitHub Actions, automated test gates, rolling deploys
+- **Web Servers**: Nginx reverse proxy, SSL/TLS, rate limiting
+- **PHP Runtime**: PHP-FPM, OPcache, queue workers (Horizon)
+- **Databases**: MySQL backup, connection pooling
+- **Monitoring**: Telescope, Horizon, uptime checks
+- **Security**: Secrets management, OWASP hardening, zero-trust principles
+
+**Workflow Position**:
+- Receives deployment request from QA & Testing Expert (after all tests pass)
+- Deploys to staging → runs smoke tests → deploys to production
+- Notifies Product Manager when feature is live
+
+**Example Tasks:**
+- *"Set up Docker Compose for the new developer on the team"*
+- *"Configure CI/CD pipeline to run tests on every PR"*
+- *"Deploy the product reviews feature to production"*
+- *"Debug why the queue workers are not processing jobs"*
+- *"Add Nginx virtual host for the new Honey Bee client domain"*
+- *"Set up SSL certificate and DNS for client-honey-bee.com"*
+- *"Review Docker configuration for production security hardening"*
+
+---
+
 ## Agent Coordination
 
 ### New Client Storefront Workflow
+
+> Full workflow detail: `.github/agents/WORKFLOW.md`
+
+**Phase 0: Discovery & Spec** (Led by Product Manager)
+0. **Client brief → feature spec** → **Product Manager**
+   - Writes feature spec with acceptance criteria
+   - Hands off to Tech Lead
 
 **Phase 1: Brand Identity & Design** (Led by Brand Identity Designer)
 1. **Brand Discovery** → **Brand Identity Designer**
@@ -435,8 +515,20 @@ The Tech Lead agent can automatically delegate to specialist agents based on the
    - Checks mobile responsiveness
    
 8. **Quality Gate** → **QA & Testing Expert**
-   - ✅ ALL tests pass → Approve for commit
-   - ❌ ANY test fails → Block commit, report issues to developer
+   - ✅ ALL tests pass → Approve for deployment
+   - ❌ ANY test fails → Block deployment, report issues to developer
+
+**Phase 4: Deployment** (Led by DevOps Engineer)
+9. **Stage & Deploy** → **DevOps Engineer**
+   - Deploy to staging, run smoke tests
+   - Promote to production after Tech Lead sign-off
+   - Configure DNS, SSL, CDN for client domain
+   - Notify Product Manager → feature is live
+
+10. **Client Acceptance** → **Product Manager**
+   - Verify against original acceptance criteria
+   - Gather client feedback
+   - Sign off on delivery
    - Provides detailed test report with pass/fail results
 
 ### Feature Development Workflow
@@ -519,6 +611,12 @@ git push
 
 ## Tools & Restrictions
 
+### Product Manager
+- **Tools**: read, search, create files, edit docs (no terminal)
+- **Focus**: Feature specs, user stories, acceptance criteria, backlog
+- **Creates**: `docs/features/` spec documents, acceptance criteria
+- **No**: Code editing, running tests, infrastructure changes
+
 ### Brand Identity Designer
 - **Tools**: read, search, view_image, askQuestions (read-only)
 - **Focus**: Brand identity, design systems, color theory, typography, accessibility
@@ -552,6 +650,13 @@ git push
 - **Can Execute**: Test commands (`php artisan test`, `npm run build`, `npm run lint`)
 - **No**: Code editing, implementation (validates only, reports issues to developers)
 - **Quality Gate**: ❌ If ANY test fails → Code CANNOT be committed (no exceptions)
+
+### DevOps Engineer
+- **Tools**: read, edit, search, execute, run_in_terminal (full access)
+- **Focus**: Infrastructure, Docker, CI/CD, deployments, monitoring
+- **Creates**: `.github/workflows/`, `docker/` config, Nginx configs
+- **Owns**: All production deployments — no developer deploys directly to production
+- **Quality Gate**: Receives QA sign-off before deploying; runs staging smoke tests before promoting to production
 
 ---
 

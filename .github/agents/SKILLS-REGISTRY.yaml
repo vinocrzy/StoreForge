@@ -1,0 +1,452 @@
+# StoreForge Agent Skills Registry
+# ─────────────────────────────────
+# Single source of truth for skill → agent mapping.
+# 
+# Principles:
+#   - Each skill has ONE primary owner (writes, maintains, decides)
+#   - Secondary users consume the skill's output or reference it
+#   - No skill is assigned to all agents — that defeats specialisation
+#   - Tech Lead = reference access; QA = validation access; PM = none
+#
+# Skill levels:
+#   primary   — agent owns this skill, loads it on every relevant task
+#   secondary — agent consumes it; reads it when crossing domain boundaries
+#   validates — QA-only: agent runs checks against this skill's standards
+#   reference — Tech Lead / PM: consults but does not implement
+
+
+# ───────────────────────────────────────────────────────────────────────────
+# SKILL CATALOGUE
+# ───────────────────────────────────────────────────────────────────────────
+
+skills:
+
+  ecommerce-api-docs:
+    file: .github/skills/ecommerce-api-docs/SKILL.md
+    description: >
+      Generate and maintain Laravel API documentation via Scribe.
+      PHPDoc annotations, controller templates, response schemas,
+      and doc regeneration workflow.
+    domain: backend
+    primary_owner: Backend Developer
+    consumers: []
+    validators: [QA & Testing Expert]
+    references: [Tech Lead]
+    tags: [laravel, scribe, phpdoc, api, rest]
+
+  ecommerce-tenancy:
+    file: .github/skills/ecommerce-tenancy/SKILL.md
+    description: >
+      Multi-tenant data isolation patterns. TenantModel global scopes,
+      store_id enforcement, tenant-aware controllers, and isolation tests.
+    domain: backend
+    primary_owner: Backend Developer
+    consumers: []
+    validators: [QA & Testing Expert]
+    references: [Tech Lead]
+    tags: [multi-tenant, security, store_id, global-scopes, isolation]
+
+  ecommerce-seo:
+    file: .github/skills/ecommerce-seo/SKILL.md
+    description: >
+      SEO field schemas for database models (slug, meta_*, og_*, schema_markup).
+      Backend implementation of SEO data structures;
+      frontend consumption for Next.js generateMetadata and Schema.org.
+    domain: backend + storefront
+    primary_owner: Backend Developer       # owns the DB fields & API SEO payload
+    consumers: [Storefront Frontend Dev]    # implements generateMetadata from API data
+    validators: [QA & Testing Expert]
+    references: [Product Manager]           # PM understands SEO requirements
+    tags: [seo, slug, meta-tags, schema-org, sitemap, open-graph]
+
+  ecommerce-setup:
+    file: .github/skills/ecommerce-setup/SKILL.md
+    description: >
+      Platform-wide environment setup: Laravel backend, React admin panel,
+      Next.js storefront, Docker Compose, and new client storefront scaffolding.
+    domain: infrastructure
+    primary_owner: DevOps Engineer
+    consumers: []
+    validators: []
+    references: [Tech Lead]
+    tags: [docker, setup, onboarding, laravel, nextjs, scaffold]
+
+  ecommerce-admin-ui:
+    file: .github/skills/ecommerce-admin-ui/SKILL.md
+    description: >
+      TailAdmin design system for the React admin panel.
+      Component patterns (Button, Table, Alert, Modal), Tailwind CSS 4
+      colour tokens, dark mode, form layouts, and dashboard patterns.
+    domain: admin-frontend
+    primary_owner: Admin Frontend Dev
+    consumers: []
+    validators: [QA & Testing Expert]
+    references: []
+    tags: [react, tailadmin, tailwind, typescript, rtk-query, forms]
+
+  ecommerce-api-integration:
+    file: .github/skills/ecommerce-api-integration/SKILL.md
+    description: >
+      Frontend API integration patterns. RTK Query endpoint definitions,
+      auth header injection (Bearer + X-Store-ID), pagination handling,
+      optimistic updates, and error state management.
+    domain: frontend
+    primary_owner: Admin Frontend Dev      # owns the RTK Query implementation
+    consumers: [Storefront Frontend Dev]   # consumes pattern for Next.js fetch calls
+    validators: []
+    references: []
+    tags: [rtk-query, axios, fetch, typescript, auth, pagination]
+
+  honey-bee-storefront-design:
+    file: .github/skills/honey-bee-storefront-design/SKILL.md
+    description: >
+      Stitch "Luminous Alchemist" design system for client-honey-bee.
+      Color tokens, utility classes (.honey-glow, .botanical-glass, etc.),
+      Noto Serif + Manrope typography, page section rhythm, and component patterns.
+    domain: client-storefront
+    primary_owner: Honey Bee Dev
+    consumers: []
+    validators: [QA & Testing Expert]
+    references: []
+    applyTo: client-honey-bee/**
+    tags: [honey-bee, stitch, tailwind-v4, nextjs, brand-design, seo]
+
+
+# ───────────────────────────────────────────────────────────────────────────
+# AGENT PROFILES
+# ───────────────────────────────────────────────────────────────────────────
+
+agents:
+
+  product-manager:
+    file: .github/agents/product-manager.agent.md
+    role: Product Strategist & Requirements Engineer
+    top_skills:
+      - Feature Specification & User Stories
+      - Acceptance Criteria Engineering
+      - Backlog Prioritisation (MoSCoW / RICE)
+      - MVP Scoping & Phased Rollout Planning
+      - Client Requirements Discovery
+    assigned_skills: {}
+    skill_notes: >
+      PM works at the requirements layer — above technical implementation.
+      No skill modules are loaded during PM work.
+      PM reads ecommerce-seo only to understand SEO acceptance criteria
+      when writing specs for content features.
+    inputs:
+      - Client brief or stakeholder request
+      - Bug report or roadmap item
+      - Sprint planning session
+    outputs:
+      - Feature spec document (docs/features/)
+      - User stories with acceptance criteria
+      - Prioritised backlog order
+    hands_off_to: Tech Lead
+
+  tech-lead:
+    file: .github/agents/tech-lead.agent.md
+    role: Technical Manager & System Architect
+    top_skills:
+      - Multi-tenant System Architecture
+      - Database Schema & API Contract Design
+      - Cross-team Task Decomposition
+      - Technology Selection & Pattern Enforcement
+      - Scalability & Security Review
+    assigned_skills:
+      reference:
+        - ecommerce-tenancy   # validates architectural isolation decisions
+        - ecommerce-api-docs  # confirms API design standards
+        - ecommerce-setup     # guides new team members / environment decisions
+    skill_notes: >
+      Tech Lead references skills to validate decisions but never implements.
+      Does not load ecommerce-admin-ui, ecommerce-api-integration, or
+      honey-bee-storefront-design — those are specialist domains.
+    inputs:
+      - Feature spec from Product Manager
+      - Architecture question from any developer
+      - Technical blocker escalation
+    outputs:
+      - Database schema or API contract
+      - Task breakdown per specialist agent
+      - Architecture decision record (updated docs/)
+    hands_off_to: Backend Developer, Admin Frontend Dev, Storefront Frontend Dev, Brand Identity Designer
+
+  brand-identity-designer:
+    file: .github/agents/brand-identity-designer.agent.md
+    role: Senior UI/UX Designer & Brand Strategist
+    top_skills:
+      - Brand Strategy & Positioning
+      - Color Theory & WCAG-Compliant Palette Design
+      - Typography System Design (Font Pairing + Scale)
+      - Design Token Architecture
+      - Competitive Analysis & Market Positioning
+    assigned_skills: {}
+    skill_notes: >
+      Brand Designer operates entirely in the pre-code design layer.
+      Outputs are .brand/ markdown documents — no skill modules apply.
+      Storefront Frontend Dev translates these docs into code using
+      ecommerce-api-integration and their own design system knowledge.
+    inputs:
+      - Client brief (business, audience, competitors)
+      - Tech Lead onboarding for new client
+    outputs:
+      - .brand/identity.md
+      - .brand/color-palette.md
+      - .brand/typography.md
+      - .brand/style-guide.md
+    hands_off_to: Storefront Frontend Dev
+
+  backend-developer:
+    file: .github/agents/backend-developer.agent.md
+    role: Senior Laravel Backend Developer
+    top_skills:
+      - Laravel 11 (Eloquent ORM, Service Container, Form Requests)
+      - RESTful API Design & Scribe Documentation
+      - Multi-tenant Data Isolation (Global Scopes)
+      - MySQL Schema Design & Query Optimisation
+      - PHPUnit Feature & Integration Testing
+    assigned_skills:
+      primary:
+        - ecommerce-api-docs     # OWNS: writes all Scribe annotations, generates docs
+        - ecommerce-tenancy      # OWNS: implements all TenantModel patterns and isolation tests
+        - ecommerce-seo          # OWNS: database SEO fields, SeoService, API SEO payload
+    skill_notes: >
+      Backend is the heaviest skill consumer.
+      ecommerce-api-docs:    loaded whenever creating or updating any controller.
+      ecommerce-tenancy:     loaded whenever creating/migrating any tenant model.
+      ecommerce-seo:         loaded when creating products, categories, or any public content model.
+      Does NOT use ecommerce-admin-ui, ecommerce-api-integration, or honey-bee-storefront-design.
+    inputs:
+      - API contract from Tech Lead
+      - Feature spec from Product Manager
+      - Migration spec from Tech Lead
+    outputs:
+      - Eloquent models + migrations
+      - Service classes (app/Services/)
+      - API controllers with Scribe PHPDoc
+      - PHPUnit feature tests
+      - Updated docs/API-REFERENCE.md
+    hands_off_to: Admin Frontend Dev, Storefront Frontend Dev (consumes the API)
+
+  admin-frontend-dev:
+    file: .github/agents/admin-frontend-dev.agent.md
+    role: Senior React Frontend Developer (Admin Panel)
+    top_skills:
+      - React 19 + TypeScript 6 (Strict Mode)
+      - Redux Toolkit 2 & RTK Query
+      - TailAdmin Design System & Tailwind CSS 4
+      - Form Architecture (React Hook Form + Validation)
+      - Accessibility — ARIA Roles & Keyboard Navigation
+    assigned_skills:
+      primary:
+        - ecommerce-admin-ui         # OWNS: all TailAdmin component patterns
+        - ecommerce-api-integration  # OWNS: all RTK Query service definitions for admin
+    skill_notes: >
+      ecommerce-admin-ui:        loaded on every admin UI task (page, form, table, modal).
+      ecommerce-api-integration: loaded when wiring up any API call via RTK Query.
+      ecommerce-api-docs:        NOT loaded — admin panel consumes the API, does not document it.
+      ecommerce-tenancy:         NOT loaded — tenant scoping is backend concern; admin sends X-Store-ID header only.
+    inputs:
+      - API contract or Scribe docs from Backend Developer
+      - Feature spec from Product Manager
+      - Tech Lead task assignment
+    outputs:
+      - React pages (platform/admin-panel/src/pages/)
+      - RTK Query service files (src/services/)
+      - TypeScript interfaces (src/types/)
+      - Redux slices (src/store/)
+    hands_off_to: QA & Testing Expert
+
+  storefront-frontend-dev:
+    file: .github/agents/storefront-frontend-dev.agent.md
+    role: Senior Next.js Frontend Developer & UI/UX Designer (Storefronts)
+    top_skills:
+      - Next.js 14 App Router (SSG / ISR / Server Components)
+      - Design System Implementation (Brand Tokens → Code)
+      - SEO & Structured Data (generateMetadata + Schema.org)
+      - Core Web Vitals & Image Optimisation
+      - WCAG 2.1 AA Accessibility Compliance
+    assigned_skills:
+      primary:
+        - ecommerce-seo              # OWNS: frontend implementation of generateMetadata, Schema.org, sitemaps
+      secondary:
+        - ecommerce-api-integration  # consumes: fetch patterns for Next.js server components and client hooks
+    skill_notes: >
+      ecommerce-seo:             loaded on EVERY page or product feature (SEO is always required).
+      ecommerce-api-integration: loaded when setting up API fetch calls in Server Components or
+                                 client-side hooks; follows the same header/auth patterns.
+      ecommerce-admin-ui:        NOT loaded — storefront uses its own brand design system, not TailAdmin.
+      ecommerce-tenancy:         NOT loaded — storefront is pinned to one store; tenant ID is baked into config.
+      honey-bee:                 NOT loaded here — Honey Bee Dev is the specialist for client-honey-bee.
+    inputs:
+      - .brand/ design docs from Brand Identity Designer
+      - API contract / Scribe docs from Backend Developer
+      - Tech Lead task assignment
+    outputs:
+      - Next.js pages with SSG and SEO metadata
+      - Design system tokens (src/design-system/tokens/)
+      - Brand component library (src/components/)
+      - Dynamic sitemap.xml + robots.txt
+    hands_off_to: QA & Testing Expert
+
+  qa-testing-expert:
+    file: .github/agents/qa-testing-expert.agent.md
+    role: Senior QA Engineer & Test Automation Specialist
+    top_skills:
+      - PHPUnit & Jest / React Testing Library Automation
+      - Multi-tenant Isolation Testing (Zero-tolerance)
+      - WCAG 2.1 AA Accessibility Auditing
+      - OWASP Top 10 Security Testing
+      - E2E Flow Testing (Playwright)
+    assigned_skills:
+      validates:
+        - ecommerce-tenancy      # runs tenant isolation suite against this skill's standards
+        - ecommerce-seo          # audits SEO field completeness and Schema.org validity
+        - ecommerce-admin-ui     # checks accessibility and TypeScript build for admin components
+    skill_notes: >
+      QA validates implementation against skill standards but does NOT implement.
+      ecommerce-tenancy: read to know what isolation tests are required; then execute them.
+      ecommerce-seo:     read to know what fields/tags must be present; then audit the output.
+      ecommerce-admin-ui: read to validate TailAdmin usage is correct and build is clean.
+      ecommerce-api-docs: NOT loaded — QA tests API behaviour, not whether docs are written.
+      ecommerce-setup:   NOT loaded — QA does not manage environments.
+    inputs:
+      - Completed feature branch from any developer
+      - PR description with scope of changes
+    outputs:
+      - Test execution report (pass/fail per suite)
+      - Accessibility audit report
+      - Security scan findings
+      - QA sign-off (or block notice with specific issues)
+    hands_off_to: DevOps Engineer (on PASS) or Developer (on FAIL)
+
+  devops-engineer:
+    file: .github/agents/devops-engineer.agent.md
+    role: Infrastructure, Deployment & Operations Specialist
+    top_skills:
+      - Docker Compose Orchestration & Multi-stage Builds
+      - GitHub Actions CI/CD Pipeline Design
+      - Nginx Configuration & SSL/TLS Management
+      - Production Security Hardening (OWASP + Headers)
+      - Performance Monitoring (Telescope, Horizon, Uptime)
+    assigned_skills:
+      primary:
+        - ecommerce-setup    # OWNS: platform environment setup, Docker, client storefront provisioning
+    skill_notes: >
+      ecommerce-setup: loaded for any environment, Docker, or infrastructure task.
+      ecommerce-tenancy: NOT loaded — DevOps doesn't write application code.
+      ecommerce-api-docs: NOT loaded — DevOps doesn't write API annotations.
+      ecommerce-admin-ui: NOT loaded — DevOps doesn't build UI.
+    inputs:
+      - QA sign-off from QA & Testing Expert
+      - Deployment request from Tech Lead
+      - Infrastructure change request
+    outputs:
+      - Deployed environment (staging or production)
+      - CI/CD pipeline configuration (.github/workflows/)
+      - Docker / Nginx configuration updates
+      - Monitoring and alert setup
+    hands_off_to: Product Manager (feature is live notification)
+
+  honey-bee-dev:
+    file: client-honey-bee/.github/agents/honey-bee-storefront-dev.agent.md
+    role: Dedicated Honey Bee Artisan Soap Storefront Developer
+    scope: client-honey-bee/** only
+    top_skills:
+      - Stitch "Luminous Alchemist" Design System Implementation
+      - Next.js 14 App Router + Tailwind CSS v4 Token Architecture
+      - Honey Bee Brand Identity (Amber + Botanical + Editorial Luxury)
+      - SEO & Schema.org Product Markup (Artisan Products)
+      - Accessible Component Design (WCAG 2.1 AA)
+    assigned_skills:
+      primary:
+        - honey-bee-storefront-design  # OWNS: sole user of this skill; always loaded first
+      secondary:
+        - ecommerce-seo                # consumed: generates product/category SEO metadata
+      reference:
+        - ecommerce-api-integration    # reference: fetch patterns for Honey Bee API calls
+    skill_notes: >
+      honey-bee-storefront-design: ALWAYS loaded before any UI work. Non-negotiable.
+      ecommerce-seo:               loaded when adding SEO metadata, Schema.org, or sitemap to any page.
+      ecommerce-api-integration:   referenced when wiring up API calls to the StoreForge backend.
+      ecommerce-api-docs:          NOT loaded — does not write Laravel docs.
+      ecommerce-tenancy:           NOT loaded — Honey Bee is single-store; tenant ID is env config.
+      ecommerce-setup:             NOT loaded — environment is managed by DevOps.
+    inputs:
+      - UI task description from Product Manager or client
+      - Stitch design reference screenshots (src/design-system/design-reference/stitch/)
+      - Backend API contract from Backend Developer
+    outputs:
+      - Next.js pages and components (client-honey-bee/src/)
+      - SEO metadata via generateMetadata
+      - Schema.org structured data
+      - Accessible, mobile-first UI matching Stitch prototypes
+    hands_off_to: QA & Testing Expert
+
+
+# ───────────────────────────────────────────────────────────────────────────
+# SKILL COVERAGE MATRIX
+# ───────────────────────────────────────────────────────────────────────────
+#
+# Agent                  | api-docs | tenancy | seo | setup | admin-ui | api-integration | honey-bee
+# ─────────────────────────────────────────────────────────────────────────────────────────────────
+# Product Manager        |    —     |    —    |  —  |   —   |    —     |       —         |    —
+# Tech Lead              |   REF    |   REF   |  —  |  REF  |    —     |       —         |    —
+# Brand Identity Designer|    —     |    —    |  —  |   —   |    —     |       —         |    —
+# Backend Developer      |   PRI    |   PRI   | PRI |   —   |    —     |       —         |    —
+# Admin Frontend Dev     |    —     |    —    |  —  |   —   |   PRI    |      PRI        |    —
+# Storefront Frontend Dev|    —     |    —    | PRI |   —   |    —     |      SEC        |    —
+# QA & Testing Expert    |    —     |   VAL   | VAL |   —   |   VAL    |       —         |   VAL
+# DevOps Engineer        |    —     |    —    |  —  |  PRI  |    —     |       —         |    —
+# Honey Bee Dev          |    —     |    —    | SEC |   —   |    —     |      REF        |   PRI
+#
+# PRI = Primary (owns)  SEC = Secondary (consumes)  VAL = Validates  REF = References
+
+
+# ───────────────────────────────────────────────────────────────────────────
+# GAP ANALYSIS — MISSING SKILLS
+# ───────────────────────────────────────────────────────────────────────────
+
+missing_skills:
+
+  ecommerce-auth:
+    priority: HIGH
+    rationale: >
+      Phone-first authentication (E.164 format), Laravel Sanctum token lifecycle,
+      login/logout/register patterns, and password reset via SMS are used across
+      Backend Developer, Admin Frontend Dev, and Storefront Frontend Dev.
+      Currently scattered across copilot-instructions.md with no dedicated skill.
+    primary_owner: Backend Developer
+    consumers: [Admin Frontend Dev, Storefront Frontend Dev]
+    suggested_file: .github/skills/ecommerce-auth/SKILL.md
+
+  ecommerce-checkout:
+    priority: HIGH
+    rationale: >
+      Cart state management, multi-step checkout flow (cart → info → payment → confirm),
+      payment gateway integration (Stripe / PayPal), and order creation API are
+      core e-commerce flows with no documented skill module.
+    primary_owner: Storefront Frontend Dev
+    consumers: [Backend Developer]
+    suggested_file: .github/skills/ecommerce-checkout/SKILL.md
+
+  ecommerce-performance:
+    priority: MEDIUM
+    rationale: >
+      Query optimisation (N+1 detection, eager loading), Redis caching patterns,
+      OPcache configuration, Core Web Vitals benchmarking, and Lighthouse CI setup.
+      Performance targets are defined (API <200ms p95, LCP <1s) but implementation
+      patterns are not captured in a reusable skill.
+    primary_owner: Backend Developer   # query optimisation
+    consumers: [DevOps Engineer, Storefront Frontend Dev]
+    suggested_file: .github/skills/ecommerce-performance/SKILL.md
+
+  ecommerce-media:
+    priority: MEDIUM
+    rationale: >
+      Product image upload (Spatie Media Library or custom), image optimisation
+      (WebP conversion, resizing), CDN delivery, and Next.js next/image integration.
+      Media handling is not currently documented as a reusable module.
+    primary_owner: Backend Developer
+    consumers: [Admin Frontend Dev, Storefront Frontend Dev]
+    suggested_file: .github/skills/ecommerce-media/SKILL.md

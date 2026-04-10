@@ -1,5 +1,23 @@
 # 🎉 GitHub Copilot Integration - Complete!
 
+## 📋 Multi-Agent Workflow
+
+The platform uses a structured team of specialist agents. See **`.github/agents/WORKFLOW.md`** for the full execution order, RACI matrix, and handoff checklists.
+
+| Agent | Role | When to Use |
+|-------|------|-------------|
+| **Product Manager** | Feature specs, user stories, acceptance criteria | Starting any new feature |
+| **Tech Lead** | Architecture, API contracts, task delegation | Architecture decisions |
+| **Brand Identity Designer** | Brand strategy, color/type systems | New client onboarding |
+| **Backend Developer** | Laravel API, DB migrations, tests | Backend implementation |
+| **Admin Frontend Dev** | React admin panel (TailAdmin + RTK Query) | Admin UI work |
+| **Storefront Frontend Dev** | Next.js storefronts, SEO, UX | Customer-facing pages |
+| **QA & Testing Expert** | Tests, accessibility, security, pre-deploy gate | Before every commit/deploy |
+| **DevOps Engineer** | Docker, CI/CD, deployments, monitoring | Infrastructure & operations |
+| **Honey Bee Dev** | Honey Bee client storefront (Stitch design) | client-honey-bee/ only |
+
+---
+
 ## ✅ What Was Created
 
 Based on our extensive conversation about the e-commerce platform, I've created a **comprehensive GitHub Copilot integration** with workspace instructions and specialized skills.
