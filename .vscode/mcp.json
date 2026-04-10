@@ -4,11 +4,8 @@
     "storeforge-browser": {
       "type": "stdio",
       "command": "npx",
-      "args": [
-        "--yes",
-        "tsx",
-        "${workspaceFolder}/platform/mcp-services/mcp-browser-service/src/index.ts"
-      ],
+      "args": ["tsx", "src/index.ts"],
+      "cwd": "${workspaceFolder}/platform/mcp-services/mcp-browser-service",
       "env": {
         "CACHE_TTL": "3600",
         "MIN_IMAGE_WIDTH": "800",
@@ -19,11 +16,8 @@
     "storeforge-assets": {
       "type": "stdio",
       "command": "npx",
-      "args": [
-        "--yes",
-        "tsx",
-        "${workspaceFolder}/platform/mcp-services/mcp-asset-service/src/index.ts"
-      ],
+      "args": ["tsx", "src/index.ts"],
+      "cwd": "${workspaceFolder}/platform/mcp-services/mcp-asset-service",
       "env": {
         "ASSETS_DIR": "${workspaceFolder}/assets",
         "MAX_FILE_SIZE_MB": "10",
