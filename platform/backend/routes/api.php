@@ -13,6 +13,11 @@ use App\Http\Controllers\Api\V1\StoreController;
 use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\SettingsController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\Public\PublicProductController;
+use App\Http\Controllers\Api\V1\Public\CartController;
+use App\Http\Controllers\Api\V1\Public\CustomerAuthController;
+use App\Http\Controllers\Api\V1\Public\CustomerAccountController;
+use App\Http\Controllers\Api\V1\Public\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -111,4 +116,41 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::post('/orders/{order}/payment', [OrderController::class, 'recordPayment']);
     Route::post('/orders/{order}/fulfill', [OrderController::class, 'fulfill']);
     Route::apiResource('orders', OrderController::class);
+});
+
+// -------------------------------------------------------------------------
+// Public Storefront Routes (no admin auth — X-Store-ID header sets tenant)
+// -------------------------------------------------------------------------
+Route::middleware(['public_tenant'])->prefix('v1/public')->group(function () {
+
+    // Product browsing
+    Route::get('/products', [PublicProductController::class, 'index']);
+    Route::get('/products/{slug}', [PublicProductController::class, 'show']);
+    Route::get('/featured-products', [PublicProductController::class, 'featured']);
+    Route::get('/categories', [PublicProductController::class, 'categories']);
+    Route::get('/categories/{slug}', [PublicProductController::class, 'showCategory']);
+
+    // Cart (token-based, no auth required)
+    Route::post('/cart', [CartController::class, 'create']);
+    Route::get('/cart/{token}', [CartController::class, 'show']);
+    Route::post('/cart/{token}/items', [CartController::class, 'addItem']);
+    Route::patch('/cart/{token}/items/{itemId}', [CartController::class, 'updateItem']);
+    Route::delete('/cart/{token}/items/{itemId}', [CartController::class, 'removeItem']);
+    Route::delete('/cart/{token}', [CartController::class, 'clear']);
+
+    // Customer auth
+    Route::post('/customer/register', [CustomerAuthController::class, 'register']);
+    Route::post('/customer/login', [CustomerAuthController::class, 'login']);
+
+    // Checkout (guest or authenticated)
+    Route::post('/checkout', [CheckoutController::class, 'process']);
+
+    // Customer account (requires customer Sanctum token)
+    Route::middleware(['auth:sanctum', 'ensure_customer'])->group(function () {
+        Route::post('/customer/logout', [CustomerAuthController::class, 'logout']);
+        Route::get('/customer/profile', [CustomerAccountController::class, 'profile']);
+        Route::patch('/customer/profile', [CustomerAccountController::class, 'updateProfile']);
+        Route::get('/customer/orders', [CustomerAccountController::class, 'orders']);
+        Route::get('/customer/orders/{id}', [CustomerAccountController::class, 'orderDetail']);
+    });
 });

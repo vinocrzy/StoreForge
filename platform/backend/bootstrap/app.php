@@ -13,7 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'tenant' => \App\Http\Middleware\SetTenantFromHeader::class,
+            'tenant'          => \App\Http\Middleware\SetTenantFromHeader::class,
+            'public_tenant'   => \App\Http\Middleware\SetPublicTenant::class,
+            'ensure_customer' => \App\Http\Middleware\EnsureCustomer::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
