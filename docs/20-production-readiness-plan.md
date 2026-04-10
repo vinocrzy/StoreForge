@@ -1,104 +1,136 @@
 # Production Readiness Plan
 
-**Document Version**: 1.0  
+**Document Version**: 1.1  
 **Created**: April 8, 2026  
+**Updated**: April 10, 2026 (Discovery Audit)  
 **Status**: 🚧 In Progress  
-**Target Release**: TBD
+**Target Release**: Late May 2026 (~7 weeks from April 10, 2026)
 
 ---
 
 ## Executive Summary
 
-This document outlines the complete implementation plan to take the e-commerce platform from current state (15% production-ready) to full production deployment. It covers all pending features, placeholder pages, data management, and production infrastructure requirements.
+This document outlines the complete implementation plan to take the e-commerce platform to full production deployment.
+
+**Updated April 10, 2026**: A codebase discovery audit revealed that **Phases 0–6 are fully complete** (not 15% as originally estimated). The primary blocker is **zero public storefront APIs** — all backend endpoints are admin-only. The revised production estimate is ~7 weeks.
+
+---
+
+## 📊 Updated Status (April 10, 2026)
+
+| Phase | Component | Status | Notes |
+|---|---|---|---|
+| 0-5 | Backend + Admin Setup | ✅ 100% | All done |
+| 6 | Admin Panel Completion | ✅ 100% | All 6.x sub-phases done |
+| 7 | Storefront UI | 🚧 80% | UI complete, **API wiring blocked** |
+| 8 | Public Storefront APIs | ❌ 0% | **P0 — Build this next** |
+| 8 | Production Infrastructure | ❌ 0% | Depends on APIs first |
+| 9 | Testing & QA | ❌ 0% | Depends on APIs + infra |
+| 10 | Launch Prep | ❌ 0% | Final phase |
+
+**Overall Production Readiness**: ~40%
+
+---
+
+## 🔍 Discovery Audit (April 10, 2026)
+
+### What Public Storefront APIs Exist?
+
+**Result: NONE.** Full audit of `platform/backend/routes/api.php` shows only 3 unauthenticated routes:
+- `POST /v1/auth/login` (admin only)
+- `POST /v1/auth/forgot-password`
+- `POST /v1/auth/reset-password`
+
+All 12 existing controllers (`ProductController`, `CategoryController`, `OrderController`, etc.) are admin-only, protected by `auth:sanctum` + `tenant` middleware. **Zero public storefront APIs exist.**
+
+### Is the Storefront Showing Real Data?
+
+**Result: No — hardcoded mock data.** However, the frontend infrastructure is nearly complete:
+
+| Component | Status |
+|---|---|
+| `src/lib/apiClient.ts` | ✅ Ready — Axios with correct base URL + Store-ID header |
+| `src/services/products.ts` | ✅ Ready — `getProducts()`, `getProductBySlug()`, `getCategories()` all defined |
+| `.env.local` | ✅ Configured — `NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1` |
+| `products/page.tsx` | ❌ Mock — `PRODUCTS` hardcoded array (comment: "replace with API call") |
+| `cart/page.tsx` | ❌ Mock — `INITIAL_CART` hardcoded via `useState` |
+| `checkout/page.tsx` | ❌ Mock — `ORDER_ITEMS` hardcoded array |
+
+**Conclusion**: Replacing mock data with real API calls is ~2 days of frontend work. The entire blocker is the missing backend public APIs.
 
 ---
 
 ## Current State Analysis
 
-### ✅ What's Complete (Fully Functional)
+### ✅ What's Complete (as of April 10, 2026)
 
-**Backend (100% Complete)**:
+**Backend (100% Complete — Admin APIs)**:
 - ✅ Multi-tenant architecture with data isolation
 - ✅ Phone-first authentication system
 - ✅ Role-based permissions (5 roles, 24 permissions)
-- ✅ Product catalog (products, categories, variants, images)
-- ✅ Customer management APIs
-- ✅ Order management APIs  
+- ✅ Product catalog (products, categories, variants, images) — admin API
+- ✅ Customer management APIs — admin only
+- ✅ Order management APIs — admin only
+- ✅ Inventory + Warehouse management APIs — admin only
 - ✅ Store provisioning APIs (super admin)
 - ✅ Manual payment processing
-- ✅ API documentation (Scribe)
+- ✅ Dashboard statistics APIs (5 endpoints)
+- ✅ Store settings APIs (9 groups)
+- ✅ Profile APIs
+- ✅ Export (CSV) for products, orders, customers, inventory
+- ✅ Bulk operations (products, customers)
+- ✅ API documentation (Scribe, 60+ endpoints)
 
-**Admin Panel (70% Complete)**:
+**Admin Panel (100% Complete)**:
 - ✅ Authentication (Sign in/out)
-- ✅ Products management (CRUD, images, variants)
+- ✅ Dashboard (real-time data, charts, period filters)
+- ✅ Products management (CRUD, images, variants, bulk, export)
 - ✅ Categories management (hierarchical)
-- ✅ Orders management (view, update status, payments)
-- ✅ Customers management (CRUD)
+- ✅ Orders management (view, update status, payments, export)
+- ✅ Customers management (CRUD, verification, bulk, export)
+- ✅ Inventory management (stock levels, warehouses, stock movements, alerts)
+- ✅ Store settings (9 tabs: general, branding, policies, checkout, payments, shipping, SEO, notifications, security)
+- ✅ Profile page (real data: edit profile, change password)
 - ✅ Stores management (super admin only)
 - ✅ Role-based access control
-- ✅ Multi-store tenant isolation
 
-**Storefront Template (100% Structure Complete)**:
+**Storefront UI (80% Complete — Design done, API wiring blocked)**:
 - ✅ Next.js 16 with App Router
-- ✅ Design system structure (.brand/ + src/design-system/)
-- ✅ Brand identity templates
-- ✅ TypeScript configuration
-- ✅ Tailwind CSS 4 setup
-- ✅ Example pages (layout ready)
+- ✅ Design system (Stitch "Luminous Alchemist" for Honey Bee)
+- ✅ All 10 pages designed: homepage, shop, product detail, cart, checkout, our-story, account, orders, contact
+- ✅ API client + services ready (`apiClient.ts`, `products.ts`, `store.ts`)
+- ✅ `.env.local` configured
+- ❌ Pages use hardcoded mock data (waiting for backend public APIs)
 
-### 🚧 Partially Complete (Needs Work)
+### ❌ Not Started (Critical Gaps — As of April 10, 2026)
 
-**Admin Panel (30% Incomplete)**:
-- 🚧 Dashboard - Has UI but shows mock data
-- 🚧 Profile page - Has UI but not connected to real data
-- 🚧 Inventory pages - All placeholders (Stock Levels, Warehouses, Stock Movements)
-- 🚧 Settings page - Placeholder only
+**Backend Missing (P0 — Build Next)**:
+- ❌ Public product listing API (no auth required)
+- ❌ Public product detail by slug (no auth)
+- ❌ Public category tree (no auth)
+- ❌ Customer storefront auth (register/login separate from admin)
+- ❌ Cart API (session-based, no auth required)
+- ❌ Guest checkout / create order (public)
+- ❌ Customer account APIs (order history, profile for shoppers)
 
-**Storefront Template (Needs Implementation)**:
-- 🚧 No actual page implementations (only structure)
-- 🚧 No API integration
-- 🚧 No product display
-- 🚧 No cart functionality
-- 🚧 No checkout flow
+**Not Yet Needed (Deferred)**:
+- ⏳ Email notification system (Phase 9+)
+- ⏳ SMS notification system (Phase 9+)
+- ⏳ File upload handling beyond images (Phase 9+)
+- ⏳ Reports/analytics APIs (post-launch)
 
-### ❌ Not Started (Critical Gaps)
-
-**Backend Missing**:
-- ❌ Inventory/warehouse management system
-- ❌ Store settings/configuration APIs
-- ❌ User profile update APIs
-- ❌ Dashboard statistics APIs
-- ❌ Reports/analytics APIs
-- ❌ File upload handling (images, documents)
-- ❌ Email notification system
-- ❌ SMS notification system (password reset, order updates)
-
-**Admin Panel Missing**:
-- ❌ Data purge functionality (clear demo/mock data)
-- ❌ File upload UI (images, documents)
-- ❌ Real-time inventory tracking
-- ❌ Analytics dashboards with real data
-- ❌ Bulk operations (products, customers, orders)
-- ❌ Export functionality (CSV, PDF)
-- ❌ Advanced search/filtering
-
-**Storefront Missing**:
-- ❌ Product listing pages
-- ❌ Product detail pages
-- ❌ Shopping cart
-- ❌ Checkout flow
-- ❌ Customer account pages
-- ❌ Order history
-- ❌ Theme customization per store
+**Storefront Wiring (Small — ~2 days after APIs exist)**:
+- 🚧 Replace `PRODUCTS` hardcoded array with `getProducts()` call
+- 🚧 Replace `INITIAL_CART` with API-backed cart state
+- 🚧 Replace `ORDER_ITEMS` with checkout API call
+- 🚧 Wire customer register/login pages to auth API
 
 **Infrastructure Missing**:
 - ❌ Production deployment setup
-- ❌ CI/CD pipeline
-- ❌ Monitoring & logging
+- ❌ CI/CD pipeline (GitHub Actions)
 - ❌ Backup strategy
 - ❌ SSL certificates
 - ❌ CDN integration
-- ❌ Database optimization for production
 
 ---
 
@@ -356,175 +388,200 @@ GET /api/v1/profile/activity - Recent activity log
 
 ---
 
-### 6.5 Advanced Features ✅ Low Priority
+### 6.5 Advanced Features ✅ COMPLETE
 
-**Export Functionality**:
-- [ ] Export products to CSV
-- [ ] Export orders to CSV
-- [ ] Export customers to CSV
-- [ ] Export inventory to CSV
-- [ ] Generate PDF invoices
-- [ ] Generate PDF reports
+- [x] Export products to CSV (`GET /api/v1/products/export`)
+- [x] Export orders to CSV (`GET /api/v1/orders/export`)
+- [x] Export customers to CSV (`GET /api/v1/customers/export`)
+- [x] Export inventory to CSV (`GET /api/v1/inventory/export`)
+- [x] Bulk product status update (`POST /api/v1/products/bulk-action`)
+- [x] Bulk customer status update (`POST /api/v1/customers/bulk-action`)
 
-**Bulk Operations**:
-- [ ] Bulk update product status (active/draft)
-- [ ] Bulk assign categories
-- [ ] Bulk price updates
-- [ ] Bulk customer operations (tags, status)
-- [ ] Bulk order operations (status, tags)
-
-**Advanced Search**:
-- [ ] Global search across all entities
-  - [ ] Advanced product search (SKU, name, description, tags)
-- [ ] Advanced customer search (name, email, phone, address)
-- [ ] Advanced order search (order number, customer, status, date range)
-- [ ] Search history and saved searches
-
-**Deliverables**:
-- Export service with CSV/PDF generation
-- Bulk operations UI and APIs
-- Global search with autocomplete
+**Completed**: April 9, 2026
 
 ---
 
-## Phase 7: Storefront Implementation (4-5 weeks)
+## Phase 6 Summary ✅ COMPLETE (April 9, 2026)
 
-**Goal**: Build complete customer-facing storefront
+All Phase 6 sub-phases complete:
+- ✅ 6.1 Dashboard (real data, charts, period filters)
+- ✅ 6.2 Inventory Management System (stock levels, warehouses, movements, alerts)
+- ✅ 6.3 Store Settings (9 tabs, all settings groups)
+- ✅ 6.4 Profile Page (edit profile, change password)
+- ✅ 6.5 Advanced Features (export CSV, bulk operations)
 
-**Priority**: HIGH  
-**Estimated Duration**: 4-5 weeks
+---
 
-### 7.1 Core Storefront Pages
+## Phase 7: Storefront UI ✅ UI COMPLETE / ❌ API WIRING BLOCKED
 
-**Backend APIs Needed** (most already exist, need enhancement):
+**Goal**: Build complete customer-facing storefront  
+**Status**: UI 100% complete. API wiring blocked by missing public backend APIs.  
+**Started**: April 8, 2026  
+**UI Complete**: April 9, 2026
+
+### 7.1 client-honey-bee Storefront (Honey Bee Artisan Soaps)
+
+**Design System**: Stitch "Luminous Alchemist" — fully implemented.
+
+**Pages Built (UI complete, mock data)**:
+- ✅ `/` — Homepage (hero, features, collections, favourites, story, CTA)
+- ✅ `/shop` (`products/page.tsx`) — Product grid with filters; uses hardcoded `PRODUCTS` array ❌
+- ✅ `/shop/[slug]` — Product detail page; mock data ❌
+- ✅ `/our-story` — Static brand story page ✅
+- ✅ `/cart` — Cart page; hardcoded `INITIAL_CART` state ❌
+- ✅ `/checkout` — Checkout flow; hardcoded `ORDER_ITEMS` ❌
+- ✅ `/account` — Customer account structure ✅
+- ✅ `/orders` — Order history structure ✅
+- ✅ `/contact` — Static contact page ✅
+
+**API Infrastructure (Ready, awaiting backend)**:
+- ✅ `src/lib/apiClient.ts` — Axios with `NEXT_PUBLIC_API_URL` + `X-Store-ID` header
+- ✅ `src/services/products.ts` — `getProducts()`, `getProductBySlug()`, `getCategories()` defined
+- ✅ `.env.local` — `NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1`, `NEXT_PUBLIC_STORE_ID=1`
+
+**What's needed to wire real data (~2 days work)**:
+1. Replace `PRODUCTS` array with `await getProducts(filters)` call
+2. Replace `INITIAL_CART` with API-backed cart state
+3. Replace checkout `ORDER_ITEMS` with cart → checkout flow
+4. Wire customer register/login to customer auth API
+
+**HARD BLOCKER**: Backend public API doesn't exist. See Phase 8.1.
+
+### 7.2 storefront-template Generic Update ✅ COMPLETE
+
+- ✅ `globals.css` — CSS var system
+- ✅ `Header.tsx` — glass-header, CSS-var-driven, responsive
+- ✅ `Footer.tsx` — 4-col structure
+- ✅ `page.tsx` — 6-section structural homepage
+
+---
+
+## Phase 8: Public Storefront APIs + Production Infrastructure ❌ NOT STARTED
+
+> **Priority: P0** — This is the next phase to build.  
+> **Estimated Duration**: 3-4 weeks total
+
+### 8.1 Public Storefront Backend APIs ❌ P0 BLOCKER
+
+**Why**: Every existing product/category endpoint requires an admin token. Shoppers cannot browse products at all. This is the #1 blocker before any real user can use the storefront.
+
+**Backend APIs to Build**:
+
 ```php
-// Public APIs (no auth required)
-GET /api/v1/public/stores/{store_id}/products - Product listing (SEO-optimized)
-GET /api/v1/public/stores/{store_id}/products/{slug} - Product detail
-GET /api/v1/public/stores/{store_id}/categories - Category tree
-GET /api/v1/public/stores/{store_id}/categories/{slug} - Category products
+// === PUBLIC — no auth required, rate limited 60/min per IP ===
+
+// Products
+GET /api/v1/public/{store_id}/products
+  - Paginated (20/page), filterable (category_slug, min_price, max_price, in_stock, search)
+  - Sorted (newest, price_asc, price_desc, name_asc)
+  - Returns: id, name, slug, price, compare_price, primary_image, in_stock, variants count
+  - SEO fields: meta_title, meta_description, og_image, schema_markup
+
+GET /api/v1/public/{store_id}/products/{slug}
+  - Full product with variants, all images, categories
+  - SEO: schema.org Product markup
+
+GET /api/v1/public/{store_id}/categories
+  - Full category tree (hierarchical)
+
+GET /api/v1/public/{store_id}/categories/{slug}
+  - Category info + paginated products in category
 
 // Cart (session-based, no auth required)
-POST /api/v1/cart - Add to cart
-GET /api/v1/cart - Get cart contents
-PATCH /api/v1/cart/{item_id} - Update quantity
-DELETE /api/v1/cart/{item_id} - Remove from cart
-DELETE /api/v1/cart - Clear cart
+POST /api/v1/public/cart          - Create cart, add item {product_id, variant_id, qty}
+GET  /api/v1/public/cart/{token}  - Get cart contents
+PATCH /api/v1/public/cart/{token}/items/{id}  - Update quantity
+DELETE /api/v1/public/cart/{token}/items/{id} - Remove item
+
+// Customer Auth (storefront only — separate from admin)
+POST /api/v1/public/customer/register {name, phone, email?, password}
+POST /api/v1/public/customer/login    {login, password}  // phone-first
+POST /api/v1/public/customer/logout
+
+// Customer Account (authenticated customer token)
+GET  /api/v1/public/customer/profile
+PATCH /api/v1/public/customer/profile
+GET  /api/v1/public/customer/orders
+GET  /api/v1/public/customer/orders/{id}
 
 // Checkout (guest or authenticated)
-POST /api/v1/checkout/validate - Validate checkout data
-POST /api/v1/orders - Create order (guest or authenticated)
-POST /api/v1/orders/{id}/payment - Record manual payment
-
-// Customer Account (authenticated)
-GET /api/v1/customer/orders - Order history
-GET /api/v1/customer/orders/{id} - Order details
-GET /api/v1/customer/profile - Get customer profile
-PATCH /api/v1/customer/profile - Update profile
-PATCH /api/v1/customer/password - Change password
+POST /api/v1/public/checkout
+  Body: {
+    cart_token: string,
+    contact: {name, phone, email?},
+    shipping_address: {address, city, state, postal_code, country},
+    payment_method: 'manual',
+    customer_token?: string  // optional: attach to customer account
+  }
+  Returns: {order_id, order_number, payment_instructions, total}
 ```
 
-**Storefront Pages**:
+**Acceptance Criteria**:
+- [ ] All public routes accessible without `Authorization` header
+- [ ] Rate limited: 60 req/min per IP for product APIs, 10/min for auth
+- [ ] Tenant isolation enforced via `store_id` URL param (not header)
+- [ ] Products return SEO fields (meta_title, meta_description, schema_markup)
+- [ ] Cart persists via token in cookie/localStorage (not session — SSG compatible)
+- [ ] Customer tokens are completely separate from admin Sanctum tokens
+- [ ] Guest checkout works without registration
+- [ ] Edge case: out-of-stock item in cart → checkout rejected with item-level error
+- [ ] Edge case: product deleted → cart item marked unavailable
 
-**1. Home Page** (`/`):
-- [ ] Hero section with store branding
-- [ ] Featured products carousel
-- [ ] Category showcase
-- [ ] SEO meta tags from store settings
-- [ ] Contact information footer
-
-**2. Product Listing Page** (`/products` or `/category/[slug]`):
-- [ ] Grid layout with product cards
-- [ ] Filters: category, price range, availability
-- [ ] Sort: newest, price (low-high), price (high-low), popular
-- [ ] Pagination or infinite scroll
-- [ ] Search bar
-- [ ] Breadcrumbs
-- [ ] SEO: product schema markup
-
-**3. Product Detail Page** (`/products/[slug]`):
-- [ ] Product image gallery with zoom
-- [ ] Product name, price, description
-- [ ] Variant selector (size, color)
-- [ ] Quantity selector
-- [ ] Add to cart button
-- [ ] Stock availability indicator
-- [ ] Product specifications
-- [ ] SEO: Product schema.org markup
-- [ ] Related products
-
-**4. Shopping Cart** (`/cart`):
-- [ ] Cart items list with images
-- [ ] Quantity update
-- [ ] Remove item
-- [ ] Subtotal, tax, total calculation
-- [ ] Continue shopping button
-- [ ] Proceed to checkout button
-- [ ] Empty cart state
-
-**5. Checkout Page** (`/checkout`):
-- [ ] Step 1: Contact information (email, phone)
-- [ ] Step 2: Shipping address form
-- [ ] Step 3: Payment method selection (manual payment only for now)
-- [ ] Step 4: Order review
-- [ ] Order summary sidebar (sticky)
-- [ ] Place order button
-- [ ] Guest checkout or sign in
-- [ ] Form validation with error messages
-
-**6. Order Confirmation** (`/orders/[id]/confirmation`):
-- [ ] Thank you message
-- [ ] Order number
-- [ ] Order summary
-- [ ] Payment instructions (for manual payment)
-- [ ] Continue shopping button
-
-**7. Customer Account** (`/account`):
-- [ ] Sign in page
-- [ ] Sign up page
-- [ ] Dashboard (order history)
-- [ ] View order details
-- [ ] Profile edit
-- [ ] Password change
+**Storefront Wiring (after APIs exist)**:
+- [ ] `products/page.tsx` → replace `PRODUCTS` array with `getProducts(filters)` call
+- [ ] `products/[slug]/page.tsx` → replace mock with `getProductBySlug(slug)` call
+- [ ] `cart/page.tsx` → replace `INITIAL_CART` with API cart state
+- [ ] `checkout/page.tsx` → wire to `POST /public/checkout`
+- [ ] `account/` pages → wire to customer auth + profile endpoints
+- [ ] `orders/` page → wire to customer orders endpoint
 
 **Deliverables**:
-- 15+ public/customer API endpoints
-- 7 complete storefront pages
-- Shopping cart with session storage
-- Checkout flow (3-step)
-- Customer authentication
-- Theme customization per store
-- Mobile-responsive design
-- SEO optimization (meta tags, schema.org)
+- ~22 new public API endpoints (products, categories, cart, customer auth, checkout)
+- `PublicProductController`, `PublicCategoryController`, `CartController`, `CustomerAuthController`, `CheckoutController`
+- `CartService`, `CheckoutService`
+- Session-based or token-based cart
+- Guest checkout flow
+- Storefront pages wired to real data
 
 ---
 
-### 7.2 Theme Customization System
+**Storefront Pages** (built, wiring to real data pending Phase 8.1 APIs):
 
-**Goal**: Allow each store to have unique branding
+| Page | UI Status | API Status |
+|---|---|---|
+| Home (`/`) | ✅ Built | ❌ Hardcoded data |
+| Shop (`/shop`) | ✅ Built | ❌ Hardcoded `PRODUCTS` array |
+| Product Detail (`/shop/[slug]`) | ✅ Built | ❌ Mock data |
+| Cart (`/cart`) | ✅ Built | ❌ `INITIAL_CART` state |
+| Checkout (`/checkout`) | ✅ Built | ❌ `ORDER_ITEMS` array |
+| Account (`/account`) | ✅ Structure | ❌ No auth yet |
+| Orders (`/orders`) | ✅ Structure | ❌ No API yet |
+| Our Story | ✅ Static | ✅ No API needed |
+| Contact | ✅ Static | ✅ No API needed |
 
-**Implementation**:
-- [ ] Store brand configuration saved in store_settings
-- [ ] Design tokens generated from settings (colors, fonts, logo)
-- [ ] Theme CSS generated dynamically per store
-- [ ] Logo and favicon from store settings
-- [ ] Custom CSS injection support (advanced users)
-
-**Deliverables**:
-- Dynamic theme generation
-- Store-specific branding
-- Logo/favicon management
+**All page wiring is Phase 8.1 work (see above).**
 
 ---
 
-## Phase 8: Production Infrastructure (2-3 weeks)
+### 7.2 Theme Customization System ✅ COMPLETE
 
-**Goal**: Production-ready deployment
+- ✅ `store_settings` table with branding group (colors, fonts)
+- ✅ Store settings API (`GET/PATCH /api/v1/settings/branding`)
+- ✅ CSS variable system in storefront template
+- ✅ ThemeProvider React context
+- ✅ Logo/favicon from store settings
 
-**Priority**: HIGH  
+---
+
+## Phase 8.2: Production Infrastructure ⏳ NOT STARTED
+
+> Begins after Phase 8.1 (Public APIs) is complete.
+
+**Goal**: Production-ready deployment  
+**Priority**: P1  
 **Estimated Duration**: 2-3 weeks
 
-### 8.1 Backend Production Setup
+### 8.2.1 Backend Production Setup
 
 **Server Requirements**:
 - [ ] Ubuntu 22.04 LTS server
