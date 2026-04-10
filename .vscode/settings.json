@@ -19,6 +19,10 @@
         "/^Set-Location platform/admin-panel; npm run build$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^git -C \"e:\\\\Projects\\\\StoreForge\" config user\\.name \"vnoczy\" ; git -C \"e:\\\\Projects\\\\StoreForge\" config user\\.email \"vinoth\\.vinothkanna\\.kanna2@gmail\\.com\"$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     }
 }

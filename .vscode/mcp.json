@@ -1,0 +1,35 @@
+{
+  "inputs": [],
+  "servers": {
+    "storeforge-browser": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "--yes",
+        "tsx",
+        "${workspaceFolder}/platform/mcp-services/mcp-browser-service/src/index.ts"
+      ],
+      "env": {
+        "CACHE_TTL": "3600",
+        "MIN_IMAGE_WIDTH": "800",
+        "MAX_RESULTS": "20",
+        "HEADLESS": "true"
+      }
+    },
+    "storeforge-assets": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "--yes",
+        "tsx",
+        "${workspaceFolder}/platform/mcp-services/mcp-asset-service/src/index.ts"
+      ],
+      "env": {
+        "ASSETS_DIR": "${workspaceFolder}/assets",
+        "MAX_FILE_SIZE_MB": "10",
+        "OPTIMIZE_QUALITY": "85",
+        "OPTIMIZE_MAX_WIDTH": "2400"
+      }
+    }
+  }
+}

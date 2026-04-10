@@ -47,6 +47,17 @@
 /storefront-template/yarn-debug.log*
 /storefront-template/yarn-error.log*
 
+# MCP Services
+/platform/mcp-services/mcp-browser-service/node_modules/
+/platform/mcp-services/mcp-browser-service/dist/
+/platform/mcp-services/mcp-browser-service/*.log
+/platform/mcp-services/mcp-asset-service/node_modules/
+/platform/mcp-services/mcp-asset-service/dist/
+/platform/mcp-services/mcp-asset-service/*.log
+
+# MCP asset downloads (runtime data, not source)
+/assets/
+
 # Client Storefronts (Separate Git Repositories)
 # These are independent repos and should NOT be tracked by main platform repo
 client-*/
@@ -61,6 +72,7 @@ storefront-template/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/mcp.json
 .idea/
 *.swp
 *.swo
