@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { useGetProductQuery, useUpdateProductMutation, useGetCategoriesQuery } from '../../services/products';
+import { useGetProductQuery, useUpdateProductMutation, useGetCategoriesQuery, useUploadProductImagesMutation } from '../../services/products';
 import Button from '../../components/ui/button/Button';
 import Alert from '../../components/ui/alert/Alert';
 import ImageUpload, { type ImageFile } from '../../components/ui/image-upload/ImageUpload';
@@ -23,6 +23,7 @@ const EditProductPage = () => {
 
   const { data: productData, isLoading: isLoadingProduct, error: loadError } = useGetProductQuery(productId);
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+  const [uploadProductImages, { isLoading: isUploadingImages }] = useUploadProductImagesMutation();
   const { data: categoriesData } = useGetCategoriesQuery();
 
   const [formData, setFormData] = useState<UpdateProductData>({
@@ -142,7 +143,20 @@ const EditProductPage = () => {
     }
 
     try {
+      // Step 1: Update product data
       await updateProduct(formData).unwrap();
+
+      // Step 2: Upload new images (those with file property)
+      const newImages = images.filter(img => img.file);
+      if (newImages.length > 0) {
+        const imageFiles = newImages.map(img => img.file!);
+        await uploadProductImages({
+          productId,
+          images: imageFiles,
+          is_primary: newImages[0].is_primary,
+        }).unwrap();
+      }
+
       setAlert({ type: 'success', message: 'Product updated successfully!' });
       setTimeout(() => {
         navigate('/products');
@@ -533,16 +547,20 @@ const EditProductPage = () => {
             type="button"
             variant="ghost"
             onClick={() => navigate('/products')}
-            disabled={isUpdating}
+            disabled={isUpdating || isUploadingImages}
           >
             Cancel
           </Button>
           <Button
             type="submit"
             variant="primary"
-            disabled={isUpdating}
+            disabled={isUpdating || isUploadingImages}
           >
-            {isUpdating ? 'Updating...' : 'Update Product'}
+            {isUpdating 
+              ? 'Updating...' 
+              : isUploadingImages 
+              ? 'Uploading images...' 
+              : 'Update Product'}
           </Button>
         </div>
       </form>

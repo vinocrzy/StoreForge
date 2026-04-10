@@ -28,10 +28,10 @@ class CheckoutService
             foreach ($items as $item) {
                 $product = Product::find($item['product_id']);
                 if (!$product || $product->status !== 'active') {
-                    abort(422, "Product '{$item['name']}' is no longer available.");
+                    abort(422, "Product '{$item['product_name']}' is no longer available.");
                 }
                 if ($product->track_inventory && $product->stock_quantity < $item['quantity']) {
-                    abort(422, "Insufficient stock for '{$item['name']}'.");
+                    abort(422, "Insufficient stock for '{$item['product_name']}'.");
                 }
             }
 
@@ -68,14 +68,14 @@ class CheckoutService
                     'product_id'       => $item['product_id'],
                     'variant_id'       => $item['variant_id'] ?? null,
                     'quantity'         => $item['quantity'],
-                    'price'            => $item['price'],
+                    'price'            => $item['unit_price'],
                     'discount_amount'  => 0,
                     'tax_amount'       => 0,
-                    'total'            => $item['price'] * $item['quantity'],
+                    'total'            => $item['total_price'],
                     'product_snapshot' => [
-                        'name'  => $item['name'],
-                        'sku'   => $item['sku'],
-                        'image' => $item['image'],
+                        'name'  => $item['product_name'],
+                        'sku'   => $item['product_sku'],
+                        'image' => $item['product_image'],
                     ],
                 ]);
 
@@ -97,13 +97,22 @@ class CheckoutService
     {
         $storeId = tenant()->id;
 
-        // Reuse existing guest customer account if email matches
+        // Reuse existing customer if phone or email matches (phone is primary identifier)
         $existing = Customer::withoutGlobalScope('store')
             ->where('store_id', $storeId)
-            ->where('email', $data['email'] ?? null)
+            ->where(function ($query) use ($data) {
+                $query->where('phone', $data['phone'])
+                      ->orWhere('email', $data['email'] ?? null);
+            })
             ->first();
 
         if ($existing) {
+            // Update customer details if changed
+            $existing->update([
+                'first_name' => $data['first_name'] ?? $existing->first_name,
+                'last_name'  => $data['last_name'] ?? $existing->last_name,
+                'email'      => $data['email'] ?? $existing->email,
+            ]);
             return $existing;
         }
 

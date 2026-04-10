@@ -166,12 +166,19 @@ class CartController extends Controller
         $totals = $this->cartService->calculateTotals($cart);
 
         return [
+            'id'         => $cart->id,
             'token'      => $cart->token,
+            'customer_id' => $cart->customer_id,
+            'store_id'   => $cart->store_id,
             'items'      => $cart->items ?? [],
             'item_count' => $totals['item_count'],
             'subtotal'   => $totals['subtotal'],
+            'tax'        => 0.00, // TODO: Implement tax calculation in future
+            'shipping'   => 0.00, // TODO: Implement shipping calculation in future
             'total'      => $totals['total'],
             'expires_at' => $cart->expires_at?->toIso8601String(),
+            'created_at' => $cart->created_at->toIso8601String(),
+            'updated_at' => $cart->updated_at->toIso8601String(),
         ];
     }
 }

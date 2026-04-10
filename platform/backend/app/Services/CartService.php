@@ -48,17 +48,20 @@ class CartService
                 abort(422, "Insufficient stock. Only {$product->stock_quantity} available.");
             }
             $items[$existingIndex]['quantity'] = $newQty;
+            // Recalculate total_price
+            $items[$existingIndex]['total_price'] = (float) $product->price * $newQty;
         } else {
             $items[] = [
-                'id'         => $itemKey,
-                'product_id' => $product->id,
-                'variant_id' => $variantId,
-                'name'       => $product->name,
-                'slug'       => $product->slug,
-                'sku'        => $product->sku,
-                'price'      => (float) $product->price,
-                'quantity'   => $quantity,
-                'image'      => $product->primaryImage?->file_path,
+                'id'            => $itemKey,
+                'product_id'    => $product->id,
+                'variant_id'    => $variantId,
+                'product_name'  => $product->name,
+                'product_slug'  => $product->slug,
+                'product_sku'   => $product->sku,
+                'product_image' => $product->primaryImage?->file_path,
+                'unit_price'    => (float) $product->price,
+                'quantity'      => $quantity,
+                'total_price'   => (float) $product->price * $quantity,
             ];
         }
 
@@ -85,6 +88,9 @@ class CartService
                 abort(422, "Insufficient stock. Only {$product->stock_quantity} available.");
             }
             $items[$index]['quantity'] = $quantity;
+            // Recalculate total_price for this item
+            $unitPrice = $items[$index]['unit_price'] ?? $items[$index]['price'] ?? 0;
+            $items[$index]['total_price'] = $unitPrice * $quantity;
         }
 
         $cart->items = array_values($items);
@@ -114,7 +120,7 @@ class CartService
     public function calculateTotals(Cart $cart): array
     {
         $items     = $cart->items ?? [];
-        $subtotal  = array_sum(array_map(fn ($i) => $i['price'] * $i['quantity'], $items));
+        $subtotal  = array_sum(array_map(fn ($i) => ($i['unit_price'] ?? $i['price'] ?? 0) * $i['quantity'], $items));
         $itemCount = array_sum(array_column($items, 'quantity'));
 
         return [

@@ -771,6 +771,384 @@ const items = [1, 2, 3];
 <div className="bg-white dark:bg-boxdark text-gray-900 dark:text-white">
 ```
 
+## CRITICAL: File Upload with RTK Query
+
+### ⚠️ Problem: FormData + Content-Type Header Conflicts
+
+**NEVER set `Content-Type: multipart/form-data` manually in RTK Query. The browser MUST set it automatically with the correct boundary parameter.**
+
+```tsx
+// ❌ WRONG - This BREAKS file uploads!
+uploadProductImages: builder.mutation<ImageResponse, UploadRequest>({
+  query: ({ productId, images }) => {
+    const formData = new FormData();
+    images.forEach(img => formData.append('images[]', img));
+    
+    return {
+      url: `/products/${productId}/images`,
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data', // ❌ WRONG!
+      },
+    };
+  },
+}),
+```
+
+```tsx
+// ✅ CORRECT - Let browser set Content-Type automatically
+uploadProductImages: builder.mutation<ImageResponse, UploadRequest>({
+  query: ({ productId, images }) => {
+    const formData = new FormData();
+    images.forEach(img => formData.append('images[]', img));
+    
+    return {
+      url: `/products/${productId}/images`,
+      method: 'POST',
+      body: formData,
+      // DO NOT set Content-Type - browser handles it
+    };
+  },
+}),
+```
+
+### ⚠️ Problem: prepareHeaders Setting Global Content-Type
+
+**If your base query sets `Content-Type: application/json` globally, it will break FormData uploads.**
+
+```tsx
+// ❌ WRONG - Global Content-Type breaks multipart
+baseQuery: fetchBaseQuery({
+  baseUrl: API_URL,
+  prepareHeaders: (headers) => {
+    headers.set('Authorization', `Bearer ${token}`);
+    headers.set('Content-Type', 'application/json'); // ❌ Breaks FormData!
+    return headers;
+  },
+}),
+```
+
+```tsx
+// ✅ CORRECT - Don't set Content-Type in prepareHeaders
+baseQuery: fetchBaseQuery({
+  baseUrl: API_URL,
+  prepareHeaders: (headers) => {
+    headers.set('Authorization', `Bearer ${token}`);
+    headers.set('Accept', 'application/json');
+    // Let fetchBaseQuery handle Content-Type automatically:
+    // - For plain objects → application/json
+    // - For FormData → multipart/form-data (browser-generated boundary)
+    return headers;
+  },
+}),
+```
+
+### Complete File Upload Pattern
+
+**Backend-to-Frontend Integration Checklist**:
+
+1. **Backend expects** (Laravel example):
+```php
+// Controller: ProductImageController.php
+$request->validate([
+    'images' => 'required|array|max:10',
+    'images.*' => 'required|image|mimes:jpeg,jpg,png,gif,webp|max:5120',
+]);
+
+// Service: Upload files
+$path = $file->store("products/{$productId}", 'public');
+
+// Model: Save record
+ProductImage::create([
+    'product_id' => $productId,
+    'file_path' => $path, // ✅ NOT 'url' - check DB schema!
+    'alt_text' => $altText,
+    'is_primary' => true,
+]);
+```
+
+2. **Frontend upload mutation**:
+```tsx
+// services/products.ts
+export const productsApi = createApi({
+  // ... base config WITHOUT Content-Type in prepareHeaders
+  
+  endpoints: (builder) => ({
+    uploadProductImages: builder.mutation<
+      { data: ProductImage[]; message: string },
+      { productId: number; images: File[]; is_primary?: boolean }
+    >({
+      query: ({ productId, images, is_primary = true }) => {
+        const formData = new FormData();
+        
+        // Append files with array syntax matching backend
+        images.forEach((image) => {
+          formData.append('images[]', image); // ✅ Match backend param name
+        });
+        
+        // Add metadata
+        if (is_primary !== undefined) {
+          formData.append('is_primary', is_primary ? '1' : '0');
+        }
+
+        return {
+          url: `/products/${productId}/images`,
+          method: 'POST',
+          body: formData,
+          // ✅ NO Content-Type header - browser sets it
+        };
+      },
+      invalidatesTags: (_result, _error, { productId }) => [
+        { type: 'Product', id: productId },
+      ],
+    }),
+  }),
+});
+
+export const { useUploadProductImagesMutation } = productsApi;
+```
+
+3. **Component integration**:
+```tsx
+// pages/Products/NewProduct.tsx
+import { useCreateProductMutation, useUploadProductImagesMutation } from '../../services/products';
+import ImageUpload, { type ImageFile } from '../../components/ui/image-upload/ImageUpload';
+
+const NewProductPage = () => {
+  const [createProduct, { isLoading }] = useCreateProductMutation();
+  const [uploadImages, { isLoading: isUploadingImages }] = useUploadProductImagesMutation();
+  
+  const [formData, setFormData] = useState<ProductFormData>({ /* ... */ });
+  const [images, setImages] = useState<ImageFile[]>([]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      // Step 1: Create product
+      const result = await createProduct(formData).unwrap();
+      const productId = result.data.id;
+
+      // Step 2: Upload images if any (only NEW images with file property)
+      if (images.length > 0) {
+        const newImages = images
+          .filter(img => img.file) // ✅ Only upload new files
+          .map(img => img.file!);
+
+        if (newImages.length > 0) {
+          await uploadImages({
+            productId,
+            images: newImages,
+            is_primary: true,
+          }).unwrap();
+        }
+      }
+
+      // Step 3: Success
+      setAlert({ type: 'success', message: 'Product created!' });
+      navigate('/products');
+    } catch (error: any) {
+      setAlert({ type: 'error', message: error?.data?.message || 'Failed' });
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* ... other fields ... */}
+      
+      <ImageUpload 
+        images={images} 
+        onImagesChange={setImages}
+        maxImages={10}
+        maxSizeMB={5}
+      />
+
+      <Button 
+        type="submit" 
+        disabled={isLoading || isUploadingImages}
+      >
+        {isLoading ? 'Creating...' : isUploadingImages ? 'Uploading...' : 'Create'}
+      </Button>
+    </form>
+  );
+};
+```
+
+4. **Edit page pattern** (upload ONLY new images):
+```tsx
+// pages/Products/EditProduct.tsx
+const EditProductPage = () => {
+  const { id } = useParams();
+  const productId = parseInt(id!, 10);
+  
+  const { data: productData } = useGetProductQuery(productId);
+  const [updateProduct] = useUpdateProductMutation();
+  const [uploadImages] = useUploadProductImagesMutation();
+  
+  const [images, setImages] = useState<ImageFile[]>([]);
+
+  // Load existing images on mount
+  useEffect(() => {
+    if (productData?.data.images) {
+      const existingImages: ImageFile[] = productData.data.images.map(img => ({
+        id: img.id.toString(),
+        url: img.url,
+        is_primary: img.is_primary,
+        preview: img.url,
+        // ✅ NO 'file' property = existing image from server
+      }));
+      setImages(existingImages);
+    }
+  }, [productData]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      // Step 1: Update product data
+      await updateProduct({ id: productId, ...formData }).unwrap();
+
+      // Step 2: Upload ONLY new images (those with file property)
+      const newImages = images.filter(img => img.file);
+      if (newImages.length > 0) {
+        await uploadImages({
+          productId,
+          images: newImages.map(img => img.file!),
+        }).unwrap();
+      }
+
+      setAlert({ type: 'success', message: 'Updated!' });
+    } catch (error) {
+      setAlert({ type: 'error', message: 'Failed' });
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <ImageUpload images={images} onImagesChange={setImages} />
+      <Button type="submit">Update Product</Button>
+    </form>
+  );
+};
+```
+
+### Common File Upload Errors & Fixes
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| `Unexpected end of multipart data` | Manual `Content-Type: multipart/form-data` set | Remove `headers: { 'Content-Type': ... }` from mutation |
+| `No file uploaded` / Empty `$_FILES` | Global `Content-Type: application/json` | Remove Content-Type from `prepareHeaders` |
+| `images.0: must be a file` | Wrong FormData key | Use `images[]` (array syntax) to match backend validation |
+| No API call triggered | Images state not tracked | Add `isUploadingImages` loading state check |
+| Upload works in New but not Edit | Uploading existing images | Filter `images.filter(img => img.file)` before upload |
+
+## CRITICAL: Backend Response Validation
+
+**Always verify backend responses match frontend expectations BEFORE implementing mutations.**
+
+### ⚠️ Problem: Incomplete API Responses
+
+```tsx
+// Backend returns (Laravel login example)
+{
+  "user": { /* ... */ },
+  "token": "abc123",
+  "stores": [
+    { "id": 1, "name": "Store A", "slug": "store-a" }
+    // ❌ Missing: domain, status, currency, created_at, updated_at
+  ]
+}
+
+// Frontend expects (authSlice.ts)
+interface Store {
+  id: number;
+  name: string;
+  domain: string;      // ❌ NOT in response
+  status: string;      // ❌ NOT in response
+  currency: string;    // ❌ NOT in response
+  created_at: string;  // ❌ NOT in response
+  updated_at: string;  // ❌ NOT in response
+}
+
+// Result: Frontend crashes trying to access missing fields
+const storeCurrency = store.currency; // undefined → breaks currency selectors
+```
+
+### ✅ Solution: Complete Backend Responses
+
+```php
+// Backend: AuthController.php
+$stores = $user->stores()->get()->map(function ($store) {
+    return [
+        'id' => $store->id,
+        'name' => $store->name,
+        'slug' => $store->slug,
+        'domain' => $store->domain,              // ✅ Add missing fields
+        'status' => $store->status,              // ✅
+        'currency' => $store->currency ?? 'USD', // ✅ With fallback
+        'created_at' => $store->created_at->toISOString(), // ✅
+        'updated_at' => $store->updated_at->toISOString(), // ✅
+    ];
+});
+```
+
+### Pre-Implementation Checklist
+
+Before writing any mutation, verify:
+
+1. **Compare types**: Does backend response match frontend interface?
+```tsx
+// ✅ Create type from API docs first
+interface ApiProductResponse {
+  data: {
+    id: number;
+    name: string;
+    price: string; // ⚠️ Backend returns string, not number!
+    // ... all fields
+  };
+}
+
+// Then use in mutation
+createProduct: builder.mutation<ApiProductResponse, CreateProductData>({
+  // ...
+})
+```
+
+2. **Test backend endpoint** in API docs/Postman BEFORE frontend integration
+```bash
+# Check actual response structure
+curl -X POST http://localhost:8000/api/v1/products \
+  -H "Authorization: Bearer token" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test","price":9.99}'
+
+# Verify response matches TypeScript interface
+```
+
+3. **Check database schema** vs model fields
+```php
+// Migration: 2024_create_product_images_table.php
+$table->string('file_path');    // ✅ Database column
+$table->string('alt_text');
+
+// Model: ProductImage.php
+protected $fillable = [
+    'file_path',  // ✅ Match column name
+    'alt_text',
+];
+
+// ❌ WRONG - Using 'url' when DB has 'file_path'
+ProductImage::create([
+    'url' => '/storage/image.jpg', // ❌ Column doesn't exist!
+]);
+
+// ✅ CORRECT
+ProductImage::create([
+    'file_path' => 'products/1/image.jpg', // ✅ Matches DB column
+]);
+```
+
 ## Resources
 
 - **Design System Docs**: `docs/19-admin-panel-design-system.md`

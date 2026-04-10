@@ -78,9 +78,10 @@ class CheckoutController extends Controller
         $order = $this->checkoutService->processCheckout($cart, $request->all(), $customer);
 
         return response()->json([
-            'data'         => $order,
-            'order_number' => $order->order_number,
-            'message'      => 'Order placed successfully.',
+            'data' => [
+                'order'   => $order,
+                'message' => 'Order placed successfully.',
+            ],
         ], 201);
     }
 }

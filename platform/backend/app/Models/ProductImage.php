@@ -25,6 +25,10 @@ class ProductImage extends Model
         'is_primary' => 'boolean',
     ];
 
+    protected $appends = [
+        'url',
+    ];
+
     /**
      * Boot model and apply global scope for tenant isolation
      */
@@ -66,7 +70,12 @@ class ProductImage extends Model
      */
     public function getUrlAttribute(): string
     {
-        return asset('storage/' . $this->file_path);
+        if (!$this->file_path) {
+            return '';
+        }
+        
+        // Return URL relative to storage public disk
+        return url('storage/' . $this->file_path);
     }
 
     /**

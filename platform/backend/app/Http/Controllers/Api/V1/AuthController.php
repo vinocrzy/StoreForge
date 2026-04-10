@@ -83,7 +83,12 @@ class AuthController extends Controller
                 'id' => $store->id,
                 'name' => $store->name,
                 'slug' => $store->slug,
+                'domain' => $store->domain,
+                'status' => $store->status,
+                'currency' => $store->currency ?? 'USD',
                 'role' => $store->pivot->role,
+                'created_at' => $store->created_at->toISOString(),
+                'updated_at' => $store->updated_at->toISOString(),
             ];
         });
 

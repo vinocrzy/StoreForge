@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\ProductImageController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\WarehouseController;
@@ -57,6 +58,11 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::post('/products/bulk-action', [ProductController::class, 'bulkAction']);
     Route::apiResource('products', ProductController::class);
     Route::post('/products/{id}/stock', [ProductController::class, 'updateStock']);
+    
+    // Product Images
+    Route::post('/products/{id}/images', [ProductImageController::class, 'store']);
+    Route::delete('/products/{id}/images/{imageId}', [ProductImageController::class, 'destroy']);
+    Route::patch('/products/{id}/images/{imageId}/primary', [ProductImageController::class, 'setPrimary']);
     
     // Categories
     Route::get('/categories/tree', [CategoryController::class, 'tree']);

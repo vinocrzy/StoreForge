@@ -2,8 +2,8 @@
 
 **Project**: Multi-Tenant E-Commerce Platform  
 **Started**: March 30, 2026  
-**Status**: ✅ Phases 6 & 7 Complete  
-**Current Phase**: Phase 8 - Public Storefront APIs + Production Deployment 🚧
+**Status**: ✅ Phases 6 & 7 Complete, Phase 8 In Progress  
+**Current Phase**: Phase 8.2 - Storefront API Integration 🚧
 
 ---
 
@@ -18,21 +18,48 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 5. âœ… **Phase 4**: Storefront Template (COMPLETE - Structure)
 6. âœ… **Phase 5**: Infrastructure & Monitoring (COMPLETE)
 7. ✅ **Phase 6**: Admin Panel Completion (COMPLETE)
-8. 🚧 **Phase 7**: Storefront Implementation (UI COMPLETE — API Integration BLOCKED by missing backend public APIs)
+8. ✅ **Phase 7**: Storefront Implementation (UI COMPLETE)
 9. â³ **Phase 8**: Production Deployment (Not Started)
 10. â³ **Phase 9**: Testing & QA (Not Started)
 11. â³ **Phase 10**: Launch Preparation (Not Started)
 
-**Production Readiness**: 55% Complete
-- ✅ Phases 0-6 complete
-- 🚧 Phase 7 UI complete, API wiring blocked (ZERO public storefront APIs exist)
-- ⏳ Phases 8-10 not started
+**Production Readiness**: 60% Complete
+- ✅ Phases 0-7 complete (backend, admin panel, storefront UI)
+- ✅ Phase 8.1 complete (19 public backend APIs)
+- 🚧 Phase 8.2 starting (storefront API integration - 2-3 days)
+- ⏳ Phases 9-10 not started
 
 **See [docs/20-production-readiness-plan.md](docs/20-production-readiness-plan.md) for complete implementation plan.**
 
 ### Latest Progress (April 10, 2026)
 
-**Phase 8.1 Public Storefront Backend APIs (Complete)**:
+**Phase 8.2 Storefront API Integration (Ready to Start)** 🚧:
+- [ ] Create API service files (cart.ts, customer.ts, checkout.ts)
+- [ ] Add TypeScript types for Cart, Customer, Checkout
+- [ ] Update Homepage to use getFeaturedProducts() and getCategories()
+- [ ] Update Products page with getProducts() API and wire filters
+- [ ] Update Product Detail page with getProductBySlug() and Add to Cart
+- [ ] Update Cart page with getCart() API and cart operations
+- [ ] Update Checkout page with guestCheckout() API and form validation
+- [ ] Create Customer Account pages (login, register, profile, order history)
+- [ ] Implement global cart state management (React Context)
+- [ ] Add error handling and loading states across all pages
+
+**Deliverables**:
+- 3 new API service files (cart, customer, checkout)
+- 5 updated pages with real API integration (homepage, products, product detail, cart, checkout)
+- 3 new account pages (login, register, account dashboard)
+- Complete end-to-end shopping flow functional
+- Production Readiness: 55% → 70%
+
+**Priority**: P0 - Critical Blocker  
+**Estimated Effort**: 2-3 days  
+**Assigned To**: Storefront Frontend Dev  
+**Specification**: [docs/features/phase-8.2-storefront-api-integration.md](docs/features/phase-8.2-storefront-api-integration.md)
+
+---
+
+**Phase 8.1 Public Storefront Backend APIs (Complete)** ✅:
 - [x] Cart model + migration (token-based, guest + auth support, 30-day expiry)
 - [x] orders.customer_id made nullable (guest checkout support)
 - [x] SetPublicTenant middleware (no admin auth, sets tenant from X-Store-ID)

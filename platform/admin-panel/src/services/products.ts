@@ -27,7 +27,9 @@ export const productsApi = createApi({
         headers.set('X-Store-ID', storeId.toString());
       }
       headers.set('Accept', 'application/json');
-      headers.set('Content-Type', 'application/json');
+      
+      // Don't set Content-Type here - let fetchBaseQuery handle it automatically
+      // It will use application/json for regular requests and multipart/form-data for FormData
       
       return headers;
     },
@@ -185,6 +187,53 @@ export const productsApi = createApi({
       }),
       invalidatesTags: [{ type: 'Product', id: 'LIST' }],
     }),
+
+    // Product Images
+    uploadProductImages: builder.mutation<
+      { data: any[]; message: string },
+      { productId: number; images: File[]; is_primary?: boolean }
+    >({
+      query: ({ productId, images, is_primary = true }) => {
+        const formData = new FormData();
+        images.forEach((image) => {
+          formData.append('images[]', image);
+        });
+        if (is_primary !== undefined) {
+          formData.append('is_primary', is_primary ? '1' : '0');
+        }
+
+        return {
+          url: `/products/${productId}/images`,
+          method: 'POST',
+          body: formData,
+          // DO NOT set Content-Type header - browser will set it automatically with boundary
+          // Setting it manually breaks multipart uploads
+        };
+      },
+      invalidatesTags: (_result, _error, { productId }) => [
+        { type: 'Product', id: productId },
+      ],
+    }),
+
+    deleteProductImage: builder.mutation<{ message: string }, { productId: number; imageId: number }>({
+      query: ({ productId, imageId }) => ({
+        url: `/products/${productId}/images/${imageId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (_result, _error, { productId }) => [
+        { type: 'Product', id: productId },
+      ],
+    }),
+
+    setPrimaryImage: builder.mutation<{ data: any; message: string }, { productId: number; imageId: number }>({
+      query: ({ productId, imageId }) => ({
+        url: `/products/${productId}/images/${imageId}/primary`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: (_result, _error, { productId }) => [
+        { type: 'Product', id: productId },
+      ],
+    }),
   }),
 });
 
@@ -203,4 +252,7 @@ export const {
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
   useBulkUpdateProductsMutation,
+  useUploadProductImagesMutation,
+  useDeleteProductImageMutation,
+  useSetPrimaryImageMutation,
 } = productsApi;

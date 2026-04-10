@@ -1,421 +1,61 @@
-name: Categories
+name: 'Product Images'
 description: |-
 
-  Manage product categories for the authenticated store. Supports hierarchical categories with parent-child relationships.
+  Manage product images
 endpoints:
   -
     custom: []
     httpMethods:
-      - GET
-    uri: api/v1/categories/tree
-    metadata:
-      custom: []
-      groupName: Categories
-      groupDescription: |-
-
-        Manage product categories for the authenticated store. Supports hierarchical categories with parent-child relationships.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get category tree'
-      description: 'Get complete category hierarchy as a tree structure.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [
-              {
-                "id": 1,
-                "name": "Electronics",
-                "children": [
-                  {
-                    "id": 2,
-                    "name": "Laptops",
-                    "children": []
-                  }
-                ]
-              }
-            ]
-          }
-        headers: []
-        description: Success
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
       - POST
-    uri: api/v1/categories/reorder
+    uri: 'api/v1/products/{id}/images'
     metadata:
       custom: []
-      groupName: Categories
+      groupName: 'Product Images'
       groupDescription: |-
 
-        Manage product categories for the authenticated store. Supports hierarchical categories with parent-child relationships.
+        Manage product images
       subgroup: ''
       subgroupDescription: ''
-      title: 'Reorder categories'
-      description: 'Update sort order for multiple categories at once.'
+      title: 'Upload product images'
+      description: 'Upload one or more images for a product. Maximum 10 images per product.'
       authenticated: true
       deprecated: false
     headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      categories:
-        custom: []
-        name: categories
-        description: 'Array of category orders.'
-        required: true
-        example:
-          -
-            id: 1
-            sort_order: 0
-          -
-            id: 2
-            sort_order: 1
-        type: 'string[]'
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      'categories[].id':
-        custom: []
-        name: 'categories[].id'
-        description: 'The <code>id</code> of an existing record in the categories table.'
-        required: true
-        example: 17
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'categories[].sort_order':
-        custom: []
-        name: 'categories[].sort_order'
-        description: 'Must be at least 0.'
-        required: true
-        example: 45
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      'categories.*.id':
-        custom: []
-        name: 'categories.*.id'
-        description: 'Category ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      'categories.*.sort_order':
-        custom: []
-        name: 'categories.*.sort_order'
-        description: 'New sort order.'
-        required: true
-        example: 0
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      categories:
-        -
-          id: 1
-          sort_order: 0
-        -
-          id: 2
-          sort_order: 1
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "message": "Categories reordered successfully"
-          }
-        headers: []
-        description: Updated
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: 'api/v1/categories/{id}/move'
-    metadata:
-      custom: []
-      groupName: Categories
-      groupDescription: |-
-
-        Manage product categories for the authenticated store. Supports hierarchical categories with parent-child relationships.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Move category'
-      description: 'Move a category to a different parent.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
+      Content-Type: multipart/form-data
       Accept: application/json
     urlParameters:
       id:
         custom: []
         name: id
-        description: 'Category ID to move.'
+        description: 'Product ID.'
         required: true
-        example: 5
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: 5
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      parent_id:
+      images:
         custom: []
-        name: parent_id
-        description: 'New parent category ID (null for root).'
-        required: false
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      parent_id: 2
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": {
-              "id": 5,
-              "name": "Laptops",
-              "parent_id": 2
-            }
-          }
-        headers: []
-        description: Moved
-      -
-        custom: []
-        status: 400
-        content: |-
-          {
-            "message": "Cannot move category to a descendant"
-          }
-        headers: []
-        description: 'Invalid move'
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/categories
-    metadata:
-      custom: []
-      groupName: Categories
-      groupDescription: |-
-
-        Manage product categories for the authenticated store. Supports hierarchical categories with parent-child relationships.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'List categories'
-      description: 'Get all categories. Can return as a flat list or hierarchical tree structure.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters:
-      only_active:
-        custom: []
-        name: only_active
-        description: 'Show only active categories.'
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      as_tree:
-        custom: []
-        name: as_tree
-        description: 'Return as hierarchical tree.'
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      only_active: true
-      as_tree: true
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": [
-              {
-                "id": 1,
-                "name": "Electronics",
-                "slug": "electronics",
-                "parent_id": null,
-                "is_active": true,
-                "children": []
-              }
-            ]
-          }
-        headers: []
-        description: Success
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: api/v1/categories
-    metadata:
-      custom: []
-      groupName: Categories
-      groupDescription: |-
-
-        Manage product categories for the authenticated store. Supports hierarchical categories with parent-child relationships.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Create category'
-      description: 'Create a new category. Can be a root category or child of another category.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      name:
-        custom: []
-        name: name
-        description: 'Category name.'
+        name: images
+        description: 'Array of image files. Max 5MB each.'
         required: true
-        example: Electronics
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      slug:
-        custom: []
-        name: slug
-        description: 'Category slug (auto-generated if not provided).'
-        required: false
-        example: electronics
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      description:
-        custom: []
-        name: description
-        description: 'Category description.'
-        required: false
-        example: 'Dolores dolorum amet iste laborum eius est dolor.'
-        type: string
+        example:
+          - null
+        type: 'file[]'
         enumValues: []
         exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      image:
-        custom: []
-        name: image
-        description: 'Image URL.'
-        required: false
-        example: consequatur
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      parent_id:
-        custom: []
-        name: parent_id
-        description: 'Parent category ID (for subcategories).'
-        required: false
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      sort_order:
-        custom: []
-        name: sort_order
-        description: 'Sort order.'
-        required: false
-        example: 0
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
         nullable: false
         deprecated: false
-      is_active:
+      is_primary:
         custom: []
-        name: is_active
-        description: 'Active status.'
+        name: is_primary
+        description: 'Set first image as primary.'
         required: false
         example: true
         type: boolean
@@ -424,30 +64,30 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: Electronics
-      slug: electronics
-      description: 'Dolores dolorum amet iste laborum eius est dolor.'
-      image: consequatur
-      parent_id: 1
-      sort_order: 0
-      is_active: true
-    fileParameters: []
+      is_primary: true
+    fileParameters:
+      images:
+        - null
     responses:
       -
         custom: []
         status: 201
         content: |-
           {
-            "data": {
-              "id": 1,
-              "name": "Electronics",
-              "slug": "electronics",
-              "parent_id": null,
-              "is_active": true
-            }
+            "data": [
+              {
+                "id": 1,
+                "product_id": 1,
+                "url": "http://localhost:8000/storage/products/1/image1.jpg",
+                "alt_text": null,
+                "sort_order": 0,
+                "is_primary": true
+              }
+            ],
+            "message": "Images uploaded successfully"
           }
         headers: []
-        description: Created
+        description: ''
       -
         custom: []
         status: 422
@@ -455,243 +95,11 @@ endpoints:
           {
             "message": "The given data was invalid",
             "errors": {
-              "name": ["The name field is required"]
+              "images.0": ["The image must be a file of type: jpeg, jpg, png, gif, webp."]
             }
           }
         headers: []
-        description: 'Validation failed'
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/categories/{id}'
-    metadata:
-      custom: []
-      groupName: Categories
-      groupDescription: |-
-
-        Manage product categories for the authenticated store. Supports hierarchical categories with parent-child relationships.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Get category details'
-      description: 'Retrieve a single category with parent, children, and products.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'Category ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": {
-              "id": 1,
-              "name": "Electronics",
-              "slug": "electronics",
-              "description": "Electronic products",
-              "parent": null,
-              "children": [],
-              "products": []
-            }
-          }
-        headers: []
-        description: Success
-      -
-        custom: []
-        status: 404
-        content: |-
-          {
-            "message": "Category not found"
-          }
-        headers: []
-        description: 'Not found'
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - PUT
-      - PATCH
-    uri: 'api/v1/categories/{id}'
-    metadata:
-      custom: []
-      groupName: Categories
-      groupDescription: |-
-
-        Manage product categories for the authenticated store. Supports hierarchical categories with parent-child relationships.
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Update category'
-      description: 'Update an existing category. Can change parent relationship.'
-      authenticated: true
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'Category ID.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      name:
-        custom: []
-        name: name
-        description: 'Category name.'
-        required: false
-        example: 'Updated Electronics'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      slug:
-        custom: []
-        name: slug
-        description: 'Must not be greater than 255 characters.'
-        required: false
-        example: amniihfqcoynlazghdtqt
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      description:
-        custom: []
-        name: description
-        description: 'Must not be greater than 1000 characters.'
-        required: false
-        example: 'Necessitatibus architecto aut consequatur debitis et id.'
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      image:
-        custom: []
-        name: image
-        description: 'Must not be greater than 500 characters.'
-        required: false
-        example: ilpmufinllwloauydlsms
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      parent_id:
-        custom: []
-        name: parent_id
-        description: 'Parent category ID.'
-        required: false
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      sort_order:
-        custom: []
-        name: sort_order
-        description: 'Must be at least 0.'
-        required: false
-        example: 45
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      is_active:
-        custom: []
-        name: is_active
-        description: 'Active status.'
-        required: false
-        example: false
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      name: 'Updated Electronics'
-      slug: amniihfqcoynlazghdtqt
-      description: 'Necessitatibus architecto aut consequatur debitis et id.'
-      image: ilpmufinllwloauydlsms
-      parent_id: 2
-      sort_order: 45
-      is_active: false
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 200
-        content: |-
-          {
-            "data": {
-              "id": 1,
-              "name": "Updated Electronics",
-              "parent_id": 2
-            }
-          }
-        headers: []
-        description: Updated
-      -
-        custom: []
-        status: 400
-        content: |-
-          {
-            "message": "Category cannot be its own parent"
-          }
-        headers: []
-        description: 'Circular reference'
-      -
-        custom: []
-        status: 404
-        content: |-
-          {
-            "message": "Category not found"
-          }
-        headers: []
-        description: 'Not found'
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -701,17 +109,17 @@ endpoints:
     custom: []
     httpMethods:
       - DELETE
-    uri: 'api/v1/categories/{id}'
+    uri: 'api/v1/products/{id}/images/{imageId}'
     metadata:
       custom: []
-      groupName: Categories
+      groupName: 'Product Images'
       groupDescription: |-
 
-        Manage product categories for the authenticated store. Supports hierarchical categories with parent-child relationships.
+        Manage product images
       subgroup: ''
       subgroupDescription: ''
-      title: 'Delete category'
-      description: 'Soft delete a category. Children can be deleted or moved to parent level.'
+      title: 'Delete product image'
+      description: 'Delete a specific product image.'
       authenticated: true
       deprecated: false
     headers:
@@ -721,7 +129,7 @@ endpoints:
       id:
         custom: []
         name: id
-        description: 'Category ID.'
+        description: 'Product ID.'
         required: true
         example: 1
         type: integer
@@ -729,41 +137,116 @@ endpoints:
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-    cleanUrlParameters:
-      id: 1
-    queryParameters:
-      delete_children:
+      imageId:
         custom: []
-        name: delete_children
-        description: 'Delete all child categories.'
-        required: false
-        example: false
-        type: boolean
+        name: imageId
+        description: 'Image ID.'
+        required: true
+        example: 5
+        type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-    cleanQueryParameters:
-      delete_children: false
+    cleanUrlParameters:
+      id: 1
+      imageId: 5
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
     responses:
       -
         custom: []
-        status: 204
-        content: ''
+        status: 200
+        content: |-
+          {
+            "message": "Image deleted successfully"
+          }
         headers: []
-        description: Deleted
+        description: ''
       -
         custom: []
         status: 404
         content: |-
           {
-            "message": "Category not found"
+            "message": "Image not found"
           }
         headers: []
-        description: 'Not found'
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/products/{id}/images/{imageId}/primary'
+    metadata:
+      custom: []
+      groupName: 'Product Images'
+      groupDescription: |-
+
+        Manage product images
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Set primary image'
+      description: 'Set a specific image as the primary product image.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'Product ID.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      imageId:
+        custom: []
+        name: imageId
+        description: 'Image ID.'
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+      imageId: 5
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "data": {
+              "id": 5,
+              "product_id": 1,
+              "url": "http://localhost:8000/storage/products/1/image5.jpg",
+              "is_primary": true
+            },
+            "message": "Primary image updated"
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null

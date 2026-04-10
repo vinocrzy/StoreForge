@@ -25,11 +25,15 @@ class ApiClient {
     // Request interceptor to add auth headers
     this.client.interceptors.request.use(
       (config) => {
-        if (this.token) {
-          config.headers.Authorization = `Bearer ${this.token}`;
+        // Always read fresh values from localStorage to handle dynamic login/logout
+        const currentToken = localStorage.getItem('auth_token');
+        const currentStoreId = localStorage.getItem('store_id');
+        
+        if (currentToken) {
+          config.headers.Authorization = `Bearer ${currentToken}`;
         }
-        if (this.storeId) {
-          config.headers['X-Store-ID'] = this.storeId;
+        if (currentStoreId) {
+          config.headers['X-Store-ID'] = currentStoreId;
         }
         return config;
       },
@@ -43,9 +47,9 @@ class ApiClient {
       (response) => response,
       (error: AxiosError) => {
         if (error.response?.status === 401) {
-          // Unauthorized - clear auth and redirect to login
+          // Unauthorized - clear auth and redirect to sign in
           this.clearAuth();
-          window.location.href = '/login';
+          window.location.href = '/signin';
         }
         return Promise.reject(error);
       }
@@ -75,14 +79,17 @@ class ApiClient {
     this.token = null;
     this.storeId = null;
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('auth_user');
     localStorage.removeItem('store_id');
+    localStorage.removeItem('store_name');
+    localStorage.removeItem('store_currency');
   }
 
   /**
    * Check if user is authenticated
    */
   isAuthenticated(): boolean {
-    return !!this.token;
+    return !!localStorage.getItem('auth_token');
   }
 
   /**

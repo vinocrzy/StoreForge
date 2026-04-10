@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useCreateProductMutation, useGetCategoriesQuery } from '../../services/products';
+import { useCreateProductMutation, useGetCategoriesQuery, useUploadProductImagesMutation } from '../../services/products';
 import Button from '../../components/ui/button/Button';
 import Alert from '../../components/ui/alert/Alert';
 import ImageUpload, { type ImageFile } from '../../components/ui/image-upload/ImageUpload';
@@ -18,6 +18,7 @@ interface FormErrors {
 const NewProductPage = () => {
   const navigate = useNavigate();
   const [createProduct, { isLoading }] = useCreateProductMutation();
+  const [uploadProductImages, { isLoading: isUploadingImages }] = useUploadProductImagesMutation();
   const { data: categoriesData } = useGetCategoriesQuery();
   const currencySymbol = getCurrencySymbol(getStoreCurrency());
 
@@ -102,7 +103,25 @@ const NewProductPage = () => {
     }
 
     try {
-      await createProduct(formData).unwrap();
+      // Step 1: Create product
+      const result = await createProduct(formData).unwrap();
+      const productId = result.data.id;
+
+      // Step 2: Upload images if any
+      if (images.length > 0) {
+        const imageFiles = images
+          .filter(img => img.file)
+          .map(img => img.file!);
+
+        if (imageFiles.length > 0) {
+          await uploadProductImages({
+            productId,
+            images: imageFiles,
+            is_primary: true,
+          }).unwrap();
+        }
+      }
+
       setAlert({ type: 'success', message: 'Product created successfully!' });
       setTimeout(() => {
         navigate('/products');
@@ -466,16 +485,20 @@ const NewProductPage = () => {
             type="button"
             variant="ghost"
             onClick={() => navigate('/products')}
-            disabled={isLoading}
+            disabled={isLoading || isUploadingImages}
           >
             Cancel
           </Button>
           <Button
             type="submit"
             variant="primary"
-            disabled={isLoading}
+            disabled={isLoading || isUploadingImages}
           >
-            {isLoading ? 'Creating...' : 'Create Product'}
+            {isLoading 
+              ? 'Creating...' 
+              : isUploadingImages 
+              ? 'Uploading images...' 
+              : 'Create Product'}
           </Button>
         </div>
       </form>

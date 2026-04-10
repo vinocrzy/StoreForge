@@ -226,4 +226,79 @@ class ProductService
 
         return $slug;
     }
+
+    /**
+     * Upload product images
+     */
+    public function uploadProductImages(int $productId, array $files, array $options = []): Collection
+    {
+        $product = Product::findOrFail($productId);
+        $uploadedImages = new Collection();
+
+        // Check max images limit
+        $existingImagesCount = $product->images()->count();
+        if ($existingImagesCount + count($files) > 10) {
+            throw new \Exception('Maximum 10 images allowed per product');
+        }
+
+        // Determine if we should set the first uploaded image as primary
+        $setPrimary = $options['is_primary'] ?? true;
+        $hasExistingPrimary = $product->images()->where('is_primary', true)->exists();
+
+        foreach ($files as $index => $file) {
+            // Store image in products/{product_id}/ directory
+            $path = $file->store("products/{$productId}", 'public');
+            
+            // Create database record
+            $image = $product->images()->create([
+                'file_path' => $path,
+                'alt_text' => $product->name,
+                'sort_order' => $existingImagesCount + $index,
+                'is_primary' => !$hasExistingPrimary && $setPrimary && $index === 0,
+            ]);
+
+            $uploadedImages->push($image);
+        }
+
+        return $uploadedImages;
+    }
+
+    /**
+     * Delete product image
+     */
+    public function deleteProductImage(int $productId, int $imageId): bool
+    {
+        $product = Product::findOrFail($productId);
+        $image = $product->images()->findOrFail($imageId);
+
+        // Delete file from storage
+        \Storage::disk('public')->delete($image->file_path);
+
+        // If this was the primary image, set another image as primary
+        if ($image->is_primary) {
+            $nextImage = $product->images()->where('id', '!=', $imageId)->first();
+            if ($nextImage) {
+                $nextImage->update(['is_primary' => true]);
+            }
+        }
+
+        return $image->delete();
+    }
+
+    /**
+     * Set primary image
+     */
+    public function setPrimaryImage(int $productId, int $imageId)
+    {
+        $product = Product::findOrFail($productId);
+        $image = $product->images()->findOrFail($imageId);
+
+        // Remove primary flag from all images
+        $product->images()->update(['is_primary' => false]);
+
+        // Set new primary image
+        $image->update(['is_primary' => true]);
+
+        return $image->fresh();
+    }
 }
