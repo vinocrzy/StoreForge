@@ -23,12 +23,29 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 10. â³ **Phase 9**: Testing & QA (Not Started)
 11. â³ **Phase 10**: Launch Preparation (Not Started)
 
-**Production Readiness**: 40% Complete
+**Production Readiness**: 55% Complete
 - ✅ Phases 0-6 complete
 - 🚧 Phase 7 UI complete, API wiring blocked (ZERO public storefront APIs exist)
 - ⏳ Phases 8-10 not started
 
 **See [docs/20-production-readiness-plan.md](docs/20-production-readiness-plan.md) for complete implementation plan.**
+
+### Latest Progress (April 10, 2026)
+
+**Phase 8.1 Public Storefront Backend APIs (Complete)**:
+- [x] Cart model + migration (token-based, guest + auth support, 30-day expiry)
+- [x] orders.customer_id made nullable (guest checkout support)
+- [x] SetPublicTenant middleware (no admin auth, sets tenant from X-Store-ID)
+- [x] EnsureCustomer middleware (validates Sanctum token belongs to Customer)
+- [x] PublicProductController: list, show by slug, categories, category by slug, featured
+- [x] CartService: createCart, addItem, updateItem, removeItem, clear, calculateTotals
+- [x] CartController: create/show/addItem/updateItem/removeItem/clear (6 routes)
+- [x] CustomerAuthController: register, login, logout (phone-first auth)
+- [x] CustomerAccountController: profile, updateProfile, orders, orderDetail
+- [x] CheckoutService: guest + authenticated checkout, stock verification, order creation, cart clear
+- [x] CheckoutController: guest or auth checkout with conditional validation
+- [x] 19 public routes registered under /api/v1/public with public_tenant middleware
+- [x] Tested: products endpoint (200), categories (200), cart create (201), customer register (201), authenticated profile (200)
 
 ### Latest Progress (April 9, 2026)
 
@@ -1613,7 +1630,7 @@ Phase 4: Storefront Template    â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–�
 Phase 5: Infrastructure         â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ 100%
 Phase 6: Admin Completion       â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ 100%  ← All 6.x sub-phases DONE
 Phase 7: Storefront UI          â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘  80%  ← UI complete, API wiring BLOCKED
-Phase 8: Public APIs + Deploy   â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘   0%  ← P0 NEXT UP
+Phase 8: Public APIs + Deploy   â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘  60%  ← P0 NEXT UP
 Phase 9: Testing & QA           â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘   0%
 Phase 10: Launch Prep           â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘   0%
 
