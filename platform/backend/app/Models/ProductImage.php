@@ -73,7 +73,12 @@ class ProductImage extends Model
         if (!$this->file_path) {
             return '';
         }
-        
+
+        // Support external CDN URLs (Pexels, Unsplash, S3, etc.)
+        if (str_starts_with($this->file_path, 'http://') || str_starts_with($this->file_path, 'https://')) {
+            return $this->file_path;
+        }
+
         // Return URL relative to storage public disk
         return url('storage/' . $this->file_path);
     }

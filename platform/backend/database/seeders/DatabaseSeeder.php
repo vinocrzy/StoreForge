@@ -30,5 +30,13 @@ class DatabaseSeeder extends Seeder
                 DemoCatalogSeeder::class,
             ]);
         }
+
+        $seedClientCatalogs = filter_var(env('SEED_CLIENT_CATALOGS', true), FILTER_VALIDATE_BOOL);
+        if ($seedClientCatalogs) {
+            $this->call([
+                StorefrontTemplateCatalogSeeder::class,
+                HoneyBeeCatalogSeeder::class,
+            ]);
+        }
     }
 }

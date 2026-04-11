@@ -17,7 +17,15 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        $stores = Store::all();
+        // Limit to the demo store only — client stores (Honey Bee, Storefront Template)
+        // have their own dedicated catalog seeders and must not be polluted with generic data.
+        $demoStoreSlug = env('DEMO_STORE_SLUG', 'demo-store');
+        $stores = Store::where('slug', $demoStoreSlug)->get();
+
+        if ($stores->isEmpty()) {
+            $this->command->warn('[ProductSeeder] Demo store not found. Skipping.');
+            return;
+        }
 
         foreach ($stores as $store) {
             // Get all categories for this store

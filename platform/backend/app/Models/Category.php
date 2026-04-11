@@ -31,6 +31,19 @@ class Category extends Model
     ];
 
     /**
+     * Append image_url to JSON so storefront types are satisfied.
+     */
+    protected $appends = ['image_url'];
+
+    /**
+     * Maps the `image` DB column to the `image_url` attribute expected by the storefront.
+     */
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->attributes['image'] ?? null;
+    }
+
+    /**
      * Boot model and apply global scope for tenant isolation
      */
     protected static function booted()
