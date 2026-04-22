@@ -56,7 +56,7 @@ skills:
     primary_owner: Backend Developer       # owns the DB fields & API SEO payload
     consumers: [Storefront Frontend Dev]    # implements generateMetadata from API data
     validators: [QA & Testing Expert]
-    references: [Product Manager]           # PM understands SEO requirements
+    references: [Product Manager, SEO Analyst]  # PM for spec context; SEO Analyst as source of truth for audits & briefs
     tags: [seo, slug, meta-tags, schema-org, sitemap, open-graph]
 
   ecommerce-setup:
@@ -118,6 +118,73 @@ skills:
 
 agents:
 
+  business-analyst:
+    file: .github/agents/business-analyst.agent.md
+    role: Market & Product Strategy Analyst
+    top_skills:
+      - E-Commerce Trend Analysis
+      - Competitive Benchmarking & Feature Gap Analysis
+      - Business Case & ROI Modeling
+      - Customer Journey & Funnel Analysis
+      - KPI & OKR Design
+      - White-Label SaaS Economics
+      - Stakeholder Communication & Executive Reporting
+    assigned_skills: {}
+    skill_notes: >
+      BA works at the strategy and research layer — above product requirements and
+      technical implementation. No skill modules are loaded.
+      BA reads domain docs (12-business-model-strategy.md, 10-development-roadmap.md,
+      PROGRESS.md) to understand current state, then produces market analyses and
+      ranked improvement proposals. Hands off to Product Manager for spec writing,
+      or to SEO Analyst for SEO-specific initiatives.
+    inputs:
+      - Strategic question ("are we keeping up?", "what should we build next?")
+      - Market signal / competitor move / customer feedback
+      - Quarterly strategy review trigger
+    outputs:
+      - Market trend report
+      - Competitive benchmark matrix
+      - Ranked improvement proposals with ROI
+      - Quarterly StoreForge Health Report
+    hands_off_to: Product Manager, SEO Analyst
+
+  seo-analyst:
+    file: .github/agents/seo-analyst.agent.md
+    role: Technical SEO & Organic Search Strategist
+    top_skills:
+      - Technical SEO Auditing
+      - Core Web Vitals Diagnosis
+      - Structured Data / Schema.org Engineering
+      - Keyword Research & Search Intent Mapping
+      - On-Page Optimization (Title/Meta/Header) Engineering
+      - E-Commerce Information Architecture
+      - SEO Brief Writing for Developers
+      - SERP Competitive Analysis
+      - SEO KPI & Reporting
+    assigned_skills:
+      reference:
+        - ecommerce-seo   # source of truth for platform SEO schema & generateMetadata patterns
+    skill_notes: >
+      SEO Analyst owns the WHAT and WHY of SEO, reviews the OUTPUT, and writes the
+      brief that implementers follow. Reads ecommerce-seo as a reference to know
+      what's already standardised; proposes extensions to it when gaps exist.
+      Does NOT implement code — briefs are handed to Backend (for DB/API fields
+      and sitemap logic), Storefront Frontend Dev / Honey Bee Dev (for
+      generateMetadata, Schema.org, CWV), and Product Manager (for content /
+      URL-structure initiatives). QA validates SEO acceptance criteria.
+    inputs:
+      - SEO audit request / new storefront launch
+      - Ranking drop or organic traffic alert
+      - Business Analyst recommendation with SEO dimension
+      - Keyword or content strategy question
+    outputs:
+      - Technical SEO audit report
+      - Keyword map with intent & target URL
+      - SEO brief (for implementers)
+      - Core Web Vitals action list
+      - Organic Search Health Report (quarterly)
+    hands_off_to: Product Manager, Backend Developer, Storefront Frontend Dev, Honey Bee Dev, QA & Testing Expert
+
   product-manager:
     file: .github/agents/product-manager.agent.md
     role: Product Strategist & Requirements Engineer
@@ -131,12 +198,15 @@ agents:
     skill_notes: >
       PM works at the requirements layer — above technical implementation.
       No skill modules are loaded during PM work.
-      PM reads ecommerce-seo only to understand SEO acceptance criteria
-      when writing specs for content features.
+      PM receives inputs from Business Analyst (strategic proposals) and SEO
+      Analyst (SEO initiatives), and reads ecommerce-seo only to understand SEO
+      acceptance criteria when writing specs for content features.
     inputs:
       - Client brief or stakeholder request
       - Bug report or roadmap item
       - Sprint planning session
+      - Business Analyst improvement proposal
+      - SEO Analyst brief
     outputs:
       - Feature spec document (docs/features/)
       - User stories with acceptance criteria
@@ -391,6 +461,8 @@ agents:
 # Agent                  | api-docs | tenancy | seo | setup | admin-ui | api-integration | honey-bee
 # ─────────────────────────────────────────────────────────────────────────────────────────────────
 # Product Manager        |    —     |    —    |  —  |   —   |    —     |       —         |    —
+# Business Analyst       |    —     |    —    |  —  |   —   |    —     |       —         |    —
+# SEO Analyst            |    —     |    —    | REF |   —   |    —     |       —         |    —
 # Tech Lead              |   REF    |   REF   |  —  |  REF  |    —     |       —         |    —
 # Brand Identity Designer|    —     |    —    |  —  |   —   |    —     |       —         |    —
 # Backend Developer      |   PRI    |   PRI   | PRI |   —   |    —     |       —         |    —
