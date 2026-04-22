@@ -21,8 +21,12 @@ use App\Http\Controllers\Api\V1\Public\CustomerAccountController;
 use App\Http\Controllers\Api\V1\Public\CheckoutController;
 use App\Http\Controllers\Api\V1\Public\WishlistController;
 use App\Http\Controllers\Api\V1\Public\ReviewController;
+use App\Http\Controllers\Api\V1\Public\PaymentController as PublicPaymentController;
 use App\Http\Controllers\Api\V1\Admin\WishlistReportController;
 use App\Http\Controllers\Api\V1\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\Api\V1\Admin\PaymentController as AdminPaymentController;
+use App\Http\Controllers\Api\V1\Webhook\StripeWebhookController;
+use App\Http\Controllers\Api\V1\Webhook\RazorpayWebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +38,15 @@ use App\Http\Controllers\Api\V1\Admin\ReviewController as AdminReviewController;
 Route::post('/v1/auth/login', [AuthController::class, 'login']);
 Route::post('/v1/auth/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/v1/auth/reset-password', [AuthController::class, 'resetPassword']);
+
+// -------------------------------------------------------------------------
+// Webhook routes (no auth, no CSRF, no tenant middleware)
+// Store is resolved from payment metadata in the webhook payload.
+// -------------------------------------------------------------------------
+Route::prefix('v1/webhooks')->group(function () {
+    Route::post('/stripe', [StripeWebhookController::class, 'handle']);
+    Route::post('/razorpay', [RazorpayWebhookController::class, 'handle']);
+});
 
 // Super admin global routes (no tenant header required)
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
@@ -127,6 +140,10 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::patch('/reviews/{id}', [AdminReviewController::class, 'update']);
     Route::delete('/reviews/{id}', [AdminReviewController::class, 'destroy']);
 
+    // Payments (admin)
+    Route::get('/payments', [AdminPaymentController::class, 'index']);
+    Route::post('/orders/{id}/refund', [AdminPaymentController::class, 'refund']);
+
     // Orders
     Route::get('/orders/export', [OrderController::class, 'export']);
     Route::get('/orders/statistics', [OrderController::class, 'statistics']);
@@ -177,6 +194,9 @@ Route::middleware(['public_tenant'])->prefix('v1/public')->group(function () {
 
         // Product reviews (authenticated customer)
         Route::post('/products/{slug}/reviews', [ReviewController::class, 'store']);
+
+        // Payment intent (customer checkout)
+        Route::post('/checkout/payment-intent', [PublicPaymentController::class, 'createIntent']);
 
         // Wishlist
         Route::get('/wishlist', [WishlistController::class, 'index']);
