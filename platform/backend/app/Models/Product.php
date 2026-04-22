@@ -206,4 +206,12 @@ class Product extends Model
     {
         return static::withoutGlobalScope('store');
     }
+
+    /**
+     * Wishlist entries for this product
+     */
+    public function wishlistedBy(): HasMany
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }

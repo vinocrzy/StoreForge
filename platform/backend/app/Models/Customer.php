@@ -212,4 +212,12 @@ class Customer extends Authenticatable
     {
         return static::withoutGlobalScope('store');
     }
+
+    /**
+     * Customer wishlisted products
+     */
+    public function wishlists(): HasMany
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }

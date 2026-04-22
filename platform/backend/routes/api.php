@@ -19,6 +19,8 @@ use App\Http\Controllers\Api\V1\Public\CartController;
 use App\Http\Controllers\Api\V1\Public\CustomerAuthController;
 use App\Http\Controllers\Api\V1\Public\CustomerAccountController;
 use App\Http\Controllers\Api\V1\Public\CheckoutController;
+use App\Http\Controllers\Api\V1\Public\WishlistController;
+use App\Http\Controllers\Api\V1\Admin\WishlistReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -114,6 +116,9 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update']);
     Route::patch('/profile/password', [ProfileController::class, 'changePassword']);
 
+    // Reports
+    Route::get('/reports/most-wishlisted', [WishlistReportController::class, 'mostWishlisted']);
+
     // Orders
     Route::get('/orders/export', [OrderController::class, 'export']);
     Route::get('/orders/statistics', [OrderController::class, 'statistics']);
@@ -158,5 +163,12 @@ Route::middleware(['public_tenant'])->prefix('v1/public')->group(function () {
         Route::patch('/customer/profile', [CustomerAccountController::class, 'updateProfile']);
         Route::get('/customer/orders', [CustomerAccountController::class, 'orders']);
         Route::get('/customer/orders/{id}', [CustomerAccountController::class, 'orderDetail']);
+
+        // Wishlist
+        Route::get('/wishlist', [WishlistController::class, 'index']);
+        Route::post('/wishlist', [WishlistController::class, 'toggle']);
+        Route::delete('/wishlist/{productId}', [WishlistController::class, 'remove']);
+        Route::get('/wishlist/check/{productId}', [WishlistController::class, 'check']);
+        Route::post('/wishlist/check', [WishlistController::class, 'checkMultiple']);
     });
 });
