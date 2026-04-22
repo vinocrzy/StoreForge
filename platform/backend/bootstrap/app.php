@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // CORS must run before all other middleware
+        $middleware->prepend(\Illuminate\Http\Middleware\HandleCors::class);
+
         $middleware->alias([
             'tenant'          => \App\Http\Middleware\SetTenantFromHeader::class,
             'public_tenant'   => \App\Http\Middleware\SetPublicTenant::class,
