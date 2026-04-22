@@ -20,7 +20,9 @@ use App\Http\Controllers\Api\V1\Public\CustomerAuthController;
 use App\Http\Controllers\Api\V1\Public\CustomerAccountController;
 use App\Http\Controllers\Api\V1\Public\CheckoutController;
 use App\Http\Controllers\Api\V1\Public\WishlistController;
+use App\Http\Controllers\Api\V1\Public\ReviewController;
 use App\Http\Controllers\Api\V1\Admin\WishlistReportController;
+use App\Http\Controllers\Api\V1\Admin\ReviewController as AdminReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -119,6 +121,12 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     // Reports
     Route::get('/reports/most-wishlisted', [WishlistReportController::class, 'mostWishlisted']);
 
+    // Reviews (admin)
+    Route::get('/reviews', [AdminReviewController::class, 'index']);
+    Route::get('/reviews/{id}', [AdminReviewController::class, 'show']);
+    Route::patch('/reviews/{id}', [AdminReviewController::class, 'update']);
+    Route::delete('/reviews/{id}', [AdminReviewController::class, 'destroy']);
+
     // Orders
     Route::get('/orders/export', [OrderController::class, 'export']);
     Route::get('/orders/statistics', [OrderController::class, 'statistics']);
@@ -140,6 +148,9 @@ Route::middleware(['public_tenant'])->prefix('v1/public')->group(function () {
     Route::get('/featured-products', [PublicProductController::class, 'featured']);
     Route::get('/categories', [PublicProductController::class, 'categories']);
     Route::get('/categories/{slug}', [PublicProductController::class, 'showCategory']);
+
+    // Product reviews (public, no auth)
+    Route::get('/products/{slug}/reviews', [ReviewController::class, 'index']);
 
     // Cart (token-based, no auth required)
     Route::post('/cart', [CartController::class, 'create']);
@@ -163,6 +174,9 @@ Route::middleware(['public_tenant'])->prefix('v1/public')->group(function () {
         Route::patch('/customer/profile', [CustomerAccountController::class, 'updateProfile']);
         Route::get('/customer/orders', [CustomerAccountController::class, 'orders']);
         Route::get('/customer/orders/{id}', [CustomerAccountController::class, 'orderDetail']);
+
+        // Product reviews (authenticated customer)
+        Route::post('/products/{slug}/reviews', [ReviewController::class, 'store']);
 
         // Wishlist
         Route::get('/wishlist', [WishlistController::class, 'index']);
