@@ -24,8 +24,8 @@ class CustomerAuthController extends Controller
      *
      * @bodyParam first_name string required First name. Example: Jane
      * @bodyParam last_name string required Last name. Example: Doe
-     * @bodyParam email string required Email address (unique per store). Example: jane@example.com
-     * @bodyParam phone string required Phone number in E.164 format (unique per store). Example: +12025551234
+     * @bodyParam phone string required Phone number in E.164 format (primary identifier, unique per store). Example: +12025551234
+     * @bodyParam email string optional Email address (optional, unique per store if provided). Example: jane@example.com
      * @bodyParam password string required Password (min 8 characters). Example: secret12345
      *
      * @response 201 scenario="Created" {
@@ -41,7 +41,7 @@ class CustomerAuthController extends Controller
         $request->validate([
             'first_name' => 'required|string|max:100',
             'last_name'  => 'required|string|max:100',
-            'email'      => "required|email|max:255|unique:customers,email,NULL,id,store_id,{$storeId}",
+            'email'      => "nullable|email|max:255|unique:customers,email,NULL,id,store_id,{$storeId}",
             'phone'      => "required|string|max:20|unique:customers,phone,NULL,id,store_id,{$storeId}",
             'password'   => ['required', Password::min(8)],
         ]);
@@ -50,7 +50,7 @@ class CustomerAuthController extends Controller
             'store_id'   => $storeId,
             'first_name' => $request->first_name,
             'last_name'  => $request->last_name,
-            'email'      => $request->email,
+            'email'      => $request->email ?? null,
             'phone'      => $request->phone,
             'password'   => Hash::make($request->password),
             'status'     => 'active',
