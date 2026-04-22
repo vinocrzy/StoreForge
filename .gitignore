@@ -66,6 +66,11 @@ client-*/
 # Base template is its own repo, not tracked by platform
 storefront-template/
 
+# Root-level node_modules (should never exist here, but guard against accidents)
+/node_modules/
+/package-lock.json
+/yarn.lock
+
 # IDE
 .vscode/*
 !.vscode/settings.json
