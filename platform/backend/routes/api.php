@@ -25,6 +25,8 @@ use App\Http\Controllers\Api\V1\Public\PaymentController as PublicPaymentControl
 use App\Http\Controllers\Api\V1\Admin\WishlistReportController;
 use App\Http\Controllers\Api\V1\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Api\V1\Admin\PaymentController as AdminPaymentController;
+use App\Http\Controllers\Api\V1\Admin\CouponController as AdminCouponController;
+use App\Http\Controllers\Api\V1\Public\CouponController as PublicCouponController;
 use App\Http\Controllers\Api\V1\Webhook\StripeWebhookController;
 use App\Http\Controllers\Api\V1\Webhook\RazorpayWebhookController;
 
@@ -144,6 +146,9 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::get('/payments', [AdminPaymentController::class, 'index']);
     Route::post('/orders/{id}/refund', [AdminPaymentController::class, 'refund']);
 
+    // Coupons (admin CRUD)
+    Route::apiResource('coupons', AdminCouponController::class);
+
     // Orders
     Route::get('/orders/export', [OrderController::class, 'export']);
     Route::get('/orders/statistics', [OrderController::class, 'statistics']);
@@ -168,6 +173,9 @@ Route::middleware(['public_tenant'])->prefix('v1/public')->group(function () {
 
     // Product reviews (public, no auth)
     Route::get('/products/{slug}/reviews', [ReviewController::class, 'index']);
+
+    // Coupon validation (storefront, no auth required)
+    Route::post('/coupons/validate', [PublicCouponController::class, 'validate']);
 
     // Cart (token-based, no auth required)
     Route::post('/cart', [CartController::class, 'create']);
