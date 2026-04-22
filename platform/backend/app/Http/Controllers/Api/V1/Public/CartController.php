@@ -70,7 +70,7 @@ class CartController extends Controller
      * @bodyParam quantity integer required Quantity to add (1–100). Example: 1
      * @bodyParam variant_id integer Optional product variant ID. Example: 3
      *
-     * @response 200 scenario="Success" {
+     * @response 201 scenario="Success" {
      *   "data": {"token": "abc123xyz", "items": [{"id": "p1", "name": "Soap", "quantity": 1}], "item_count": 1, "subtotal": 12.99, "total": 12.99}
      * }
      */
@@ -94,7 +94,7 @@ class CartController extends Controller
             $request->integer('variant_id') ?: null
         );
 
-        return response()->json(['data' => $this->formatCart($cart)]);
+        return response()->json(['data' => $this->formatCart($cart)], 201);
     }
 
     /**
