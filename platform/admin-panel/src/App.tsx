@@ -28,6 +28,11 @@ import WarehousesPage from "./pages/Inventory/Warehouses";
 import StockMovementsPage from "./pages/Inventory/StockMovements";
 import StockAlertsPage from "./pages/Inventory/StockAlerts";
 import StoreSettingsPage from "./pages/Settings/StoreSettings";
+import CouponsPage from "./pages/Coupons";
+import NewCouponPage from "./pages/Coupons/NewCoupon";
+import EditCouponPage from "./pages/Coupons/EditCoupon";
+import ReviewsPage from "./pages/Reviews";
+import ReviewDetailPage from "./pages/Reviews/ReviewDetail";
 
 // Protected Route Component
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -113,6 +118,15 @@ function App() {
             <Route path="/warehouses" element={<StoreAdminOnlyRoute><WarehousesPage /></StoreAdminOnlyRoute>} />
             <Route path="/inventory/movements" element={<StoreAdminOnlyRoute><StockMovementsPage /></StoreAdminOnlyRoute>} />
             <Route path="/inventory/alerts" element={<StoreAdminOnlyRoute><StockAlertsPage /></StoreAdminOnlyRoute>} />
+
+            {/* Coupons */}
+            <Route path="/coupons" element={<StoreAdminOnlyRoute><CouponsPage /></StoreAdminOnlyRoute>} />
+            <Route path="/coupons/new" element={<StoreAdminOnlyRoute><NewCouponPage /></StoreAdminOnlyRoute>} />
+            <Route path="/coupons/:id/edit" element={<StoreAdminOnlyRoute><EditCouponPage /></StoreAdminOnlyRoute>} />
+
+            {/* Reviews */}
+            <Route path="/reviews" element={<StoreAdminOnlyRoute><ReviewsPage /></StoreAdminOnlyRoute>} />
+            <Route path="/reviews/:id" element={<StoreAdminOnlyRoute><ReviewDetailPage /></StoreAdminOnlyRoute>} />
 
             {/* Settings */}
             <Route path="/settings/store" element={<StoreAdminOnlyRoute><StoreSettingsPage /></StoreAdminOnlyRoute>} />

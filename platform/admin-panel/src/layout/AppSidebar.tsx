@@ -10,6 +10,7 @@ import {
   DollarLineIcon,
   BoxIconLine,
   ShootingStarIcon,
+  ChatIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import { useAppSelector } from "../store/hooks";
@@ -69,6 +70,20 @@ const navItems: NavItem[] = [
       { name: "Warehouses", path: "/warehouses" },
       { name: "Stock Movements", path: "/inventory/movements" },
       { name: "Stock Alerts", path: "/inventory/alerts" },
+    ],
+  },
+  {
+    icon: <DollarLineIcon />,
+    name: "Marketing",
+    subItems: [
+      { name: "Coupons", path: "/coupons" },
+    ],
+  },
+  {
+    icon: <ChatIcon />,
+    name: "Reviews",
+    subItems: [
+      { name: "All Reviews", path: "/reviews" },
     ],
   },
   {

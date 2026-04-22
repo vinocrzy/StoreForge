@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { useGetOrderQuery, useCancelOrderMutation, useFulfillOrderMutation } from '../../services/orders';
+import { useProcessRefundMutation } from '../../services/payments';
 import Button from '../../components/ui/button/Button';
 import Badge from '../../components/ui/badge/Badge';
 import Alert from '../../components/ui/alert/Alert';
+import { Modal } from '../../components/ui/modal';
 import type { OrderStatus, PaymentStatus, FulfillmentStatus } from '../../types/order';
 import { formatPrice, getStoreCurrency } from '../../utils/currency';
 import UpdateOrderStatusModal from './components/UpdateOrderStatusModal';
@@ -17,9 +19,13 @@ const OrderDetailsPage = () => {
   const { data: order, isLoading, error } = useGetOrderQuery(orderId);
   const [cancelOrder] = useCancelOrderMutation();
   const [fulfillOrder] = useFulfillOrderMutation();
+  const [processRefund, { isLoading: isRefunding }] = useProcessRefundMutation();
 
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showRefundModal, setShowRefundModal] = useState(false);
+  const [refundAmount, setRefundAmount] = useState('');
+  const [refundReason, setRefundReason] = useState('');
   const [alert, setAlert] = useState<{variant: 'success' | 'error', title: string, message: string} | null>(null);
 
   // Helper function to get order status badge color
@@ -102,6 +108,28 @@ const OrderDetailsPage = () => {
     }
   };
 
+  const handleRefund = async () => {
+    const amount = parseFloat(refundAmount);
+    if (!amount || amount <= 0) return;
+    try {
+      await processRefund({ orderId, data: { amount, reason: refundReason } }).unwrap();
+      setAlert({
+        variant: 'success',
+        title: 'Refund Processed',
+        message: `Refund of $${amount.toFixed(2)} has been initiated.`
+      });
+      setShowRefundModal(false);
+      setRefundAmount('');
+      setRefundReason('');
+    } catch {
+      setAlert({
+        variant: 'error',
+        title: 'Refund Failed',
+        message: 'Failed to process refund. Please try again.'
+      });
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="p-6">
@@ -157,6 +185,11 @@ const OrderDetailsPage = () => {
           </p>
         </div>
         <div className="flex gap-2">
+          {order.payment_status === 'paid' && order.payment_method !== 'manual' && (
+            <Button variant="warning" onClick={() => { setShowRefundModal(true); setRefundAmount(String(Number(order.total))); setRefundReason(''); }}>
+              Refund
+            </Button>
+          )}
           {order.payment_status === 'pending' && (
             <Button variant="success" onClick={() => setShowPaymentModal(true)}>
               Record Payment
@@ -445,6 +478,44 @@ const OrderDetailsPage = () => {
           }}
         />
       )}
+
+      {/* Refund Modal */}
+      <Modal isOpen={showRefundModal} onClose={() => setShowRefundModal(false)} className="max-w-md p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Process Refund</h3>
+        <div className="space-y-4">
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Refund Amount
+            </label>
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              max={Number(order.total)}
+              className="w-full rounded-lg border border-stroke bg-white px-4 py-2.5 text-sm text-dark focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white"
+              value={refundAmount}
+              onChange={(e) => setRefundAmount(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Reason
+            </label>
+            <textarea
+              className="w-full rounded-lg border border-stroke bg-white px-4 py-2.5 text-sm text-dark placeholder:text-gray-400 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white min-h-[100px]"
+              placeholder="Reason for refund..."
+              value={refundReason}
+              onChange={(e) => setRefundReason(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="flex justify-end gap-3 mt-4">
+          <Button variant="outline" onClick={() => setShowRefundModal(false)}>Cancel</Button>
+          <Button variant="warning" onClick={handleRefund} disabled={isRefunding || !refundAmount || parseFloat(refundAmount) <= 0}>
+            {isRefunding ? 'Processing...' : 'Process Refund'}
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };

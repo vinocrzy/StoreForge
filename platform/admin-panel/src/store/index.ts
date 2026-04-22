@@ -9,6 +9,9 @@ import { dashboardApi } from '../services/dashboard';
 import { inventoryApi } from '../services/inventory';
 import { settingsApi } from '../services/settings';
 import { profileApi } from '../services/profile';
+import { couponsApi } from '../services/coupons';
+import { reviewsApi } from '../services/reviews';
+import { paymentsApi } from '../services/payments';
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +25,9 @@ export const store = configureStore({
     [inventoryApi.reducerPath]: inventoryApi.reducer,
     [settingsApi.reducerPath]: settingsApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
+    [couponsApi.reducerPath]: couponsApi.reducer,
+    [reviewsApi.reducerPath]: reviewsApi.reducer,
+    [paymentsApi.reducerPath]: paymentsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -33,7 +39,10 @@ export const store = configureStore({
       .concat(dashboardApi.middleware)
       .concat(inventoryApi.middleware)
       .concat(settingsApi.middleware)
-      .concat(profileApi.middleware),
+      .concat(profileApi.middleware)
+      .concat(couponsApi.middleware)
+      .concat(reviewsApi.middleware)
+      .concat(paymentsApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

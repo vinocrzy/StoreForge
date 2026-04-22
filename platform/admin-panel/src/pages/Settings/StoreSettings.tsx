@@ -284,6 +284,45 @@ const StoreSettingsPage = () => {
             <Field label="Cash on Delivery" description="Allow payment at delivery">
               <Toggle checked={Boolean(g('payments').cod_enabled ?? false)} onChange={(v) => set('payments', 'cod_enabled', v)} label="Enable cash on delivery" />
             </Field>
+
+            <hr className="border-stroke dark:border-strokedark" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Payment Gateway</h2>
+
+            <Field label="Gateway Provider" description="Select an online payment gateway">
+              <select className={inputClass} value={String(g('payments').payment_gateway ?? 'manual')} onChange={(e) => set('payments', 'payment_gateway', e.target.value)}>
+                <option value="manual">Manual (No Gateway)</option>
+                <option value="stripe">Stripe</option>
+                <option value="razorpay">Razorpay</option>
+              </select>
+            </Field>
+
+            {String(g('payments').payment_gateway ?? '') === 'stripe' && (
+              <>
+                <Field label="Publishable Key" description="Stripe publishable key (pk_...)">
+                  <TextInput value={String(g('payments').stripe_publishable_key ?? '')} onChange={(v) => set('payments', 'stripe_publishable_key', v)} placeholder="pk_live_..." />
+                </Field>
+                <Field label="Secret Key" description="Stripe secret key (sk_...)">
+                  <TextInput type="password" value={String(g('payments').stripe_secret_key ?? '')} onChange={(v) => set('payments', 'stripe_secret_key', v)} placeholder="sk_live_..." />
+                </Field>
+                <Field label="Webhook Secret" description="Stripe webhook signing secret (whsec_...)">
+                  <TextInput type="password" value={String(g('payments').stripe_webhook_secret ?? '')} onChange={(v) => set('payments', 'stripe_webhook_secret', v)} placeholder="whsec_..." />
+                </Field>
+              </>
+            )}
+
+            {String(g('payments').payment_gateway ?? '') === 'razorpay' && (
+              <>
+                <Field label="Key ID" description="Razorpay Key ID">
+                  <TextInput value={String(g('payments').razorpay_key_id ?? '')} onChange={(v) => set('payments', 'razorpay_key_id', v)} placeholder="rzp_live_..." />
+                </Field>
+                <Field label="Key Secret" description="Razorpay Key Secret">
+                  <TextInput type="password" value={String(g('payments').razorpay_key_secret ?? '')} onChange={(v) => set('payments', 'razorpay_key_secret', v)} placeholder="..." />
+                </Field>
+                <Field label="Webhook Secret" description="Razorpay webhook secret">
+                  <TextInput type="password" value={String(g('payments').razorpay_webhook_secret ?? '')} onChange={(v) => set('payments', 'razorpay_webhook_secret', v)} placeholder="..." />
+                </Field>
+              </>
+            )}
           </div>
         )}
 

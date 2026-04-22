@@ -5,8 +5,6 @@ const API_TIMEOUT = Number(import.meta.env.VITE_API_TIMEOUT) || 30000;
 
 class ApiClient {
   private client: AxiosInstance;
-  private token: string | null = null;
-  private storeId: string | null = null;
 
   constructor() {
     this.client = axios.create({
@@ -17,10 +15,6 @@ class ApiClient {
         'Accept': 'application/json',
       },
     });
-
-    // Load token and store ID from localStorage on init
-    this.token = localStorage.getItem('auth_token');
-    this.storeId = localStorage.getItem('store_id');
 
     // Request interceptor to add auth headers
     this.client.interceptors.request.use(
@@ -60,7 +54,6 @@ class ApiClient {
    * Set authentication token
    */
   setToken(token: string) {
-    this.token = token;
     localStorage.setItem('auth_token', token);
   }
 
@@ -68,7 +61,6 @@ class ApiClient {
    * Set store ID for tenant scoping
    */
   setStoreId(storeId: number) {
-    this.storeId = storeId.toString();
     localStorage.setItem('store_id', storeId.toString());
   }
 
@@ -76,8 +68,6 @@ class ApiClient {
    * Clear authentication
    */
   clearAuth() {
-    this.token = null;
-    this.storeId = null;
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');
     localStorage.removeItem('store_id');
