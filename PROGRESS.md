@@ -6,7 +6,7 @@
 **Current Phase**: Phase 9B — Competitive Parity (P1)  
 **Production**: Live at https://honeybee.net.in  
 **Production Readiness**: 100% Complete 🎉  
-**Commercial Readiness**: 🚧 35% (Phase 9A Complete, 9B Next)
+**Commercial Readiness**: 🚧 45% (Phase 9A Complete + Storefront Integrated, 9B Next)
 
 ---
 
@@ -38,9 +38,9 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 
 **See [docs/20-production-readiness-plan.md](docs/20-production-readiness-plan.md) for complete implementation plan.**
 
-### Latest Progress (April 22, 2026)
+### Latest Progress (April 27, 2026)
 
-**Phase 9A: Commerce Essentials — ALL 5 FEATURES COMPLETE** ✅:
+**Phase 9A: Commerce Essentials — ALL FEATURES COMPLETE + STOREFRONT INTEGRATED** ✅:
 - [x] Competitive gap analysis completed (16 gaps identified vs Shopify/BigCommerce/WooCommerce)
 - [x] Work plan created with 14 feature specs, acceptance criteria, and database schemas
 - [x] Phase 9A–9C roadmap defined (18 weeks total)
@@ -49,6 +49,9 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 - [x] **9A-3: Product Reviews & Ratings** ✅ — ProductReview model + ReviewService (submit, approve/reject, admin response, rating cache) + 6 API routes (4 admin + 2 public) + AggregateRating ready + 2 migrations
 - [x] **9A-4: Payment Gateway (Stripe + Razorpay)** ✅ — PaymentGatewayInterface + StripeGateway + RazorpayGateway + PaymentGatewayFactory + PaymentService + webhook handlers (idempotent, signature-verified) + encrypted API keys + admin refund endpoint + 6 routes
 - [x] **9A-5: Coupon & Promotion Engine** ✅ — Coupon + CouponUsage models + CouponService (validate 6 rules, calculateDiscount, recordUsage) + admin CRUD + public validate endpoint + 2 migrations + 6 routes
+- [x] **Admin Panel Frontend** ✅ — Coupons CRUD (4 pages), Reviews management (2 pages), Payment settings in Store Settings, Refund button in Order Details, RTK Query services for coupons/reviews/payments
+- [x] **Storefront Integration (Honey Bee)** ✅ — Coupons in checkout, wishlists (toggle + page), reviews (display + submit), payment gateway UI (Razorpay/Stripe checkout overlay with branding)
+- [x] **Storefront Template Back-port** ✅ — All Phase 9A storefront features back-ported with brand-neutral design (CSS variables, configurable params)
 
 **Phase 9A Deliverables Summary**:
 - ✅ 35 new API routes added (across all 5 features)
@@ -57,7 +60,11 @@ Following the priority-based approach from [docs/13-implementation-priority.md](
 - ✅ 5 new services (WishlistService, ReviewService, CouponService, PaymentService, PaymentGatewayFactory)
 - ✅ 6 email notification classes + 2 observers + 6 Blade templates
 - ✅ Payment gateway abstraction layer with Stripe + Razorpay support
+- ✅ Admin panel frontend: 9 new files (coupons CRUD, reviews management, payment settings)
+- ✅ Honey Bee storefront: coupons, wishlists, reviews, payment checkout overlay (Razorpay/Stripe)
+- ✅ Storefront template: brand-neutral back-port of all Phase 9A features
 - ✅ All features tenant-isolated via store_id global scopes
+- ✅ All 3 repos committed and builds passing
 
 **Next**: Phase 9B — Competitive Parity (Abandoned Cart, Tax, Shipping, Analytics, RMA)
 
