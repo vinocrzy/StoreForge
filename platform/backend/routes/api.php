@@ -192,6 +192,16 @@ Route::middleware(['public_tenant'])->prefix('v1/public')->group(function () {
     // Checkout (guest or authenticated)
     Route::post('/checkout', [CheckoutController::class, 'process']);
 
+    // Payment gateway config (public — returns gateway type only, no secrets)
+    Route::get('/payment-config', function () {
+        $storeId = tenant()->id;
+        $gateway = \App\Models\StoreSetting::where('store_id', $storeId)
+            ->where('key', 'payment_gateway')
+            ->value('value') ?? 'manual';
+
+        return response()->json(['payment_gateway' => $gateway]);
+    });
+
     // Customer account (requires customer Sanctum token)
     Route::middleware(['auth:sanctum', 'ensure_customer'])->group(function () {
         Route::post('/customer/logout', [CustomerAuthController::class, 'logout']);

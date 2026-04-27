@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Services\CartService;
 use App\Services\CheckoutService;
+use App\Services\PaymentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -19,6 +20,7 @@ class CheckoutController extends Controller
     public function __construct(
         private CartService $cartService,
         private CheckoutService $checkoutService,
+        private PaymentService $paymentService,
     ) {}
 
     /**
@@ -50,7 +52,7 @@ class CheckoutController extends Controller
 
         $rules = [
             'cart_token'     => 'required|string',
-            'payment_method' => 'required|string|in:cod,bank_transfer,card,pending',
+            'payment_method' => 'required|string|in:cod,bank_transfer,card,online,pending',
             'note'           => 'nullable|string|max:500',
         ];
 
@@ -77,9 +79,22 @@ class CheckoutController extends Controller
 
         $order = $this->checkoutService->processCheckout($cart, $request->all(), $customer);
 
+        // If a payment gateway is configured and payment method is 'card',
+        // create a payment intent so the frontend can collect payment immediately.
+        $paymentData = null;
+        if (in_array($request->payment_method, ['card', 'online'])) {
+            try {
+                $paymentData = $this->paymentService->createPaymentIntent($order);
+            } catch (\RuntimeException $e) {
+                // Gateway not configured or error — order still created, payment can be manual
+                $paymentData = ['gateway' => 'manual', 'message' => $e->getMessage()];
+            }
+        }
+
         return response()->json([
             'data' => [
                 'order'   => $order,
+                'payment' => $paymentData,
                 'message' => 'Order placed successfully.',
             ],
         ], 201);
