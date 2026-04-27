@@ -87,10 +87,27 @@ const navItems: NavItem[] = [
     ],
   },
   {
+    icon: <DollarLineIcon />,
+    name: "Analytics",
+    subItems: [
+      { name: "Dashboard", path: "/analytics" },
+      { name: "Abandoned Carts", path: "/abandoned-carts" },
+    ],
+  },
+  {
+    icon: <BoxCubeIcon />,
+    name: "Returns",
+    subItems: [
+      { name: "Return Requests", path: "/returns" },
+    ],
+  },
+  {
     icon: <ShootingStarIcon />,
     name: "Settings",
     subItems: [
       { name: "Store Settings", path: "/settings/store" },
+      { name: "Shipping Methods", path: "/shipping" },
+      { name: "Tax Settings", path: "/settings/tax" },
       { name: "Profile", path: "/profile" },
     ],
   },

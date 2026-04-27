@@ -33,6 +33,11 @@ import NewCouponPage from "./pages/Coupons/NewCoupon";
 import EditCouponPage from "./pages/Coupons/EditCoupon";
 import ReviewsPage from "./pages/Reviews";
 import ReviewDetailPage from "./pages/Reviews/ReviewDetail";
+import AnalyticsDashboard from "./pages/Analytics";
+import AbandonedCartsPage from "./pages/AbandonedCarts";
+import ShippingMethodsPage from "./pages/Shipping";
+import TaxSettingsPage from "./pages/TaxSettings";
+import ReturnsPage from "./pages/Returns";
 
 // Protected Route Component
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -127,6 +132,11 @@ function App() {
             {/* Reviews */}
             <Route path="/reviews" element={<StoreAdminOnlyRoute><ReviewsPage /></StoreAdminOnlyRoute>} />
             <Route path="/reviews/:id" element={<StoreAdminOnlyRoute><ReviewDetailPage /></StoreAdminOnlyRoute>} />
+            <Route path="/analytics" element={<StoreAdminOnlyRoute><AnalyticsDashboard /></StoreAdminOnlyRoute>} />
+            <Route path="/abandoned-carts" element={<StoreAdminOnlyRoute><AbandonedCartsPage /></StoreAdminOnlyRoute>} />
+            <Route path="/shipping" element={<StoreAdminOnlyRoute><ShippingMethodsPage /></StoreAdminOnlyRoute>} />
+            <Route path="/settings/tax" element={<StoreAdminOnlyRoute><TaxSettingsPage /></StoreAdminOnlyRoute>} />
+            <Route path="/returns" element={<StoreAdminOnlyRoute><ReturnsPage /></StoreAdminOnlyRoute>} />
 
             {/* Settings */}
             <Route path="/settings/store" element={<StoreAdminOnlyRoute><StoreSettingsPage /></StoreAdminOnlyRoute>} />
