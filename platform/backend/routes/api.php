@@ -29,6 +29,15 @@ use App\Http\Controllers\Api\V1\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Api\V1\Public\CouponController as PublicCouponController;
 use App\Http\Controllers\Api\V1\Webhook\StripeWebhookController;
 use App\Http\Controllers\Api\V1\Webhook\RazorpayWebhookController;
+// Phase 9B
+use App\Http\Controllers\Api\V1\Admin\AbandonedCartController;
+use App\Http\Controllers\Api\V1\Admin\TaxSettingsController;
+use App\Http\Controllers\Api\V1\Admin\ShippingMethodController;
+use App\Http\Controllers\Api\V1\Admin\OrderTrackingController;
+use App\Http\Controllers\Api\V1\Admin\AnalyticsController;
+use App\Http\Controllers\Api\V1\Admin\ReturnController as AdminReturnController;
+use App\Http\Controllers\Api\V1\Public\ShippingController;
+use App\Http\Controllers\Api\V1\Storefront\ReturnController as StorefrontReturnController;
 
 /*
 |--------------------------------------------------------------------------
@@ -149,6 +158,33 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     // Coupons (admin CRUD)
     Route::apiResource('coupons', AdminCouponController::class);
 
+    // Phase 9B: Abandoned Cart Recovery
+    Route::get('/admin/abandoned-carts', [AbandonedCartController::class, 'index']);
+    Route::get('/admin/analytics/abandoned-carts', [AbandonedCartController::class, 'analytics']);
+
+    // Phase 9B: Tax Settings
+    Route::get('/admin/settings/tax', [TaxSettingsController::class, 'show']);
+    Route::put('/admin/settings/tax', [TaxSettingsController::class, 'update']);
+
+    // Phase 9B: Shipping Methods (admin CRUD)
+    Route::apiResource('admin/shipping-methods', ShippingMethodController::class);
+
+    // Phase 9B: Order Tracking
+    Route::patch('/admin/orders/{id}/tracking', [OrderTrackingController::class, 'update']);
+
+    // Phase 9B: Analytics Dashboard
+    Route::get('/admin/analytics/dashboard', [AnalyticsController::class, 'dashboard']);
+    Route::get('/admin/analytics/revenue', [AnalyticsController::class, 'revenue']);
+    Route::get('/admin/analytics/top-products', [AnalyticsController::class, 'topProducts']);
+    Route::get('/admin/analytics/customers', [AnalyticsController::class, 'customers']);
+
+    // Phase 9B: Returns & Refunds (admin)
+    Route::get('/admin/returns', [AdminReturnController::class, 'index']);
+    Route::get('/admin/returns/{id}', [AdminReturnController::class, 'show']);
+    Route::patch('/admin/returns/{id}/approve', [AdminReturnController::class, 'approve']);
+    Route::patch('/admin/returns/{id}/reject', [AdminReturnController::class, 'reject']);
+    Route::post('/admin/returns/{id}/refund', [AdminReturnController::class, 'processRefund']);
+
     // Orders
     Route::get('/orders/export', [OrderController::class, 'export']);
     Route::get('/orders/statistics', [OrderController::class, 'statistics']);
@@ -176,6 +212,9 @@ Route::middleware(['public_tenant'])->prefix('v1/public')->group(function () {
 
     // Coupon validation (storefront, no auth required)
     Route::post('/coupons/validate', [PublicCouponController::class, 'validate']);
+
+    // Phase 9B: Public shipping methods
+    Route::get('/shipping-methods', [ShippingController::class, 'index']);
 
     // Cart (token-based, no auth required)
     Route::post('/cart', [CartController::class, 'create']);
@@ -222,5 +261,10 @@ Route::middleware(['public_tenant'])->prefix('v1/public')->group(function () {
         Route::delete('/wishlist/{productId}', [WishlistController::class, 'remove']);
         Route::get('/wishlist/check/{productId}', [WishlistController::class, 'check']);
         Route::post('/wishlist/check', [WishlistController::class, 'checkMultiple']);
+
+        // Phase 9B: Customer returns
+        Route::get('/returns', [StorefrontReturnController::class, 'index']);
+        Route::post('/returns', [StorefrontReturnController::class, 'store']);
+        Route::get('/returns/{id}', [StorefrontReturnController::class, 'show']);
     });
 });
