@@ -38,6 +38,12 @@ use App\Http\Controllers\Api\V1\Admin\AnalyticsController;
 use App\Http\Controllers\Api\V1\Admin\ReturnController as AdminReturnController;
 use App\Http\Controllers\Api\V1\Public\ShippingController;
 use App\Http\Controllers\Api\V1\Storefront\ReturnController as StorefrontReturnController;
+// Phase 9C
+use App\Http\Controllers\Api\V1\Public\RecommendationController;
+use App\Http\Controllers\Api\V1\Public\NewsletterController;
+use App\Http\Controllers\Api\V1\Admin\LoyaltyController as AdminLoyaltyController;
+use App\Http\Controllers\Api\V1\Admin\StoreSettingsExtController;
+use App\Http\Controllers\Api\V1\Storefront\LoyaltyController as StorefrontLoyaltyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -185,6 +191,18 @@ Route::middleware(['auth:sanctum', 'tenant'])->prefix('v1')->group(function () {
     Route::patch('/admin/returns/{id}/reject', [AdminReturnController::class, 'reject']);
     Route::post('/admin/returns/{id}/refund', [AdminReturnController::class, 'processRefund']);
 
+    // Phase 9C: Loyalty Program (admin)
+    Route::get('/admin/loyalty/config', [AdminLoyaltyController::class, 'getConfig']);
+    Route::put('/admin/loyalty/config', [AdminLoyaltyController::class, 'updateConfig']);
+    Route::get('/admin/loyalty/customers/{customerId}', [AdminLoyaltyController::class, 'customerPoints']);
+    Route::post('/admin/loyalty/customers/{customerId}/adjust', [AdminLoyaltyController::class, 'adjustPoints']);
+
+    // Phase 9C: Currency & Email Marketing Settings (admin)
+    Route::get('/admin/settings/currency', [StoreSettingsExtController::class, 'getCurrencySettings']);
+    Route::put('/admin/settings/currency', [StoreSettingsExtController::class, 'updateCurrencySettings']);
+    Route::get('/admin/settings/email-marketing', [StoreSettingsExtController::class, 'getEmailMarketingSettings']);
+    Route::put('/admin/settings/email-marketing', [StoreSettingsExtController::class, 'updateEmailMarketingSettings']);
+
     // Orders
     Route::get('/orders/export', [OrderController::class, 'export']);
     Route::get('/orders/statistics', [OrderController::class, 'statistics']);
@@ -215,6 +233,14 @@ Route::middleware(['public_tenant'])->prefix('v1/public')->group(function () {
 
     // Phase 9B: Public shipping methods
     Route::get('/shipping-methods', [ShippingController::class, 'index']);
+
+    // Phase 9C: Product Recommendations (public, no auth)
+    Route::get('/products/{productId}/recommendations', [RecommendationController::class, 'forProduct']);
+    Route::post('/recommendations/cart', [RecommendationController::class, 'forCart']);
+
+    // Phase 9C: Newsletter subscribe/unsubscribe (public)
+    Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
+    Route::post('/newsletter/unsubscribe', [NewsletterController::class, 'unsubscribe']);
 
     // Cart (token-based, no auth required)
     Route::post('/cart', [CartController::class, 'create']);
@@ -266,5 +292,10 @@ Route::middleware(['public_tenant'])->prefix('v1/public')->group(function () {
         Route::get('/returns', [StorefrontReturnController::class, 'index']);
         Route::post('/returns', [StorefrontReturnController::class, 'store']);
         Route::get('/returns/{id}', [StorefrontReturnController::class, 'show']);
+
+        // Phase 9C: Customer loyalty
+        Route::get('/loyalty/balance', [StorefrontLoyaltyController::class, 'balance']);
+        Route::get('/loyalty/history', [StorefrontLoyaltyController::class, 'history']);
+        Route::post('/loyalty/validate-redemption', [StorefrontLoyaltyController::class, 'validateRedemption']);
     });
 });
