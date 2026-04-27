@@ -38,6 +38,9 @@ import AbandonedCartsPage from "./pages/AbandonedCarts";
 import ShippingMethodsPage from "./pages/Shipping";
 import TaxSettingsPage from "./pages/TaxSettings";
 import ReturnsPage from "./pages/Returns";
+import LoyaltySettingsPage from "./pages/LoyaltySettings";
+import CurrencySettingsPage from "./pages/CurrencySettings";
+import EmailMarketingPage from "./pages/EmailMarketing";
 
 // Protected Route Component
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -137,6 +140,9 @@ function App() {
             <Route path="/shipping" element={<StoreAdminOnlyRoute><ShippingMethodsPage /></StoreAdminOnlyRoute>} />
             <Route path="/settings/tax" element={<StoreAdminOnlyRoute><TaxSettingsPage /></StoreAdminOnlyRoute>} />
             <Route path="/returns" element={<StoreAdminOnlyRoute><ReturnsPage /></StoreAdminOnlyRoute>} />
+            <Route path="/settings/loyalty" element={<StoreAdminOnlyRoute><LoyaltySettingsPage /></StoreAdminOnlyRoute>} />
+            <Route path="/settings/currency" element={<StoreAdminOnlyRoute><CurrencySettingsPage /></StoreAdminOnlyRoute>} />
+            <Route path="/settings/email-marketing" element={<StoreAdminOnlyRoute><EmailMarketingPage /></StoreAdminOnlyRoute>} />
 
             {/* Settings */}
             <Route path="/settings/store" element={<StoreAdminOnlyRoute><StoreSettingsPage /></StoreAdminOnlyRoute>} />

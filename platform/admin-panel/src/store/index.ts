@@ -15,6 +15,7 @@ import { paymentsApi } from '../services/payments';
 import { analyticsApi } from '../services/analytics';
 import { shippingApi } from '../services/shipping';
 import { returnsApi } from '../services/returns';
+import { settingsExtApi } from '../services/settingsExt';
 
 export const store = configureStore({
   reducer: {
@@ -34,6 +35,7 @@ export const store = configureStore({
     [analyticsApi.reducerPath]: analyticsApi.reducer,
     [shippingApi.reducerPath]: shippingApi.reducer,
     [returnsApi.reducerPath]: returnsApi.reducer,
+    [settingsExtApi.reducerPath]: settingsExtApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -51,7 +53,8 @@ export const store = configureStore({
       .concat(paymentsApi.middleware)
       .concat(analyticsApi.middleware)
       .concat(shippingApi.middleware)
-      .concat(returnsApi.middleware),
+      .concat(returnsApi.middleware)
+      .concat(settingsExtApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
